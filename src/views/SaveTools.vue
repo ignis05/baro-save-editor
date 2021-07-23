@@ -7,11 +7,11 @@
       </v-col>
     </v-row>
     <!-- row 2 - save info and download -->
-     <v-row>
-      
+    <v-row>
+      <SaveDataBar></SaveDataBar>
     </v-row>
     <!-- row 3 - tools -->
-     <v-row>
+    <v-row>
       <v-col>
         <!-- owned subs -->
       </v-col>
@@ -30,12 +30,14 @@
 
 <script>
 import FileDropper from '../components/FileDropper.vue'
+import SaveDataBar from '../components/SaveDataBar.vue'
 
 export default {
   name: 'SaveTools',
 
   components: {
     FileDropper,
+    SaveDataBar,
   },
 }
 </script>

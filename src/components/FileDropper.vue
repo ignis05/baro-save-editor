@@ -1,21 +1,24 @@
 <template>
-  <div class="h3">Drag a file below to get started</div>
-  <div
-    class="dropzone"
-    @drop.stop.prevent="dropHandler"
-    @click="dropzoneClickHandler"
-    @dragenter.stop.prevent="dragEnter"
-    @dragleave.stop.prevent="dragLeave"
-    :style="{ borderColor: hovered ? getBorderColor : '' }"
-  ></div>
-  <input
-    ref="fileInput"
-    class="dropzoneInput"
-    type="file"
-    @change="selectHandler"
-    multiple="false"
-    accept=".save,.sub,.xml"
-  />
+  <v-card class="pa-4" elevation="1">
+    <div class="h3 mb-1">Drag a file below to get started</div>
+    <div
+      class="dropzone"
+      @drop.prevent="dropHandler"
+      @click="dropzoneClickHandler"
+      @dragenter.stop.prevent="dragEnter"
+      @dragleave.stop.prevent="dragLeave"
+      @dragover.stop.prevent
+      :style="{ borderColor: hovered ? getBorderColor : '' }"
+    ></div>
+    <input
+      ref="fileInput"
+      class="dropzoneInput"
+      type="file"
+      @change="selectHandler"
+      multiple="false"
+      accept=".save,.sub,.xml"
+    />
+  </v-card>
 </template>
 
 <script>
@@ -56,6 +59,7 @@ export default {
       ev.target
     },
     dropHandler(ev) {
+      console.log('drop triggered')
       this.hovered = false
       if (ev.dataTransfer?.files[0]) this.loadFile(ev.dataTransfer.files[0])
     },
