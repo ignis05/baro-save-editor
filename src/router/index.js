@@ -25,7 +25,7 @@ const routes = [
     name: 'About',
     component: About,
     meta: {
-      title: 'About Barotrauma Save Editor',
+      title: 'About This App',
     },
   },
 ]

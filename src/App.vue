@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-app-bar color="primary">
-      <v-app-bar-title class="text-h4 text-black" text>{{ pageName }}</v-app-bar-title>
+      <v-app-bar-title class="text-h4 text-black mr-0 pr-0" text>{{ pageName }}</v-app-bar-title>
+      <span v-if="!['About This App'].includes(pageName)" class="text-caption signature">by ignis05</span>
       <v-spacer />
       <v-btn v-for="link in navLinks" :key="`navbar-link-${link.label}`" :to="link.url" class="mx-2">
         {{ link.label }}
@@ -46,5 +47,10 @@ export default {
 <style>
 .v-app-bar-title {
   font-weight: bold;
+}
+span.signature {
+  position: relative;
+  top: 10px;
+  color: rgb(100, 5, 5);
 }
 </style>

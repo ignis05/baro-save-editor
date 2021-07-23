@@ -11,14 +11,12 @@
   "dependencies": {
     "@mdi/font": "5.9.55",
     "core-js": "^3.6.5",
-    "jquery": "^3.6.0",
     "roboto-fontface": "*",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuetify": "^3.0.0-alpha.0",
     "vuex": "^4.0.0-0",
     "xml-js": "^1.6.11",
-    "xml2js": "^0.4.23",
     "zlib": "^1.0.5"
   },
   "devDependencies": {
