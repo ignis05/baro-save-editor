@@ -1,22 +1,21 @@
 <template>
+  <div class="h3">Drag a file below to get started</div>
   <div
-    class="dropzoneWrapper"
-    @drop.prevent="dropHandler"
+    class="dropzone"
+    @drop.stop.prevent="dropHandler"
     @click="dropzoneClickHandler"
-    @dragenter="dragEnter"
-    @dragover="dragOver"
-    @dragleave="dragLeave"
-  >
-    <p>Drop files here</p>
-    <input
-      ref="fileInput"
-      class="dropzone"
-      type="file"
-      @change="selectHandler"
-      multiple="false"
-      accept=".save,.sub,.xml"
-    />
-  </div>
+    @dragenter.stop.prevent="dragEnter"
+    @dragleave.stop.prevent="dragLeave"
+    :style="{ borderColor: hovered ? getBorderColor : '' }"
+  ></div>
+  <input
+    ref="fileInput"
+    class="dropzoneInput"
+    type="file"
+    @change="selectHandler"
+    multiple="false"
+    accept=".save,.sub,.xml"
+  />
 </template>
 
 <script>
@@ -24,7 +23,9 @@ import { DecompressSave } from '../helpers/CompressionHelpers'
 
 export default {
   data() {
-    return {}
+    return {
+      hovered: false,
+    }
   },
   methods: {
     loadFile(file) {
@@ -43,6 +44,7 @@ export default {
           var save = DecompressSave(Buffer.from(resultRaw))
           resultFile.data = save
         } else if (file.name.endsWith('.sub')) {
+          // sub here
         } else {
           resultFile.data = resultRaw.toString('utf-8')
         }
@@ -54,36 +56,39 @@ export default {
       ev.target
     },
     dropHandler(ev) {
+      this.hovered = false
       if (ev.dataTransfer?.files[0]) this.loadFile(ev.dataTransfer.files[0])
     },
-    dropzoneClickHandler(ev) {
+    dropzoneClickHandler() {
       this.$refs.fileInput.click()
     },
-    dragEnter(ev) {
-      ev.stopPropagation()
-      console.log('enter')
+    dragEnter() {
+      this.hovered = true
     },
-    dragOver(ev) {
-      ev.stopPropagation()
-      console.log('over')
+    dragLeave() {
+      this.hovered = false
     },
-    dragLeave(ev) {
-      ev.stopPropagation()
-      console.log('leave')
+  },
+  computed: {
+    getBorderColor() {
+      return this.$vuetify.theme.themes.dark.colors.success
     },
   },
 }
 </script>
 
 <style scoped>
-input.dropzone {
-  opacity: 0;
+input.dropzoneInput {
+  display: none;
 }
-.dropzoneWrapper {
+.dropzone {
   border: 2px dashed #bbb;
   border-radius: 5px;
   padding: 50px;
   text-align: center;
   cursor: pointer;
+  position: relative;
+  background-image: url('~@/assets/file-upload-outline.png');
+  background-position: center;
 }
 </style>
