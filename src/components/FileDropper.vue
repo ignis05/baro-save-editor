@@ -56,7 +56,7 @@ export default {
     },
     selectHandler(ev) {
       if (ev.target?.files[0]) this.loadFile(ev.target.files[0])
-      ev.target
+      ev.target.value = null
     },
     dropHandler(ev) {
       console.log('drop triggered')
