@@ -13,5 +13,6 @@ module.exports = {
     'no-unused-vars': 'warn',
     'no-empty': 'warn',
     'no-irregular-whitespace': 'off',
+    'no-unreachable': 'warn',
   },
 }

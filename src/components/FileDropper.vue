@@ -75,7 +75,7 @@ export default {
   },
   computed: {
     getBorderColor() {
-      return this.$vuetify.theme.themes.dark.colors.success
+      return this.$vuetify.theme.themes.dark.colors.secondary
     },
   },
 }

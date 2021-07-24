@@ -11,12 +11,12 @@
       <SaveDataBar></SaveDataBar>
     </v-row>
     <!-- row 3 - tools -->
-    <v-row>
+    <v-row v-if="saveLoaded">
       <v-col>
         <!-- owned subs -->
       </v-col>
-      <v-col>
-        <!-- aval subs -->
+      <v-col v-if="isMultiPlayer">
+        <AvalSubList></AvalSubList>
       </v-col>
       <v-col>
         <!-- crew -->
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import AvalSubList from '../components/AvalSubList.vue'
 import FileDropper from '../components/FileDropper.vue'
 import SaveDataBar from '../components/SaveDataBar.vue'
 
@@ -36,8 +37,21 @@ export default {
   name: 'SaveTools',
 
   components: {
+    AvalSubList,
     FileDropper,
     SaveDataBar,
+  },
+  computed: {
+    saveLoaded() {
+      return this.$store.state.FileModule.savefileName !== null
+    },
+    isMultiPlayer() {
+      return (
+        this.$store.state.FileModule.gamesession.elements?.[0]?.elements?.findIndex(
+          (el) => el.name === 'MultiPlayerCampaign',
+        ) !== -1
+      )
+    },
   },
 }
 </script>

@@ -2,8 +2,8 @@ import { xml2js } from 'xml-js'
 
 export default {
   state: {
-    savefileName: 'none',
     gamesession: {},
+    savefileName: null,
     subfiles: {},
   },
   mutations: {

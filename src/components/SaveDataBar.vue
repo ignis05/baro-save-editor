@@ -14,7 +14,7 @@
 export default {
   computed: {
     filename() {
-      return this.$store.state.FileModule.savefileName
+      return this.$store.state.FileModule.savefileName || 'none'
     },
     modificationDate() {
       let timestamp = this.$store.state.FileModule.gamesession.elements?.[0]?.attributes?.savetime
