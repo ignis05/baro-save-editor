@@ -31,6 +31,7 @@ export default {
     addSub() {
       let subName = this.$refs.subListInput.value
       this.avalSubList.push({ type: 'element', name: 'Sub', attributes: { name: subName } })
+      this.$refs.subListInput.value = ''
     },
     deleteSub(subName) {
       let index = this.avalSubList.findIndex((el) => el.attributes.name == subName)

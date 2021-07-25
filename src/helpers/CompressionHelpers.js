@@ -1,9 +1,9 @@
-import { gunzipSync } from 'zlib'
+import { gzipSync, gunzipSync } from 'zlib'
 
 /**
  * Uses zlib to decompress barotrauma savefiles and splits files from each other
  * @param {Buffer} saveContent  - raw savefile content as buffer
- * @returns {Object} savefile   - object where keys are filenames and values are file contents
+ * @returns {Object} object where keys are filenames and values are file contents
  */
 export function DecompressSave(saveContent) {
   var result = {}
@@ -27,4 +27,44 @@ export function DecompressSave(saveContent) {
     result[name] = f_content
   }
   return result
+}
+
+/**
+ * Merges files within object into one and compresses them using zlib
+ * @param {Object} save   - object where keys are filenames and values are file contents
+ * @returns {Buffer} raw savefile content as buffer
+ */
+export function CompressSave(save) {
+  var buffer = Buffer.alloc(0)
+  for (let [filename, content] of Object.entries(save)) {
+    var name = Buffer.from(filename, 'utf-16le')
+    var nameLength = Buffer.alloc(4)
+    nameLength.writeInt32LE(filename.length)
+
+    // if content is string, convert it to buffer
+    var file = typeof content === 'string' ? Buffer.from(content, 'utf-8') : content
+    var fileLength = Buffer.alloc(4)
+    fileLength.writeInt32LE(file.length)
+
+    buffer = Buffer.concat([buffer, nameLength, name, fileLength, file])
+  }
+  return gzipSync(buffer)
+}
+
+/**
+ * Uses zlib to decompress .sub (gzip) file
+ * @param {Buffer} fileContent  - raw .sub file content as buffer
+ * @returns {String} string with sub xml
+ */
+export function DecompressSub(fileContent) {
+  return gunzipSync(fileContent).toString('utf-8')
+}
+
+/**
+ * Uses zlib to created compresses .sub (gzip) file
+ * @param {String} xmlString  - string with sub xml
+ * @returns {Buffer} compressed file content as Buffer
+ */
+export function CompressSub(xmlString) {
+  return gzipSync(Buffer.from(xmlString, 'utf-8'))
 }
