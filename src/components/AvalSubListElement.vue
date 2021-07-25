@@ -1,6 +1,7 @@
 <template>
-  <div>
-    {{ subName }}
+  <div class="flex-row">
+    <span class="mr-4">{{ subName }}</span>
+    <v-icon color="red" class="deleteIcon" @click="emitDelete">mdi-delete-outline</v-icon>
   </div>
 </template>
 
@@ -9,7 +10,16 @@ export default {
   props: {
     subName: String,
   },
+  methods: {
+    emitDelete() {
+      this.$emit('deleteSub', this.subName)
+    },
+  },
 }
 </script>
 
-<style></style>
+<style scoped>
+.deleteIcon {
+  cursor: pointer;
+}
+</style>

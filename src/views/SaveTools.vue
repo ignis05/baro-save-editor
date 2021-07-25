@@ -8,7 +8,7 @@
     </v-row>
     <!-- row 2 - save info and download -->
     <v-row>
-      <SaveDataBar></SaveDataBar>
+      <SaveDataBar :blockDownload="!saveLoaded"></SaveDataBar>
     </v-row>
     <!-- row 3 - tools -->
     <v-row v-if="saveLoaded">

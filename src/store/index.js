@@ -14,6 +14,11 @@ export default createStore({
     isMultiPlayer: (state) => {
       return state.gamesession.elements?.[0]?.elements?.findIndex((el) => el.name === 'MultiPlayerCampaign') !== -1
     },
+    campaign: (state) => {
+      return state.gamesession.elements?.[0]?.elements?.find(
+        (el) => el.name === 'MultiPlayerCampaign' || el.name === 'SinglePlayerCampaign',
+      )
+    },
   },
   mutations: {
     SET_SAVEFILENAME(state, newName) {

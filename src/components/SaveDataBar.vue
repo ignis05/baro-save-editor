@@ -1,7 +1,7 @@
 <template>
   <v-col>
     <v-card elevation="1">
-      <v-btn color="secondary">Download</v-btn>
+      <v-btn color="secondary" :disabled="blockDownload">Download</v-btn>
       <div class="float-right ma-1">
         Loaded file: <span class="text-primary">{{ filename }}</span> ,   modification date:
         <span class="text-primary">{{ modificationDate }}</span>
@@ -12,6 +12,9 @@
 
 <script>
 export default {
+  props: {
+    blockDownload: Boolean,
+  },
   computed: {
     filename() {
       return this.$store.state.savefileName || 'none'
