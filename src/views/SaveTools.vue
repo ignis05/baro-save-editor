@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import AvalSubList from '../components/AvalSubList.vue'
 import FileDropper from '../components/FileDropper.vue'
 import SaveDataBar from '../components/SaveDataBar.vue'
@@ -42,16 +44,7 @@ export default {
     SaveDataBar,
   },
   computed: {
-    saveLoaded() {
-      return this.$store.state.FileModule.savefileName !== null
-    },
-    isMultiPlayer() {
-      return (
-        this.$store.state.FileModule.gamesession.elements?.[0]?.elements?.findIndex(
-          (el) => el.name === 'MultiPlayerCampaign',
-        ) !== -1
-      )
-    },
+    ...mapGetters(['saveLoaded', 'isMultiPlayer']),
   },
 }
 </script>

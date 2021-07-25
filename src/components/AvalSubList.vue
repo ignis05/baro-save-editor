@@ -18,7 +18,7 @@ export default {
   },
   computed: {
     avalSubList() {
-      let aSubs = this.$store.state.FileModule.gamesession.elements?.[0]?.elements
+      let aSubs = this.$store.state.gamesession.elements?.[0]?.elements
         ?.find((el) => el.name === 'MultiPlayerCampaign')
         .elements.find((el) => el.name === 'AvailableSubs')
       return aSubs.elements.map((el) => el.attributes.name)

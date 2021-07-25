@@ -14,10 +14,10 @@
 export default {
   computed: {
     filename() {
-      return this.$store.state.FileModule.savefileName || 'none'
+      return this.$store.state.savefileName || 'none'
     },
     modificationDate() {
-      let timestamp = this.$store.state.FileModule.gamesession.elements?.[0]?.attributes?.savetime
+      let timestamp = this.$store.state.gamesession.elements?.[0]?.attributes?.savetime
       if (!timestamp) return '-'
       let date = new Date(parseInt(timestamp) * 1000)
       return date.toLocaleString()
