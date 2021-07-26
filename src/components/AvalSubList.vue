@@ -1,9 +1,9 @@
 <template>
-  <v-card elevation="1">
+  <v-card elevation="1" class="pb-2">
     <v-card-header class="flex-column align-center">
       <v-card-title> Available Submarines </v-card-title>
     </v-card-header>
-    <v-sheet class="flex-column">
+    <v-sheet class="mb-2">
       <AvalSubListElement
         v-for="sub of avalSubList.map((el) => el.attributes.name)"
         :key="sub"
@@ -11,7 +11,10 @@
         @deleteSub="deleteSub"
       ></AvalSubListElement>
     </v-sheet>
-    <input ref="subListInput" /><v-btn @click="addSub" color="secondary">Add</v-btn>
+    <v-sheet class="d-flex flex-row justify-space-between px-2">
+      <input v-model="inputVal" ref="subListInput" class="mr-2 pl-2" />
+      <v-btn :disabled="!inputVal" @click="addSub" color="secondary">Add</v-btn>
+    </v-sheet>
   </v-card>
 </template>
 
@@ -20,7 +23,9 @@ import AvalSubListElement from './AvalSubListElement.vue'
 
 export default {
   data() {
-    return {}
+    return {
+      inputVal: '',
+    }
   },
   computed: {
     avalSubList() {
@@ -29,9 +34,9 @@ export default {
   },
   methods: {
     addSub() {
-      let subName = this.$refs.subListInput.value
-      this.avalSubList.push({ type: 'element', name: 'Sub', attributes: { name: subName } })
-      this.$refs.subListInput.value = ''
+      if (!this.inputVal) return
+      this.avalSubList.push({ type: 'element', name: 'Sub', attributes: { name: this.inputVal } })
+      this.inputVal = ''
     },
     deleteSub(subName) {
       let index = this.avalSubList.findIndex((el) => el.attributes.name == subName)

@@ -3,7 +3,7 @@
     <v-card elevation="1">
       <v-btn color="secondary" :disabled="blockDownload" @click="download">Download</v-btn>
       <div class="float-right ma-1">
-        Loaded file: <span class="text-primary">{{ filename }}</span> ,   modification date:
+        Loaded file: <span class="text-primary">{{ filename }}</span> , Save date:
         <span class="text-primary">{{ modificationDate }}</span>
       </div>
     </v-card>
