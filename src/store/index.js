@@ -4,21 +4,25 @@ import { DecompressSub } from '../helpers/CompressionHelpers'
 
 export default createStore({
   state: {
+    editorSubmarine: { filename: null, data: {} },
     gamesession: {},
     savefileName: null,
     subfiles: {},
   },
   getters: {
-    saveLoaded: (state) => {
-      return state.savefileName !== null
-    },
-    isMultiPlayer: (state) => {
-      return state.gamesession.elements?.[0]?.elements?.findIndex((el) => el.name === 'MultiPlayerCampaign') !== -1
-    },
     campaign: (state) => {
       return state.gamesession.elements?.[0]?.elements?.find(
         (el) => el.name === 'MultiPlayerCampaign' || el.name === 'SinglePlayerCampaign',
       )
+    },
+    isMultiPlayer: (state) => {
+      return state.gamesession.elements?.[0]?.elements?.findIndex((el) => el.name === 'MultiPlayerCampaign') !== -1
+    },
+    saveLoaded: (state) => {
+      return state.savefileName !== null
+    },
+    subLoaded: (state) => {
+      return state.editorSubmarine.filename !== null
     },
   },
   mutations: {
@@ -28,16 +32,37 @@ export default createStore({
     SET_GAMESESSION(state, newData) {
       state.gamesession = newData
     },
+    // clear submarine files attached to savefile
     CLEAR_SUBFILES(state) {
       state.subfiles = {}
     },
+    // add submarine file as attached to savefile
     ADD_SUBFILE(state, { name, data }) {
       state.subfiles[name] = data
+    },
+    // set submarine file for submarine editor
+    SET_SUBFILE(state, { name, data }) {
+      state.editorSubmarine.filename = name
+      state.editorSubmarine.data = data
     },
   },
   actions: {
     clearSubFiles({ commit }) {
       commit('CLEAR_SUBFILES')
+    },
+    subUploaded({ commit }, file) {
+      // .sub submarine
+      if (file.name.endsWith('.sub')) {
+        let sub = xml2js(DecompressSub(Buffer.from(file.data)))
+        console.dir(sub)
+        commit('SET_SUBFILE', { name: file.name, data: sub })
+      }
+      // .xml submarine
+      else if (file.name.endsWith('.xml')) {
+        commit('SET_SUBFILE', { name: file.name, data: xml2js(file.data.toString('utf-8')) })
+      }
+      // other file types
+      else return console.error(`wrong file type uploaded - ${file.name}`)
     },
     fileUploaded({ commit }, file) {
       console.log(`Received file ${file.name}`)

@@ -25,6 +25,9 @@
 import { DecompressSave } from '../helpers/CompressionHelpers'
 
 export default {
+  props: {
+    fromSubEditor: Boolean,
+  },
   data() {
     return {
       hovered: false,
@@ -43,15 +46,27 @@ export default {
           data: null,
         }
 
-        if (file.name.endsWith('.save')) {
-          var save = DecompressSave(Buffer.from(resultRaw))
-          resultFile.data = save
-        } else if (file.name.endsWith('.sub')) {
-          // sub here
-        } else {
-          resultFile.data = resultRaw.toString('utf-8')
+        // uploads from submarine editor
+        if (this.fromSubEditor) {
+          if (!file.name.endsWith('.sub')) {
+            // todo: v-alert here
+            return console.warn('not a .sub file')
+          }
+          resultFile.data = resultRaw
+          this.$store.dispatch('subUploaded', resultFile)
         }
-        this.$store.dispatch('fileUploaded', resultFile)
+        // uploads from save editor
+        else {
+          if (file.name.endsWith('.save')) {
+            var save = DecompressSave(Buffer.from(resultRaw))
+            resultFile.data = save
+          } else if (file.name.endsWith('.sub')) {
+            resultFile.data = resultRaw
+          } else {
+            resultFile.data = resultRaw.toString('utf-8')
+          }
+          this.$store.dispatch('fileUploaded', resultFile)
+        }
       }
     },
     selectHandler(ev) {
