@@ -1,13 +1,10 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import SaveTools from '../views/SaveTools.vue'
-import SubTools from '../views/SubTools.vue'
-import About from '../views/About.vue'
 
 const routes = [
   {
     path: '/',
     name: 'SaveTools',
-    component: SaveTools,
+    component: () => import('../views/SaveTools.vue'),
     meta: {
       title: 'Barotrauma Save Editor',
     },
@@ -15,7 +12,7 @@ const routes = [
   {
     path: '/SubTools',
     name: 'SubTools',
-    component: SubTools,
+    component: () => import('../views/SubTools.vue'),
     meta: {
       title: 'Barotrauma Submarine Editor',
     },
@@ -23,7 +20,7 @@ const routes = [
   {
     path: '/About',
     name: 'About',
-    component: About,
+    component: () => import('../views/About.vue'),
     meta: {
       title: 'About This App',
     },
