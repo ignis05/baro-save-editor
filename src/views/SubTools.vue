@@ -12,7 +12,14 @@
     </v-row>
 
     <!-- row 3 - tools -->
-    <v-row> </v-row>
+    <v-row v-if="subLoaded">
+      <v-col>
+        <ShuttleExporter></ShuttleExporter>
+      </v-col>
+      <v-col></v-col>
+      <v-col></v-col>
+      <v-col></v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -20,6 +27,7 @@
 import { mapGetters } from 'vuex'
 
 import FileDropper from '../components/FileDropper.vue'
+import ShuttleExporter from '../components/ShuttleExporter.vue'
 import SubDataBar from '../components/SubDataBar.vue'
 
 export default {
@@ -29,6 +37,7 @@ export default {
   },
   components: {
     FileDropper,
+    ShuttleExporter,
     SubDataBar,
   },
 }
