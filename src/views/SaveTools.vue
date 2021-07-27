@@ -13,7 +13,7 @@
     <!-- row 3 - tools -->
     <v-row v-if="saveLoaded">
       <v-col>
-        <!-- owned subs -->
+        <OwnedSubList></OwnedSubList>
       </v-col>
       <v-col v-if="isMultiPlayer">
         <AvalSubList></AvalSubList>
@@ -33,6 +33,7 @@ import { mapGetters } from 'vuex'
 
 import AvalSubList from '../components/AvalSubList.vue'
 import FileDropper from '../components/FileDropper.vue'
+import OwnedSubList from '../components/OwnedSubList.vue'
 import SaveDataBar from '../components/SaveDataBar.vue'
 
 export default {
@@ -41,6 +42,7 @@ export default {
   components: {
     AvalSubList,
     FileDropper,
+    OwnedSubList,
     SaveDataBar,
   },
   computed: {

@@ -11,9 +11,7 @@
 </template>
 
 <script>
-import { js2xml } from 'xml-js'
-
-import { CompressSub } from '../helpers/CompressionHelpers'
+import { desanitized_js2xml, CompressSub } from '../helpers/CompressionHelpers'
 
 export default {
   props: {
@@ -30,7 +28,7 @@ export default {
   methods: {
     download() {
       // compress file
-      let compressed = CompressSub(js2xml(this.$store.state.editorSubmarine.data))
+      let compressed = CompressSub(desanitized_js2xml(this.$store.state.editorSubmarine.data))
 
       // trigger download
       let a = document.createElement('a')

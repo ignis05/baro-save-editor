@@ -19,15 +19,13 @@
 </template>
 
 <script>
-import { js2xml } from 'xml-js'
-
-import { CompressSub } from '../helpers/CompressionHelpers'
+import { desanitized_js2xml, CompressSub } from '../helpers/CompressionHelpers'
 
 export default {
   methods: {
     downloadShuttle(subObject) {
       // use String#replace to not modify original element in main sub
-      let xmlString = js2xml({ elements: [subObject] }).replace('LinkedSubmarine', 'Submarine')
+      let xmlString = desanitized_js2xml({ elements: [subObject] }).replace('LinkedSubmarine', 'Submarine')
 
       // compress
       let compressed = CompressSub(xmlString)

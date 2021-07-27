@@ -1,4 +1,5 @@
 import { gzipSync, gunzipSync } from 'zlib'
+import { js2xml } from 'xml-js'
 
 /**
  * Uses zlib to decompress barotrauma savefiles and splits files from each other
@@ -67,4 +68,19 @@ export function DecompressSub(fileContent) {
  */
 export function CompressSub(xmlString) {
   return gzipSync(Buffer.from(xmlString, 'utf-8'))
+}
+
+/**
+ * js2xml wrapper that replaces sanitized characters with their original couterparts
+ * @param {Object} object
+ * @param {Object} settings
+ * @returns {String} xml string
+ */
+export function desanitized_js2xml(object, settings) {
+  return js2xml(object, {
+    ...settings,
+    attributeValueFn(value) {
+      return value.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&/g, '&amp;')
+    },
+  })
 }

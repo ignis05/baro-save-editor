@@ -59,7 +59,11 @@ export default createStore({
       }
       // .xml submarine
       else if (file.name.endsWith('.xml')) {
-        commit('SET_SUBFILE', { name: file.name, data: xml2js(file.data.toString('utf-8')) })
+        commit('SET_SUBFILE', { name: file.name.slice(0, -4) + '.sub', data: xml2js(file.data.toString('utf-8')) })
+      }
+      // transfer from save editor
+      else if (file.name.endsWith('.raw')) {
+        commit('SET_SUBFILE', { name: file.name.slice(0, -4) + '.sub', data: file.data })
       }
       // other file types
       else return console.error(`wrong file type uploaded - ${file.name}`)
