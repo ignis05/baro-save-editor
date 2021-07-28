@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import { xml2js } from 'xml-js'
-import { DecompressSub } from '../helpers/CompressionHelpers'
+import { DecompressSub, gsHeader } from '../helpers/CompressionHelpers'
 
 export default createStore({
   state: {
@@ -76,8 +76,7 @@ export default createStore({
         commit('SET_SAVEFILENAME', file.name)
 
         // strips header - makes gamesssion the root of xml
-        const stripSize = `<?xml version="1.0" encoding="utf-8"?>\n`.length
-        var parsedGamesession = xml2js(file.data['gamesession.xml'].toString('utf-8').substring(stripSize))
+        let parsedGamesession = xml2js(file.data['gamesession.xml'].toString('utf-8').substring(gsHeader.length))
 
         if (parsedGamesession.elements[0].name !== 'Gamesession') throw `Failed to parse gamesession.xml`
         console.dir(parsedGamesession)
@@ -93,11 +92,11 @@ export default createStore({
             let subName = subObject?.elements[0]?.attributes?.name
             if (!subName) {
               console.warn(`Failed to parse xml from ${filename} - file might be invalid`)
-              // todo: replace with snackbar/v-alert warning message
+              // todo: replace with v-alert warning message
             }
           } else {
             console.warn(`Failed to recognize file type: ${filename}`)
-            // todo: replace with snackbar/v-alert warning message
+            // todo: replace with v-alert warning message
           }
         }
       } else if (!state.savefileName) return console.warn(`No .save file to attach additional files to`)
@@ -120,6 +119,19 @@ export default createStore({
           ownedSubs.push({ type: 'element', name: 'sub', attributes: { name: subName } })
         } else console.log(`updating existing submarine ${file.name}`)
         commit('ADD_SUBFILE', { name: file.name, data: subObject })
+      }
+      // gamesession.xml
+      else if (file.name === 'gamesession.xml') {
+        // strips header - makes gamesssion the root of xml
+        let parsedGamesession = xml2js(file.data.substring(gsHeader.length))
+        console.dir(parsedGamesession)
+
+        if (parsedGamesession.elements?.[0]?.name !== 'Gamesession') throw `Failed to parse gamesession.xml`
+        console.log('replaced gamesession.xml')
+        commit('SET_GAMESESSION', parsedGamesession)
+      } else {
+        console.warn(`Failed to recognize file type: ${file.name}`)
+        // todo: replace with v-alert warning message
       }
     },
   },

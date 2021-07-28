@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { desanitized_js2xml, CompressSave, CompressSub } from '../helpers/CompressionHelpers'
+import { desanitized_js2xml, CompressSave, CompressSub, gsHeader } from '../helpers/CompressionHelpers'
 
 export default {
   props: {
@@ -33,8 +33,7 @@ export default {
       var save = {}
 
       // convert gamesession to xml string and prepend header
-      save['gamesession.xml'] =
-        `<?xml version="1.0" encoding="utf-8"?>\n` + desanitized_js2xml(this.$store.state.gamesession)
+      save['gamesession.xml'] = gsHeader + desanitized_js2xml(this.$store.state.gamesession)
 
       // compress and attach .sub files
       for (let [subFileName, subObject] of Object.entries(this.$store.state.subfiles)) {

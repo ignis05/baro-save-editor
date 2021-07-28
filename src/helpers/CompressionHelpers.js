@@ -84,3 +84,6 @@ export function desanitized_js2xml(object, settings) {
     },
   })
 }
+
+// header to strip and put back on gamesession.xml
+export const gsHeader = `<?xml version="1.0" encoding="utf-8"?>\n`

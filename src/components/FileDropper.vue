@@ -62,8 +62,10 @@ export default {
             resultFile.data = save
           } else if (file.name.endsWith('.sub')) {
             resultFile.data = resultRaw
+          } else if (file.name.endsWith('.xml')) {
+            resultFile.data = Buffer.from(resultRaw).toString('utf-8')
           } else {
-            resultFile.data = resultRaw.toString('utf-8')
+            resultFile.data = resultRaw
           }
           this.$store.dispatch('fileUploaded', resultFile)
         }
