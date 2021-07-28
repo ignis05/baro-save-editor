@@ -1,24 +1,22 @@
 # baro-save-editor
 
+## Tools for save and submarine editing for Barotrauma.
+
+Working fully client-sided in the browser.<br>
+Github pages build available on https://ignis05.github.io/baro-save-editor/#/<br>
+
+<hr>
+Made with Vue 3 and Vuetify.
+<br>
+<br>
+
 ## Project setup
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- `npm run serve` - starts development server
+- `npm run build` - makes production build
+- `npm run lint` - lints and fixes files
+- `npm run deploy` - builds and pushes dist to github pages
