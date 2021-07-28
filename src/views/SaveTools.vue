@@ -19,10 +19,10 @@
         <AvalSubList></AvalSubList>
       </v-col>
       <v-col>
-        <!-- crew -->
+        <CrewList></CrewList>
       </v-col>
       <v-col>
-        <!-- other -->
+        <MiscSaveTools></MiscSaveTools>
       </v-col>
     </v-row>
   </v-container>
@@ -32,7 +32,9 @@
 import { mapGetters } from 'vuex'
 
 import AvalSubList from '../components/AvalSubList.vue'
+import CrewList from '../components/CrewList.vue'
 import FileDropper from '../components/FileDropper.vue'
+import MiscSaveTools from '../components/MiscSaveTools.vue'
 import OwnedSubList from '../components/OwnedSubList.vue'
 import SaveDataBar from '../components/SaveDataBar.vue'
 
@@ -41,7 +43,9 @@ export default {
 
   components: {
     AvalSubList,
+    CrewList,
     FileDropper,
+    MiscSaveTools,
     OwnedSubList,
     SaveDataBar,
   },

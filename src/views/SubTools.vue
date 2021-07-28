@@ -16,9 +16,15 @@
       <v-col>
         <ShuttleExporter></ShuttleExporter>
       </v-col>
-      <v-col></v-col>
-      <v-col></v-col>
-      <v-col></v-col>
+      <v-col>
+        <WireHider></WireHider>
+      </v-col>
+      <v-col>
+        <ScriptRunner></ScriptRunner>
+      </v-col>
+      <v-col>
+        <MiscSubTools></MiscSubTools>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -27,8 +33,11 @@
 import { mapGetters } from 'vuex'
 
 import FileDropper from '../components/FileDropper.vue'
+import MiscSubTools from '../components/MiscSubTools.vue'
+import ScriptRunner from '../components/ScriptRunner.vue'
 import ShuttleExporter from '../components/ShuttleExporter.vue'
 import SubDataBar from '../components/SubDataBar.vue'
+import WireHider from '../components/WireHider.vue'
 
 export default {
   name: 'SubTools',
@@ -37,8 +46,11 @@ export default {
   },
   components: {
     FileDropper,
+    MiscSubTools,
+    ScriptRunner,
     ShuttleExporter,
     SubDataBar,
+    WireHider,
   },
 }
 </script>
