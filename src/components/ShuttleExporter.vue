@@ -19,13 +19,18 @@
 </template>
 
 <script>
+import _clone from 'lodash/clone'
 import { desanitized_js2xml, CompressSub } from '../helpers/CompressionHelpers'
 
 export default {
   methods: {
     downloadShuttle(subObject) {
-      // use String#replace to not modify original element in main sub
-      let xmlString = desanitized_js2xml({ elements: [subObject] }).replace('LinkedSubmarine', 'Submarine')
+      // clone object to avoid modifying original one
+      let subClone = _clone(subObject)
+      subClone.name = 'Submarine'
+
+      // wrap and convert to xml
+      let xmlString = desanitized_js2xml({ elements: [subClone] })
 
       // compress
       let compressed = CompressSub(xmlString)
@@ -33,7 +38,7 @@ export default {
       // trigger download
       let a = document.createElement('a')
       a.href = URL.createObjectURL(new Blob([compressed.buffer], { type: 'application/gzip' }))
-      a.download = `${subObject.attributes.name}.sub`
+      a.download = `${subClone.attributes.name}.sub`
       a.click()
     },
     downloadImage() {

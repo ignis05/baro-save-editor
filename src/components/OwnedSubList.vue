@@ -55,7 +55,7 @@ export default {
       let subFilename = Object.keys(subFiles).find((file) => subFiles[file].elements[0].attributes.name === subName)
       if (!subFilename) return console.error(`Failed to move ${subName} to editor - not found in attached .sub files`)
       this.$store.dispatch('subUploaded', {
-        name: subFilename.slice(0, -4) + '.raw',
+        name: subFilename + '.raw',
         data: JSON.parse(JSON.stringify(subFiles[subFilename])),
       })
       this.$router.push('/SubTools')

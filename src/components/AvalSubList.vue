@@ -12,7 +12,7 @@
       ></AvalSubListElement>
     </v-sheet>
     <v-sheet class="d-flex flex-row justify-space-between px-2">
-      <input v-model="inputVal" ref="subListInput" class="mr-2 pl-2" />
+      <input v-model="inputVal" @keyup="keyUpHandler" ref="subListInput" class="mr-2 pl-2" />
       <v-btn :disabled="!inputVal" @click="addSub" color="secondary">Add</v-btn>
     </v-sheet>
   </v-card>
@@ -33,6 +33,9 @@ export default {
     },
   },
   methods: {
+    keyUpHandler(ev) {
+      if (ev.key === 'Enter') this.addSub()
+    },
     addSub() {
       if (!this.inputVal) return
       this.avalSubList.push({ type: 'element', name: 'Sub', attributes: { name: this.inputVal } })

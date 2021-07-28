@@ -63,7 +63,7 @@ export default createStore({
       }
       // transfer from save editor
       else if (file.name.endsWith('.raw')) {
-        commit('SET_SUBFILE', { name: file.name.slice(0, -4) + '.sub', data: file.data })
+        commit('SET_SUBFILE', { name: file.name.slice(0, -4), data: file.data })
       }
       // other file types
       else return console.error(`wrong file type uploaded - ${file.name}`)
