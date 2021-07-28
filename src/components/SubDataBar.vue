@@ -1,7 +1,16 @@
 <template>
   <v-col>
     <v-card elevation="1">
-      <v-btn color="secondary" :disabled="blockDownload" @click="download">Download</v-btn>
+      <v-btn class="mr-4" color="secondary" :disabled="blockDownload" @click="download">Download</v-btn>
+      <v-icon
+        size="32"
+        title="load to savefile"
+        :color="buttonActive ? 'secondary' : 'grey'"
+        :class="{ iconButton: buttonActive }"
+        @click="pushToSaveEditor"
+      >
+        mdi-clipboard-arrow-left-outline
+      </v-icon>
       <div class="float-right ma-1">
         Loaded file: <span class="text-primary">{{ filename }}</span> ,   submarine name:
         <span class="text-primary">{{ subname }}</span>
@@ -11,6 +20,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import { desanitized_js2xml, CompressSub } from '../helpers/CompressionHelpers'
 
 export default {
@@ -18,11 +29,15 @@ export default {
     blockDownload: Boolean,
   },
   computed: {
+    ...mapGetters(['saveLoaded']),
     filename() {
       return this.$store.state.editorSubmarine.filename || 'none'
     },
     subname() {
       return this.$store.state.editorSubmarine.data?.elements?.[0].attributes.name || '-'
+    },
+    buttonActive() {
+      return this.saveLoaded && !this.blockDownload
     },
   },
   methods: {
@@ -36,8 +51,20 @@ export default {
       a.download = this.$store.state.editorSubmarine.filename
       a.click()
     },
+    pushToSaveEditor() {
+      if (!this.buttonActive) return
+      this.$store.dispatch('fileUploaded', {
+        name: this.filename + '.raw',
+        data: this.$store.state.editorSubmarine.data,
+      })
+      this.$router.push('/')
+    },
   },
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.iconButton {
+  cursor: pointer;
+}
+</style>

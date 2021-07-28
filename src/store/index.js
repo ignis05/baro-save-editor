@@ -68,7 +68,7 @@ export default createStore({
       // other file types
       else return console.error(`wrong file type uploaded - ${file.name}`)
     },
-    fileUploaded({ commit }, file) {
+    fileUploaded({ commit, state }, file) {
       console.log(`Received file ${file.name}`)
 
       if (file.name.endsWith('.save')) {
@@ -100,12 +100,26 @@ export default createStore({
             // todo: replace with snackbar/v-alert warning message
           }
         }
-      }
-      // additional .sub file uploaded
-      else if (file.name.endsWith('.sub')) {
-        let subObject = xml2js(DecompressSub(file.data))
+      } else if (!state.savefileName) return console.warn(`No .save file to attach additional files to`)
+      // additional .sub file uploaded, or .raw transfer from submarine editor
+      else if (file.name.endsWith('.sub') || file.name.endsWith('.raw')) {
+        var subObject
+        // raw js object
+        if (file.name.endsWith('.raw')) {
+          subObject = file.data
+          file.name = file.name.substring(0, -4) // strip .raw extention
+        }
+        // normal .sub file
+        else subObject = xml2js(DecompressSub(Buffer.from(file.data)))
+
+        if (!state.subfiles[file.name]) {
+          console.log(`adding new submarine ${file.name}`)
+          // push submarine name to ownedsubmarines list
+          let subName = subObject.elements[0].attributes.name
+          let ownedSubs = state.gamesession.elements?.[0].elements.find((el) => el.name == 'ownedsubmarines').elements
+          ownedSubs.push({ type: 'element', name: 'sub', attributes: { name: subName } })
+        } else console.log(`updating existing submarine ${file.name}`)
         commit('ADD_SUBFILE', { name: file.name, data: subObject })
-        // todo: add it to owned submarines
       }
     },
   },

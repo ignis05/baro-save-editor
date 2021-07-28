@@ -34,6 +34,12 @@ export default {
   },
   methods: {
     deleteSub(subName) {
+      // remove from attached files
+      let subFiles = this.$store.state.subfiles
+      let subFilename = Object.keys(subFiles).find((file) => subFiles[file].elements[0].attributes.name === subName)
+      if (!subFilename) return console.error(`Failed to delete ${subName} - not found in attached .sub files`)
+      delete subFiles[subFilename]
+      // remove from ownedsubmarines
       let index = this.ownedSubList.findIndex((el) => el.attributes.name === subName)
       if (index === -1) return console.error(`Failed to delete ${subName} - not found in ownedSubmarines`)
       this.ownedSubList.splice(index, 1)
