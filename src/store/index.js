@@ -21,6 +21,9 @@ export default createStore({
     saveLoaded: (state) => {
       return state.savefileName !== null
     },
+    sub: (state) => {
+      return state.editorSubmarine.data?.elements?.[0]
+    },
     subLoaded: (state) => {
       return state.editorSubmarine.filename !== null
     },
