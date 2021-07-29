@@ -56,5 +56,6 @@ export default {
 input {
   border: 1px solid white;
   color: white;
+  width: 100%;
 }
 </style>
