@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import AvalSubListElement from './AvalSubListElement.vue'
+import AvalSubListElement from '@/components/AvalSubListElement'
 
 export default {
   data() {

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { DecompressSave } from '../helpers/CompressionHelpers'
+import { DecompressSave } from '@/helpers/CompressionHelpers'
 
 export default {
   props: {

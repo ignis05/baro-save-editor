@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import { xml2js } from 'xml-js'
-import { DecompressSub, gsHeader } from '../helpers/CompressionHelpers'
+import { DecompressSub, gsHeader } from '@/helpers/CompressionHelpers'
 
 export default createStore({
   state: {

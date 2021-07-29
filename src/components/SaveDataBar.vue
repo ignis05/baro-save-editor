@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { desanitized_js2xml, CompressSave, CompressSub, gsHeader } from '../helpers/CompressionHelpers'
+import { desanitized_js2xml, CompressSave, CompressSub, gsHeader } from '@/helpers/CompressionHelpers'
 
 export default {
   props: {

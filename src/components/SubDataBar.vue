@@ -22,7 +22,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import { desanitized_js2xml, CompressSub } from '../helpers/CompressionHelpers'
+import { desanitized_js2xml, CompressSub } from '@/helpers/CompressionHelpers'
 
 export default {
   props: {
