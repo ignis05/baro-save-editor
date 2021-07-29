@@ -14,6 +14,9 @@
       >
         Export {{ sub.name }}
       </v-btn>
+      <div v-if="previewImage == '' && linkedSubmarines.length == 0" class="text-center text-grey">
+        Nothing suitable for export found
+      </div>
     </v-sheet>
   </v-card>
 </template>

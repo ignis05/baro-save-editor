@@ -15,7 +15,7 @@
       <v-col>
         <OwnedSubList></OwnedSubList>
       </v-col>
-      <v-col v-if="isMultiPlayer">
+      <v-col>
         <AvalSubList></AvalSubList>
       </v-col>
       <v-col>
@@ -50,7 +50,7 @@ export default {
     SaveDataBar,
   },
   computed: {
-    ...mapGetters(['saveLoaded', 'isMultiPlayer']),
+    ...mapGetters(['saveLoaded']),
   },
 }
 </script>
