@@ -5,7 +5,7 @@
     </v-card-header>
     <v-sheet class="d-flex flex-column align-center">
       <!-- set campaign id -->
-      <h3 v-if="isMP">Campaign ID</h3>
+      <h3 class="toolTitle" v-if="isMP">Campaign ID</h3>
       <div v-if="isMP" class="d-flex flex-row justify-space-between px-2 mb-4">
         <input
           type="number"
@@ -17,7 +17,7 @@
         <v-btn :disabled="!campaignId.isDifferent.value" @click="campaignId.click" color="secondary">SET</v-btn>
       </div>
       <!-- set money -->
-      <h3>Current Money</h3>
+      <h3 class="toolTitle">Current Money</h3>
       <div class="d-flex flex-row justify-space-between px-2">
         <input
           type="number"
@@ -98,5 +98,11 @@ function campaignIdSetup() {
 input {
   border: 1px solid white;
   width: 100%;
+}
+.toolTitle {
+  font-weight: normal;
+  font-size: 1.1em;
+  align-self: flex-start;
+  margin-left: 12px;
 }
 </style>

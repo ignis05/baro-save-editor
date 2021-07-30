@@ -5,7 +5,7 @@
     </v-card-header>
     <v-sheet class="d-flex flex-column align-center">
       <!-- set price -->
-      <h3>Change Price</h3>
+      <h3 class="toolTitle">Change Price</h3>
       <div class="d-flex flex-row justify-space-between px-2">
         <input
           type="number"
@@ -59,5 +59,11 @@ function priceSetup() {
 input {
   border: 1px solid white;
   width: 100%;
+}
+.toolTitle {
+  font-weight: normal;
+  font-size: 1.1em;
+  align-self: flex-start;
+  margin-left: 12px;
 }
 </style>

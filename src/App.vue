@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-app-bar color="primary">
-      <v-app-bar-title class="text-h4 text-black" text>{{ pageName }}</v-app-bar-title>
-      <v-spacer />
+      <v-app-bar-title v-if="titleVisible" class="text-h4 text-black" text>{{ pageName }}</v-app-bar-title>
+      <v-spacer v-if="titleVisible" />
       <v-btn v-for="link in navLinks" :key="`navbar-link-${link.label}`" :to="link.url" class="mx-2">
         {{ link.label }}
       </v-btn>
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import { useDisplay } from 'vuetify/lib/composables/display'
+
 export default {
   name: 'App',
   data() {
@@ -38,6 +40,9 @@ export default {
   computed: {
     pageName() {
       return this.$route.meta.title
+    },
+    titleVisible() {
+      return useDisplay().mdAndUp.value
     },
   },
 }

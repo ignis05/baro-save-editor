@@ -51,7 +51,9 @@ export default {
       console.log(el)
     },
     deleteChar(el) {
-      console.log(el)
+      let index = this.crewList.elements.indexOf(el)
+      if (index == -1) return console.error('faled to delete - element not found')
+      this.crewList.elements.splice(index, 1)
     },
   },
 }
