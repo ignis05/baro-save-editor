@@ -4,16 +4,26 @@
       <v-card-title> Export from file </v-card-title>
     </v-card-header>
     <v-sheet class="d-flex flex-column align-center">
-      <v-btn v-if="previewImage !== ''" color="primary" @click="downloadImage">Export preview image</v-btn>
-      <v-btn
-        color="primary"
-        class="mt-2"
+      <!-- preview image -->
+      <v-sheet class="d-flex flex-row justify-center align-center mt-2 px-4" style="width: 100%">
+        <div class="d-flex flex-row justify-center align-center">Preview Image</div>
+        <v-spacer></v-spacer>
+        <v-icon class="iconButton" color="secondary" @click="downloadImage()">mdi-file-download-outline</v-icon>
+      </v-sheet>
+      <!-- linked submarines -->
+      <v-sheet
+        class="d-flex flex-row justify-center align-center mt-2 px-4"
+        style="width: 100%"
         v-for="sub of linkedSubmarines"
         :key="sub.snowflake"
-        @click="downloadShuttle(sub.object)"
       >
-        Export {{ sub.name }}
-      </v-btn>
+        <div class="d-flex flex-row justify-center align-center">{{ sub.name }}</div>
+        <v-spacer></v-spacer>
+        <v-icon class="iconButton" color="secondary" @click="downloadShuttle(sub.object)"
+          >mdi-file-download-outline
+        </v-icon>
+      </v-sheet>
+      <!-- when no preview image or linked submarines -->
       <div v-if="previewImage == '' && linkedSubmarines.length == 0" class="text-center text-grey">
         Nothing suitable for export found
       </div>
@@ -67,4 +77,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.iconButton {
+  cursor: pointer;
+}
+</style>
