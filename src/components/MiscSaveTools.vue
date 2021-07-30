@@ -25,7 +25,9 @@
           class="mr-2 pl-2"
           :class="{ 'text-secondary': campaignId.isDifferent.value, 'text-white': !campaignId.isDifferent.value }"
         />
-        <v-btn :disabled="!campaignId.isDifferent.value" @click="campaignId.click" color="secondary">SET</v-btn>
+        <v-btn variant="outlined" :disabled="!campaignId.isDifferent.value" @click="campaignId.click" color="secondary">
+          SET
+        </v-btn>
       </div>
       <!-- set money -->
       <h3 class="toolTitle">Current Money</h3>
@@ -37,7 +39,9 @@
           class="mr-2 pl-2"
           :class="{ 'text-secondary': money.isDifferent.value, 'text-white': !money.isDifferent.value }"
         />
-        <v-btn :disabled="!money.isDifferent.value" @click="money.click" color="secondary">SET</v-btn>
+        <v-btn variant="outlined" :disabled="!money.isDifferent.value" @click="money.click" color="secondary">
+          SET
+        </v-btn>
       </div>
     </v-sheet>
   </v-card>

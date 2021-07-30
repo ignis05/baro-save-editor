@@ -14,7 +14,9 @@
           class="mr-2 pl-2"
           :class="{ 'text-secondary': price.isDifferent.value, 'text-white': !price.isDifferent.value }"
         />
-        <v-btn :disabled="!price.isDifferent.value" @click="price.click" color="secondary">SET</v-btn>
+        <v-btn variant="outlined" :disabled="!price.isDifferent.value" @click="price.click" color="secondary">
+          SET
+        </v-btn>
       </div>
     </v-sheet>
   </v-card>

@@ -5,7 +5,11 @@
     </v-card-header>
     <v-sheet class="d-flex flex-column align-center">
       <!-- preview image -->
-      <v-sheet class="d-flex flex-row justify-center align-center mt-2 px-4" style="width: 100%">
+      <v-sheet
+        v-if="previewImage !== ''"
+        class="d-flex flex-row justify-center align-center mt-2 px-4"
+        style="width: 100%"
+      >
         <div class="d-flex flex-row justify-center align-center">Preview Image</div>
         <v-spacer></v-spacer>
         <v-icon class="iconButton" color="secondary" @click="downloadImage()">mdi-file-download-outline</v-icon>
