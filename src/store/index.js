@@ -57,7 +57,6 @@ export default createStore({
       // .sub submarine
       if (file.name.endsWith('.sub')) {
         let sub = xml2js(DecompressSub(Buffer.from(file.data)))
-        console.dir(sub)
         commit('SET_SUBFILE', { name: file.name, data: sub })
       }
       // .xml submarine
@@ -72,8 +71,6 @@ export default createStore({
       else return console.error(`wrong file type uploaded - ${file.name}`)
     },
     fileUploaded({ commit, state }, file) {
-      console.log(`Received file ${file.name}`)
-
       if (file.name.endsWith('.save')) {
         commit('CLEAR_SUBFILES')
         commit('SET_SAVEFILENAME', file.name)
@@ -82,7 +79,6 @@ export default createStore({
         let parsedGamesession = xml2js(file.data['gamesession.xml'].toString('utf-8').substring(gsHeader.length))
 
         if (parsedGamesession.elements[0].name !== 'Gamesession') throw `Failed to parse gamesession.xml`
-        console.dir(parsedGamesession)
         commit('SET_GAMESESSION', parsedGamesession)
         delete file.data['gamesession.xml'] // so it doesnt repeat when iterating through the rest
 
@@ -90,7 +86,6 @@ export default createStore({
         for (let [filename, content] of Object.entries(file.data)) {
           if (filename.endsWith('.sub')) {
             let subObject = xml2js(DecompressSub(content))
-            console.dir(subObject)
             commit('ADD_SUBFILE', { name: filename, data: subObject })
             let subName = subObject?.elements[0]?.attributes?.name
             if (!subName) {
@@ -115,22 +110,23 @@ export default createStore({
         else subObject = xml2js(DecompressSub(Buffer.from(file.data)))
 
         if (!state.subfiles[file.name]) {
-          console.log(`adding new submarine ${file.name}`)
+          // todo: v-alert `adding new submarine ${file.name}`
           // push submarine name to ownedsubmarines list
           let subName = subObject.elements[0].attributes.name
           let ownedSubs = state.gamesession.elements?.[0].elements.find((el) => el.name == 'ownedsubmarines').elements
           ownedSubs.push({ type: 'element', name: 'sub', attributes: { name: subName } })
-        } else console.log(`updating existing submarine ${file.name}`)
+        } else {
+          // todo: v-alert `updating existing submarine ${file.name}`
+        }
         commit('ADD_SUBFILE', { name: file.name, data: subObject })
       }
       // gamesession.xml
       else if (file.name === 'gamesession.xml') {
         // strips header - makes gamesssion the root of xml
         let parsedGamesession = xml2js(file.data.substring(gsHeader.length))
-        console.dir(parsedGamesession)
 
         if (parsedGamesession.elements?.[0]?.name !== 'Gamesession') throw `Failed to parse gamesession.xml`
-        console.log('replaced gamesession.xml')
+        // todo: v-alert replaced gamesession.xml
         commit('SET_GAMESESSION', parsedGamesession)
       } else {
         console.warn(`Failed to recognize file type: ${file.name}`)

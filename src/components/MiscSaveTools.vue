@@ -4,9 +4,20 @@
       <v-card-title> Misc Tools </v-card-title>
     </v-card-header>
     <v-sheet class="d-flex flex-column align-center">
+      <!-- gamesession.xml edit / download -->
+      <div class="d-flex flex-row justify-space-between pr-2 toolContent" style="width: 100%">
+        <h3 class="toolTitle d-block">Gamesession.xml</h3>
+        <v-spacer></v-spacer>
+        <v-icon title="edit" color="secondary" class="iconButton" @click="gameses.edit()">
+          mdi-file-edit-outline
+        </v-icon>
+        <v-icon title="download" color="secondary" class="iconButton" @click="gameses.download()">
+          mdi-file-download-outline
+        </v-icon>
+      </div>
       <!-- set campaign id -->
       <h3 class="toolTitle" v-if="isMP">Campaign ID</h3>
-      <div v-if="isMP" class="d-flex flex-row justify-space-between px-2 mb-4">
+      <div v-if="isMP" class="toolContent d-flex flex-row justify-space-between px-2">
         <input
           type="number"
           v-model="campaignId.inputVal.value"
@@ -18,7 +29,7 @@
       </div>
       <!-- set money -->
       <h3 class="toolTitle">Current Money</h3>
-      <div class="d-flex flex-row justify-space-between px-2">
+      <div class="toolContent d-flex flex-row justify-space-between px-2">
         <input
           type="number"
           v-model="money.inputVal.value"
@@ -36,6 +47,8 @@
 import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 
+import { desanitized_js2xml, gsHeader } from '@/helpers/CompressionHelpers'
+
 export default {
   setup() {
     const store = useStore()
@@ -44,8 +57,9 @@ export default {
 
     const money = moneySetup()
     const campaignId = campaignIdSetup()
+    const gameses = gamesesSetup()
 
-    return { isMP, money, campaignId }
+    return { isMP, money, campaignId, gameses }
   },
 }
 function moneySetup() {
@@ -92,9 +106,31 @@ function campaignIdSetup() {
 
   return { inputVal, isDifferent, click, keyUp }
 }
+function gamesesSetup() {
+  const store = useStore()
+
+  function download() {
+    let xmlString = gsHeader + desanitized_js2xml(store.state.gamesession)
+
+    // trigger download
+    let a = document.createElement('a')
+    a.href = URL.createObjectURL(new Blob([xmlString], { type: 'application/xml' }))
+    a.download = 'gamesession.xml'
+    a.click()
+  }
+
+  function edit() {
+    // todo: edit code
+  }
+
+  return { download, edit }
+}
 </script>
 
 <style scoped>
+.iconButton {
+  cursor: pointer;
+}
 input {
   border: 1px solid white;
   width: 100%;
@@ -104,5 +140,8 @@ input {
   font-size: 1.1em;
   align-self: flex-start;
   margin-left: 12px;
+}
+.toolContent:not(:last-child) {
+  margin-bottom: 16px;
 }
 </style>

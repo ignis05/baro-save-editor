@@ -76,7 +76,6 @@ export default {
       ev.target.value = null
     },
     dropHandler(ev) {
-      console.log('drop triggered')
       this.hovered = false
       if (ev.dataTransfer?.files[0]) this.loadFile(ev.dataTransfer.files[0])
     },
