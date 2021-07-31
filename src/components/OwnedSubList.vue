@@ -41,8 +41,18 @@ export default {
       delete subFiles[subFilename]
       // remove from ownedsubmarines
       let index = this.ownedSubList.findIndex((el) => el.attributes.name === subName)
-      if (index === -1) return console.error(`Failed to delete ${subName} - not found in ownedSubmarines`)
+      if (index === -1) {
+        this.$store.dispatch('showAlert', {
+          type: 'error',
+          text: `Failed to delete ${subName} - not found in ownedSubmarines.`,
+        })
+        return console.error(`Failed to delete ${subName} - not found in ownedSubmarines`)
+      }
       this.ownedSubList.splice(index, 1)
+      this.$store.dispatch('showAlert', {
+        type: 'success',
+        text: `Removed "${subName}" from the owned submarines and "${subFilename}" file from the savefile.`,
+      })
     },
     downloadSub(subName) {
       let subFiles = this.$store.state.subfiles

@@ -45,11 +45,19 @@ export default {
     addSub() {
       if (!this.inputVal) return
       this.avalSubList.push({ type: 'element', name: 'Sub', attributes: { name: this.inputVal } })
+      this.$store.dispatch('showAlert', {
+        type: 'success',
+        text: `Added ${this.inputVal} to the available submarines.`,
+      })
       this.inputVal = ''
     },
     deleteSub(subName) {
       let index = this.avalSubList.findIndex((el) => el.attributes.name == subName)
       this.avalSubList.splice(index, 1)
+      this.$store.dispatch('showAlert', {
+        type: 'success',
+        text: `Removed ${subName} from the available submarines.`,
+      })
     },
   },
   components: {

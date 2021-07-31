@@ -54,6 +54,10 @@ export default {
       let index = this.crewList.elements.indexOf(el)
       if (index == -1) return console.error('faled to delete - element not found')
       this.crewList.elements.splice(index, 1)
+      this.$store.dispatch('showAlert', {
+        type: 'success',
+        text: `Removed ${el.attributes.name} from the crew.`,
+      })
     },
   },
 }

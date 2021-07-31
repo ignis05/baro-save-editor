@@ -48,10 +48,6 @@ export default {
 
         // uploads from submarine editor
         if (this.fromSubEditor) {
-          if (!file.name.endsWith('.sub')) {
-            // todo: v-alert here
-            return console.warn('not a .sub file')
-          }
           resultFile.data = resultRaw
           this.$store.dispatch('subUploaded', resultFile)
         }

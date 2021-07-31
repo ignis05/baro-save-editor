@@ -43,7 +43,17 @@ function priceSetup() {
     return inputVal.value !== priceGetter.value
   })
   function click() {
-    if (parseInt(inputVal.value) >= 0) store.getters.sub.attributes.price = inputVal.value
+    if (parseInt(inputVal.value) >= 0) {
+      store.getters.sub.attributes.price = inputVal.value
+      store.dispatch('showAlert', {
+        type: 'success',
+        text: `Set submarine price to "${inputVal.value}"`,
+      })
+    } else
+      store.dispatch('showAlert', {
+        type: 'info',
+        text: `Value must be a positive number.`,
+      })
   }
   function keyUp(ev) {
     if (ev.key === 'Enter') click()

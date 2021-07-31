@@ -37,7 +37,16 @@ export default {
           count++
         }
       }
-      // todo: v-alert `Set ${count} wires to ${setToBool ? 'hidden' : 'visible'}`
+      if (count > 0)
+        this.$store.dispatch('showAlert', {
+          type: 'success',
+          text: `Set ${count} wires to ${setToBool ? 'hidden' : 'visible'}`,
+        })
+      else
+        this.$store.dispatch('showAlert', {
+          type: 'info',
+          text: `All wires of that type were already set to ${setToBool ? 'hidden' : 'visible'}`,
+        })
     },
     unhideWires() {
       this.hideWires(false)

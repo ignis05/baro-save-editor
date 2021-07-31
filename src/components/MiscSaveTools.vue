@@ -76,7 +76,17 @@ function moneySetup() {
     return inputVal.value !== moneyGetter.value
   })
   function click() {
-    if (parseInt(inputVal.value) >= 0) store.getters.campaign.attributes.money = inputVal.value
+    if (parseInt(inputVal.value) >= 0) {
+      store.getters.campaign.attributes.money = inputVal.value
+      store.dispatch('showAlert', {
+        type: 'success',
+        text: `Set current money to "${inputVal.value}".`,
+      })
+    } else
+      store.dispatch('showAlert', {
+        type: 'info',
+        text: `Value must be a positive number.`,
+      })
   }
   function keyUp(ev) {
     if (ev.key === 'Enter') click()
@@ -98,7 +108,17 @@ function campaignIdSetup() {
     return inputVal.value !== cpIdGetter.value
   })
   function click() {
-    if (inputVal.value != '') store.state.gamesession.elements[0].attributes.campaignid = inputVal.value
+    if (inputVal.value != '') {
+      store.state.gamesession.elements[0].attributes.campaignid = inputVal.value
+      store.dispatch('showAlert', {
+        type: 'success',
+        text: `Set campaign ID to "${inputVal.value}".`,
+      })
+    } else
+      store.dispatch('showAlert', {
+        type: 'info',
+        text: `ID can't be empty.`,
+      })
   }
   function keyUp(ev) {
     if (ev.key === 'Enter') click()
