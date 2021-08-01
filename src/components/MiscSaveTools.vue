@@ -268,7 +268,7 @@ input {
 .toolTitle {
   font-weight: normal;
   font-size: 1.1em;
-  align-self: flex-start;
+  align-self: center;
   margin-left: 12px;
 }
 .toolContent:not(:last-child) {

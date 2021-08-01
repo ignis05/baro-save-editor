@@ -1,6 +1,10 @@
 <template>
   <v-card class="pa-4" elevation="1">
-    <div class="h3 mb-1">Drag a file below to get started</div>
+    <div class="d-flex flex-row align-center justify-center mb-1">
+      <div class="h3 mb-1">Drag a file below to get started</div>
+      <v-spacer></v-spacer>
+      <v-btn size="x-small" icon title="where can i find my files"><v-icon>mdi-help-circle-outline</v-icon></v-btn>
+    </div>
     <div
       class="dropzone"
       @drop.prevent="dropHandler"
