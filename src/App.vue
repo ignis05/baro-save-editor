@@ -17,9 +17,8 @@
     <v-main>
       <router-view />
     </v-main>
-
-    <AlertBox></AlertBox>
   </v-app>
+  <AlertBox></AlertBox>
 </template>
 
 <script>

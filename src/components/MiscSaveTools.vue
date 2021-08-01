@@ -8,9 +8,28 @@
       <div class="d-flex flex-row justify-space-between pr-2 toolContent" style="width: 100%">
         <h3 class="toolTitle d-block">Gamesession.xml</h3>
         <v-spacer></v-spacer>
-        <v-icon title="edit" color="secondary" class="iconButton" @click="gameses.edit()">
+        <v-icon title="edit" color="secondary" class="iconButton" @click.stop="gameses.edit()">
           mdi-file-edit-outline
         </v-icon>
+        <v-dialog class="fullscreen" v-model="gameses.dialog.value" fullscreen>
+          <v-card class="d-flex flex-column" style="width: 100%; height: 100%">
+            <v-card-title>
+              <span class="text-h5">Manualy edit gamesession.xml</span>
+            </v-card-title>
+            <v-card-text class="d-flex flex-grow-1">
+              <textarea
+                v-model="gameses.xmlString.value"
+                spellcheck="false"
+                class="textArea d-flex px-2 flex-grow-1"
+              ></textarea>
+            </v-card-text>
+            <v-card-actions style="flex: 0 1 auto">
+              <v-spacer></v-spacer>
+              <v-btn color="red darken-1" text @click="gameses.dialog.value = false"> Cancel </v-btn>
+              <v-btn color="green darken-1" text @click="gameses.saveChanges"> Save </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
         <v-icon title="download" color="secondary" class="iconButton" @click="gameses.download()">
           mdi-file-download-outline
         </v-icon>
@@ -50,6 +69,7 @@
 <script>
 import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
+import { xml2js } from 'xml-js'
 
 import { desanitized_js2xml, gsHeader } from '@/helpers/CompressionHelpers'
 
@@ -133,6 +153,9 @@ function campaignIdSetup() {
 function gamesesSetup() {
   const store = useStore()
 
+  const dialog = ref(false)
+  const xmlString = ref('')
+
   function download() {
     let xmlString = gsHeader + desanitized_js2xml(store.state.gamesession)
 
@@ -144,10 +167,42 @@ function gamesesSetup() {
   }
 
   function edit() {
-    // todo: edit code
+    dialog.value = true
+    xmlString.value = gsHeader + desanitized_js2xml(store.state.gamesession, { spaces: 4 })
   }
 
-  return { download, edit }
+  function saveChanges() {
+    let newGameses
+    try {
+      newGameses = xml2js(xmlString.value.substring(gsHeader.length))
+    } catch (err) {
+      console.warn(err)
+      store.dispatch('showAlert', {
+        type: 'error',
+        text: `XML parser fail: ${err.message}`,
+      })
+      return
+    }
+    var campaign = newGameses.elements?.[0]?.elements?.find(
+      (el) => el.name === 'MultiPlayerCampaign' || el.name === 'SinglePlayerCampaign',
+    )
+    if (campaign) {
+      store.commit('SET_GAMESESSION', newGameses)
+      dialog.value = false
+      store.dispatch('showAlert', {
+        type: 'success',
+        text: `Updated "gamesession.xml".`,
+      })
+    } else {
+      console.warn(`Failed to find campaign element in new gamesession - aborting`)
+      store.dispatch('showAlert', {
+        type: 'error',
+        text: `Campaign data not found in the savefile - make sure the xml is correct. Changes were not saved.`,
+      })
+    }
+  }
+
+  return { download, edit, dialog, xmlString, saveChanges }
 }
 </script>
 
@@ -167,5 +222,21 @@ input {
 }
 .toolContent:not(:last-child) {
   margin-bottom: 16px;
+}
+.textArea {
+  background: white;
+  color: black;
+}
+</style>
+
+<style>
+/* temp hack untill fullscreen prop gets properly implemented */
+.v-dialog.fullscreen .v-overlay__content {
+  width: 100%;
+  height: 100%;
+  max-width: none !important;
+  max-height: none !important;
+  min-width: none !important;
+  min-height: none !important;
 }
 </style>
