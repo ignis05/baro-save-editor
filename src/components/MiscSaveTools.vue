@@ -8,6 +8,15 @@
       <div class="d-flex flex-row justify-space-between pr-2 toolContent" style="width: 100%">
         <h3 class="toolTitle d-block">Gamesession.xml</h3>
         <v-spacer></v-spacer>
+        <v-icon title="copy to clipboard" color="secondary" class="iconButton" @click="gameses.copy()">
+          mdi-clipboard-arrow-down-outline
+        </v-icon>
+        <v-icon title="paste from clipboard" color="secondary" class="iconButton" @click="gameses.paste()">
+          mdi-clipboard-arrow-up-outline
+        </v-icon>
+        <v-icon title="download" color="secondary" class="iconButton" @click="gameses.download()">
+          mdi-file-download-outline
+        </v-icon>
         <v-icon title="edit" color="secondary" class="iconButton" @click.stop="gameses.edit()">
           mdi-file-edit-outline
         </v-icon>
@@ -25,14 +34,11 @@
             </v-card-text>
             <v-card-actions style="flex: 0 1 auto">
               <v-spacer></v-spacer>
-              <v-btn color="red darken-1" text @click="gameses.dialog.value = false"> Cancel </v-btn>
-              <v-btn color="green darken-1" text @click="gameses.saveChanges"> Save </v-btn>
+              <v-btn color="red darken-1" text @click="gameses.closeDialog()"> Cancel </v-btn>
+              <v-btn color="green darken-1" text @click="gameses.saveChanges()"> Save </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-icon title="download" color="secondary" class="iconButton" @click="gameses.download()">
-          mdi-file-download-outline
-        </v-icon>
       </div>
       <!-- set campaign id -->
       <h3 class="toolTitle" v-if="isMP">Campaign ID</h3>
@@ -188,7 +194,6 @@ function gamesesSetup() {
     )
     if (campaign) {
       store.commit('SET_GAMESESSION', newGameses)
-      dialog.value = false
       store.dispatch('showAlert', {
         type: 'success',
         text: `Updated "gamesession.xml".`,
@@ -197,12 +202,58 @@ function gamesesSetup() {
       console.warn(`Failed to find campaign element in new gamesession - aborting`)
       store.dispatch('showAlert', {
         type: 'error',
-        text: `Campaign data not found in the savefile - make sure the xml is correct. Changes were not saved.`,
+        text: `Campaign data not found in the gamesession - make sure the xml is correct. Changes were not saved.`,
       })
     }
   }
 
-  return { download, edit, dialog, xmlString, saveChanges }
+  function closeDialog() {
+    dialog.value = false
+    xmlString.value = ''
+  }
+
+  async function copy() {
+    let xmlString = gsHeader + desanitized_js2xml(store.state.gamesession, { spaces: 4 })
+    await navigator.clipboard.writeText(xmlString)
+    store.dispatch('showAlert', {
+      type: 'success',
+      text: `Copied gamesession.xml to system clipboard.`,
+    })
+  }
+
+  async function paste() {
+    let xmlString = await navigator.clipboard.readText()
+    let newGameses
+    try {
+      newGameses = xml2js(xmlString.substring(gsHeader.length))
+    } catch (err) {
+      console.warn(err)
+      store.dispatch('showAlert', {
+        type: 'error',
+        text: `XML parser fail: ${err.message}`,
+      })
+      return
+    }
+    var campaign = newGameses.elements?.[0]?.elements?.find(
+      (el) => el.name === 'MultiPlayerCampaign' || el.name === 'SinglePlayerCampaign',
+    )
+    if (campaign) {
+      store.commit('SET_GAMESESSION', newGameses)
+      dialog.value = false
+      store.dispatch('showAlert', {
+        type: 'success',
+        text: `Pasted "gamesession.xml" from clipboard.`,
+      })
+    } else {
+      console.warn(`Failed to find campaign element in new gamesession - aborting`)
+      store.dispatch('showAlert', {
+        type: 'error',
+        text: `Campaign data not found in the gamesession - make sure the xml is correct.`,
+      })
+    }
+  }
+
+  return { download, edit, dialog, xmlString, saveChanges, closeDialog, copy, paste }
 }
 </script>
 
