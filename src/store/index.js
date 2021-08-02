@@ -10,6 +10,7 @@ export default createStore({
     alertTimout: null,
     editorSubmarine: { filename: null, data: {} },
     gamesession: {},
+    isLoading: false,
     savefileName: null,
     subfiles: {},
   },
@@ -77,6 +78,10 @@ export default createStore({
       if (!bots.elements) bots.elements = []
       for (let char of characters) bots.elements.push(char)
     },
+    // sets isLoading
+    SET_LOADING(state, value) {
+      state.isLoading = value
+    },
   },
   actions: {
     showAlert({ commit }, value) {
@@ -117,6 +122,7 @@ export default createStore({
           text: `Unrecognized file type: ${file.name}.`,
         })
       }
+      commit('SET_LOADING', false)
     },
     fileUploaded({ commit, dispatch, state, getters }, file) {
       if (file.name.endsWith('.save')) {
@@ -160,14 +166,16 @@ export default createStore({
       }
       // additional .sub file uploaded, or .raw transfer from submarine editor
       else if (file.name.endsWith('.sub') || file.name.endsWith('.raw')) {
+        console.log(`received ${file.name}`)
         var subObject
         // raw js object
         if (file.name.endsWith('.raw')) {
           subObject = file.data
-          file.name = file.name.substring(0, -4) // strip .raw extention
+          file.name = file.name.slice(0, -4) // strip .raw extention
         }
         // normal .sub file
         else subObject = xml2js(DecompressSub(Buffer.from(file.data)))
+        console.log(`final: ${file.name}`)
 
         if (!state.subfiles[file.name]) {
           // push submarine name to ownedsubmarines list
@@ -232,8 +240,9 @@ export default createStore({
           text: `Unrecognized file type: ${file.name}.`,
         })
       }
+      commit('SET_LOADING', false)
     },
-    convertSaveFile({ dispatch, state, getters }) {
+    convertSaveFile({ commit, dispatch, state, getters }) {
       // MP to SP convertion
       if (getters.isMultiPlayer) {
         // convert bots to crew
@@ -293,6 +302,10 @@ export default createStore({
           text: `Converted savefile to multi-player format.`,
         })
       }
+      commit('SET_LOADING', false)
+    },
+    setLoading({ commit, state }, value) {
+      if (state.isLoading !== !!value) commit('SET_LOADING', !!value)
     },
   },
   modules: {},

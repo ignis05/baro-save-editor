@@ -143,7 +143,11 @@ export default {
     }
   },
   methods: {
-    loadFile(file) {
+    async loadFile(file) {
+      await this.$store.dispatch('setLoading', true)
+      // give vue time to update component before synchronous decompression
+      await new Promise((r) => setTimeout(r, 50))
+
       const reader = new FileReader()
 
       reader.readAsArrayBuffer(file)

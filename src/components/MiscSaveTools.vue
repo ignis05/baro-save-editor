@@ -311,7 +311,10 @@ function convertSetup() {
 
   const dialog = ref(false)
 
-  function click() {
+  async function click() {
+    await store.dispatch('setLoading', true)
+    // give vue time to update component before synchronous operation
+    await new Promise((r) => setTimeout(r, 50))
     store.dispatch('convertSaveFile')
   }
 

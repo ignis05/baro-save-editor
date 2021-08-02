@@ -53,6 +53,7 @@ export default {
     },
     pushToSaveEditor() {
       if (!this.buttonActive) return
+      console.log(`dispatching ${this.filename + '.raw'}`)
       this.$store.dispatch('fileUploaded', {
         name: this.filename + '.raw',
         data: this.$store.state.editorSubmarine.data,
