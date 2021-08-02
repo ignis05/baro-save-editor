@@ -3,6 +3,7 @@ import { xml2js } from 'xml-js'
 import _random from 'lodash/random'
 
 import { DecompressSub, gsHeader } from '@/helpers/CompressionHelpers'
+import fixOldSave from '@/helpers/fixOldSave'
 
 export default createStore({
   state: {
@@ -134,17 +135,7 @@ export default createStore({
 
         if (parsedGamesession.elements[0].name !== 'Gamesession') throw `Failed to parse gamesession.xml`
 
-        let campaign = parsedGamesession.elements?.[0]?.elements?.find(
-          (el) => el.name === 'MultiPlayerCampaign' || el.name === 'SinglePlayerCampaign',
-        )
-        // add CampaignSettings to older saves
-        if (!campaign.elements.find((el) => el.name === 'CampaignSettings')) {
-          campaign.elements.unshift({
-            type: 'element',
-            name: 'CampaignSettings',
-            attributes: { radiationenabled: 'false', maxmissioncount: '1' },
-          })
-        }
+        fixOldSave(parsedGamesession)
 
         commit('SET_GAMESESSION', parsedGamesession)
         delete file.data['gamesession.xml'] // so it doesnt repeat when iterating through the rest
@@ -214,17 +205,8 @@ export default createStore({
 
         if (parsedGamesession.elements?.[0]?.name !== 'Gamesession') throw `Failed to parse gamesession.xml`
 
-        let campaign = parsedGamesession.elements?.[0]?.elements?.find(
-          (el) => el.name === 'MultiPlayerCampaign' || el.name === 'SinglePlayerCampaign',
-        )
-        // add CampaignSettings to older saves
-        if (!campaign.elements.find((el) => el.name === 'CampaignSettings')) {
-          campaign.elements.unshift({
-            type: 'element',
-            name: 'CampaignSettings',
-            attributes: { radiationenabled: 'false', maxmissioncount: '1' },
-          })
-        }
+        fixOldSave(parsedGamesession)
+
         commit('SET_GAMESESSION', parsedGamesession)
         dispatch('showAlert', {
           type: 'success',
