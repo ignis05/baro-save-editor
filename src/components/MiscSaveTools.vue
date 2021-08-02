@@ -40,6 +40,56 @@
           </v-card>
         </v-dialog>
       </div>
+      <!-- convert format -->
+      <h3 class="toolTitle">Save conversion</h3>
+      <div class="toolContent d-flex flex-row justify-space-between align-center px-2">
+        <div class="text">
+          Convert to a <span class="text-primary">{{ isMP ? 'single' : 'multi' }}-player</span> format:
+        </div>
+        <v-spacer></v-spacer>
+        <v-btn @click="convert.click" size="x-small" icon title="Convert">
+          <v-icon color="secondary">mdi-file-sync-outline</v-icon>
+        </v-btn>
+        <v-btn @click.stop="convert.dialog.value = true" size="x-small" icon title="Info">
+          <v-icon>mdi-help-circle-outline</v-icon>
+        </v-btn>
+        <!-- info dialog -->
+        <v-dialog class="convertInfo" v-model="convert.dialog.value">
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">{{
+                isMP ? 'Multi-player to single-player convertion' : 'Single-player to multi-player convertion'
+              }}</span>
+              <v-spacer></v-spacer>
+              <v-btn color="red" size="x-small" icon @click="convert.dialog.value = false">
+                <v-icon>mdi-close-thick</v-icon>
+              </v-btn>
+            </v-card-title>
+            <v-divider></v-divider>
+            <!-- MP to SP -->
+            <v-card-text class="px-2" v-if="isMP">
+              <div class="text">
+                - Available submarines list will be deleted<br />
+                - Hired bots will be turned into crew members<br />
+                <br />
+                Please note that the player-controlled characters are not saved inside the .save file.<br />If you wish
+                to have them in single-player, you need to import them by loading
+                <span class="text-primary">(...)_CharacterDataxml"</span> file.
+              </div>
+            </v-card-text>
+            <!-- SP to MP -->
+            <v-card-text class="px-2" v-else>
+              <div class="text">
+                - Submarines you can purchase at the shipyard well be limited to a specific list. If you want to
+                purchase non-vanilla submarine, make sure to add its name to that list.<br />
+                - Current crew will be turned into bots.<br />
+                - Random campaign id will be generated. Make sure it's not conflicting with any of your other
+                multiplayer saves.<br />
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
+      </div>
       <!-- set campaign id -->
       <h3 class="toolTitle" v-if="isMP">Campaign ID</h3>
       <div v-if="isMP" class="toolContent d-flex flex-row justify-space-between px-2">
@@ -88,8 +138,9 @@ export default {
     const money = moneySetup()
     const campaignId = campaignIdSetup()
     const gameses = gamesesSetup()
+    const convert = convertSetup()
 
-    return { isMP, money, campaignId, gameses }
+    return { isMP, money, campaignId, gameses, convert }
   },
 }
 function moneySetup() {
@@ -255,6 +306,17 @@ function gamesesSetup() {
 
   return { download, edit, dialog, xmlString, saveChanges, closeDialog, copy, paste }
 }
+function convertSetup() {
+  const store = useStore()
+
+  const dialog = ref(false)
+
+  function click() {
+    store.dispatch('convertSaveFile')
+  }
+
+  return { dialog, click }
+}
 </script>
 
 <style scoped>
@@ -289,5 +351,9 @@ input {
   max-height: none !important;
   min-width: none !important;
   min-height: none !important;
+}
+.v-dialog.convertInfo .v-overlay__content {
+  max-width: 820px !important;
+  max-height: 650px !important;
 }
 </style>

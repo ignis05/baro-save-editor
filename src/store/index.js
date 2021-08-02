@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import { xml2js } from 'xml-js'
+import _random from 'lodash/random'
 
 import { DecompressSub, gsHeader } from '@/helpers/CompressionHelpers'
 
@@ -229,6 +230,67 @@ export default createStore({
         dispatch('showAlert', {
           type: 'warning',
           text: `Unrecognized file type: ${file.name}.`,
+        })
+      }
+    },
+    convertSaveFile({ dispatch, state, getters }) {
+      // MP to SP convertion
+      if (getters.isMultiPlayer) {
+        // convert bots to crew
+        let crew = getters.campaign.elements.find((el) => el.name == 'bots')
+        crew.name = 'crew'
+        if (crew.attributes.hasbots) delete crew.attributes.hasbots
+
+        // strip available subs
+        let availSubListIndex = getters.campaign.elements.findIndex((el) => el.name === 'AvailableSubs')
+        getters.campaign.elements.splice(availSubListIndex, 1)
+
+        // rename campaign
+        getters.campaign.name = 'SinglePlayerCampaign'
+
+        // show alert
+        dispatch('showAlert', {
+          type: 'success',
+          text: `Converted savefile to single-player format.`,
+        })
+      }
+      // SP to MP conversion
+      else {
+        // convert crew to bots
+        let bots = getters.campaign.elements.find((el) => el.name == 'crew')
+        bots.name = 'bots'
+        if (!bots.attributes) bots.attributes = {}
+        bots.attributes.hasbots = 'true'
+
+        // add available subs
+        let availSubList = {
+          type: 'element',
+          name: 'AvailableSubs',
+          elements: [
+            { type: 'element', name: 'Sub', attributes: { name: 'Azimuth' } },
+            { type: 'element', name: 'Sub', attributes: { name: 'Berilia' } },
+            { type: 'element', name: 'Sub', attributes: { name: 'Dugong' } },
+            { type: 'element', name: 'Sub', attributes: { name: 'Humpback' } },
+            { type: 'element', name: 'Sub', attributes: { name: 'Kastrull' } },
+            { type: 'element', name: 'Sub', attributes: { name: 'Orca' } },
+            { type: 'element', name: 'Sub', attributes: { name: 'R-29' } },
+            { type: 'element', name: 'Sub', attributes: { name: 'Remora' } },
+            { type: 'element', name: 'Sub', attributes: { name: 'Typhon' } },
+            { type: 'element', name: 'Sub', attributes: { name: 'Typhon2' } },
+          ],
+        }
+        getters.campaign.elements.push(availSubList)
+
+        // rename campaign
+        getters.campaign.name = 'MultiPlayerCampaign'
+
+        // set campaign id to random
+        state.gamesession.elements[0].attributes.campaignid = _random(50, 100).toString()
+
+        // show alert
+        dispatch('showAlert', {
+          type: 'success',
+          text: `Converted savefile to multi-player format.`,
         })
       }
     },
