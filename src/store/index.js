@@ -59,6 +59,22 @@ export default createStore({
       state.editorSubmarine.filename = name
       state.editorSubmarine.data = data
     },
+    // add characters to the SP crew
+    ADD_CHARACTERS(state, characters) {
+      let crew = state.gamesession.elements[0].elements
+        ?.find((el) => el.name === 'SinglePlayerCampaign')
+        .elements.find((el) => el.name === 'crew')
+      for (let char of characters) crew.elements.push(char)
+    },
+    // add characters to the MP bot crew
+    ADD_BOTS(state, characters) {
+      let bots = state.gamesession.elements?.[0]?.elements
+        ?.find((el) => el.name === 'MultiPlayerCampaign')
+        .elements.find((el) => el.name === 'bots')
+      if (bots.attributes.hasbots !== 'true') bots.attributes.hasbots = 'true'
+      if (!bots.elements) bots.elements = []
+      for (let char of characters) bots.elements.push(char)
+    },
   },
   actions: {
     showAlert({ commit }, value) {
@@ -100,7 +116,7 @@ export default createStore({
         })
       }
     },
-    fileUploaded({ commit, dispatch, state }, file) {
+    fileUploaded({ commit, dispatch, state, getters }, file) {
       if (file.name.endsWith('.save')) {
         commit('CLEAR_SUBFILES')
         commit('SET_SAVEFILENAME', file.name)
@@ -179,6 +195,34 @@ export default createStore({
           type: 'success',
           text: `Updated gamesession.xml file.`,
         })
+      } else if (file.name.endsWith('CharacterData.xml')) {
+        let dataObject = xml2js(file.data.substring(gsHeader.length))
+        let characters = []
+        let count = 0
+        for (let chData of dataObject?.elements?.[0]?.elements) {
+          // for some reason inventory and health in characterdata.xml are adjacent to <Character> instead of nested inside it
+          let character = chData.elements.find((el) => (el.name = 'Character'))
+          let inventory = chData.elements.find((el) => (el.name = 'inventory'))
+          let health = chData.elements.find((el) => (el.name = 'health'))
+          character.elements.push(inventory)
+          character.elements.push(health)
+          characters.push(character)
+          count++
+        }
+        if (count === 0) {
+          console.warn(`Character import failed - file might be invalid or empty`)
+          dispatch('showAlert', {
+            type: 'warning',
+            text: `Character import failed - file might be invalid or empty.`,
+          })
+        } else {
+          if (getters.isMultiPlayer) commit('ADD_BOTS', characters)
+          else commit('ADD_CHARACTERS', characters)
+          dispatch('showAlert', {
+            type: 'success',
+            text: `Succesfully imported ${count} characters.`,
+          })
+        }
       } else {
         console.warn(`Unrecognized file type: ${file.name}`)
         dispatch('showAlert', {

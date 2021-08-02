@@ -7,7 +7,7 @@
       <v-btn @click.stop="fileLocDialog = true" size="x-small" icon title="Where can I find my files?">
         <v-icon>mdi-file-find-outline</v-icon>
       </v-btn>
-      <v-dialog v-model="fileLocDialog">
+      <v-dialog class="filedropper" v-model="fileLocDialog">
         <v-card>
           <v-card-title>
             <span class="text-h5">Where are my {{ fromSubEditor ? '.sub' : '.save' }} files?</span>
@@ -66,7 +66,7 @@
       <v-btn @click.stop="helpDialog = true" size="x-small" icon title="What files can I load?">
         <v-icon>mdi-help-circle-outline</v-icon>
       </v-btn>
-      <v-dialog v-model="helpDialog">
+      <v-dialog class="filedropper" v-model="helpDialog">
         <v-card>
           <v-card-title>
             <span class="text-h5">What files can i load here?</span>
@@ -123,7 +123,7 @@
       type="file"
       @change="selectHandler"
       multiple="false"
-      accept=".save,.sub,.xml"
+      :accept="fromSubEditor ? '.sub, .xml' : '.save, .sub, .xml'"
     />
   </v-card>
 </template>
@@ -219,7 +219,7 @@ input.dropzoneInput {
 </style>
 
 <style>
-.v-overlay__content {
+.v-dialog.filedropper .v-overlay__content {
   max-width: 780px !important;
   max-height: 650px !important;
 }
