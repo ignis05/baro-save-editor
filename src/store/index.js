@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import { xml2js } from 'xml-js'
+
 import { DecompressSub, gsHeader } from '@/helpers/CompressionHelpers'
 
 export default createStore({
@@ -201,9 +202,9 @@ export default createStore({
         let count = 0
         for (let chData of dataObject?.elements?.[0]?.elements) {
           // for some reason inventory and health in characterdata.xml are adjacent to <Character> instead of nested inside it
-          let character = chData.elements.find((el) => (el.name = 'Character'))
-          let inventory = chData.elements.find((el) => (el.name = 'inventory'))
-          let health = chData.elements.find((el) => (el.name = 'health'))
+          let character = chData.elements.find((el) => el.name == 'Character')
+          let inventory = chData.elements.find((el) => el.name == 'inventory')
+          let health = chData.elements.find((el) => el.name == 'health')
           character.elements.push(inventory)
           character.elements.push(health)
           characters.push(character)
