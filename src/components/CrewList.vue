@@ -5,7 +5,7 @@
     </v-card-header>
     <v-sheet class="mb-2">
       <v-sheet
-        v-for="el of crewList.elements"
+        v-for="el of characterArray"
         :key="hashWrapper(el.attributes)"
         :class="`d-flex flex-row justify-center px-4 ${el.elements.find((e) => e.name == 'job').attributes.identifier}`"
       >
@@ -41,6 +41,9 @@ export default {
       return this.$store.getters.campaign.elements.find((el) =>
         this.isMultiPlayer ? el.name == 'bots' : el.name == 'crew',
       )
+    },
+    characterArray() {
+      return this.crewList.elements.filter((el) => el.name === 'Character')
     },
   },
   methods: {

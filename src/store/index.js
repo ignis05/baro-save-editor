@@ -133,6 +133,19 @@ export default createStore({
         let parsedGamesession = xml2js(file.data['gamesession.xml'].toString('utf-8').substring(gsHeader.length))
 
         if (parsedGamesession.elements[0].name !== 'Gamesession') throw `Failed to parse gamesession.xml`
+
+        let campaign = parsedGamesession.elements?.[0]?.elements?.find(
+          (el) => el.name === 'MultiPlayerCampaign' || el.name === 'SinglePlayerCampaign',
+        )
+        // add CampaignSettings to older saves
+        if (!campaign.elements.find((el) => el.name === 'CampaignSettings')) {
+          campaign.elements.unshift({
+            type: 'element',
+            name: 'CampaignSettings',
+            attributes: { radiationenabled: 'false', maxmissioncount: '1' },
+          })
+        }
+
         commit('SET_GAMESESSION', parsedGamesession)
         delete file.data['gamesession.xml'] // so it doesnt repeat when iterating through the rest
 
@@ -200,6 +213,18 @@ export default createStore({
         let parsedGamesession = xml2js(file.data.substring(gsHeader.length))
 
         if (parsedGamesession.elements?.[0]?.name !== 'Gamesession') throw `Failed to parse gamesession.xml`
+
+        let campaign = parsedGamesession.elements?.[0]?.elements?.find(
+          (el) => el.name === 'MultiPlayerCampaign' || el.name === 'SinglePlayerCampaign',
+        )
+        // add CampaignSettings to older saves
+        if (!campaign.elements.find((el) => el.name === 'CampaignSettings')) {
+          campaign.elements.unshift({
+            type: 'element',
+            name: 'CampaignSettings',
+            attributes: { radiationenabled: 'false', maxmissioncount: '1' },
+          })
+        }
         commit('SET_GAMESESSION', parsedGamesession)
         dispatch('showAlert', {
           type: 'success',

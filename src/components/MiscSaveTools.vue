@@ -118,6 +118,25 @@
           SET
         </v-btn>
       </div>
+      <!-- set max missions -->
+      <h3 class="toolTitle">Max Missions</h3>
+      <div class="toolContent d-flex flex-row justify-space-between px-2">
+        <input
+          type="number"
+          v-model="maxmissions.inputVal.value"
+          @keyup="maxmissions.keyUp"
+          class="mr-2 pl-2"
+          :class="{ 'text-secondary': maxmissions.isDifferent.value, 'text-white': !maxmissions.isDifferent.value }"
+        />
+        <v-btn
+          variant="outlined"
+          :disabled="!maxmissions.isDifferent.value"
+          @click="maxmissions.click"
+          color="secondary"
+        >
+          SET
+        </v-btn>
+      </div>
     </v-sheet>
   </v-card>
 </template>
@@ -137,10 +156,11 @@ export default {
 
     const money = moneySetup()
     const campaignId = campaignIdSetup()
+    const maxmissions = maxmissionsSetup()
     const gameses = gamesesSetup()
     const convert = convertSetup()
 
-    return { isMP, money, campaignId, gameses, convert }
+    return { isMP, money, campaignId, maxmissions, gameses, convert }
   },
 }
 function moneySetup() {
@@ -319,6 +339,41 @@ function convertSetup() {
   }
 
   return { dialog, click }
+}
+function maxmissionsSetup() {
+  const store = useStore()
+
+  const maxmsGetter = computed(
+    () => store.getters.campaign.elements.find((el) => el.name == 'CampaignSettings').attributes.maxmissioncount,
+  )
+
+  const inputVal = ref(maxmsGetter.value)
+  const isDifferent = computed(() => {
+    return inputVal.value !== maxmsGetter.value
+  })
+  function click() {
+    if (parseInt(inputVal.value) >= 0) {
+      store.getters.campaign.elements.find((el) => el.name == 'CampaignSettings').attributes.maxmissioncount =
+        inputVal.value
+      store.dispatch('showAlert', {
+        type: 'success',
+        text: `Set max missions to "${inputVal.value}".`,
+      })
+    } else
+      store.dispatch('showAlert', {
+        type: 'info',
+        text: `Value must be a positive number.`,
+      })
+  }
+  function keyUp(ev) {
+    if (ev.key === 'Enter') click()
+  }
+
+  watch(maxmsGetter, () => {
+    inputVal.value = maxmsGetter.value
+  })
+
+  return { inputVal, isDifferent, click, keyUp }
 }
 </script>
 
