@@ -5,12 +5,12 @@
     </v-card-header>
     <div v-if="isMultiPlayer">
       <v-sheet class="mb-2">
-        <AvalSubListElement
-          v-for="sub of avalSubList.map((el) => el.attributes.name)"
+        <AvailSubListElement
+          v-for="sub of availSubList.map((el) => el.attributes.name)"
           :key="sub"
           :subName="sub"
           @deleteSub="deleteSub"
-        ></AvalSubListElement>
+        ></AvailSubListElement>
       </v-sheet>
       <v-sheet class="d-flex flex-row justify-space-between px-2">
         <input v-model="inputVal" @keyup="keyUpHandler" ref="subListInput" class="mr-2 pl-2" />
@@ -24,7 +24,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import AvalSubListElement from '@/components/AvalSubListElement'
+import AvailSubListElement from '@/components/AvailSubListElement'
 
 export default {
   data() {
@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     ...mapGetters(['isMultiPlayer']),
-    avalSubList() {
+    availSubList() {
       return this.$store.getters.campaign.elements.find((el) => el.name === 'AvailableSubs').elements
     },
   },
@@ -44,7 +44,7 @@ export default {
     },
     addSub() {
       if (!this.inputVal) return
-      this.avalSubList.push({ type: 'element', name: 'Sub', attributes: { name: this.inputVal } })
+      this.availSubList.push({ type: 'element', name: 'Sub', attributes: { name: this.inputVal } })
       this.$store.dispatch('showAlert', {
         type: 'success',
         text: `Added ${this.inputVal} to the available submarines.`,
@@ -52,8 +52,8 @@ export default {
       this.inputVal = ''
     },
     deleteSub(subName) {
-      let index = this.avalSubList.findIndex((el) => el.attributes.name == subName)
-      this.avalSubList.splice(index, 1)
+      let index = this.availSubList.findIndex((el) => el.attributes.name == subName)
+      this.availSubList.splice(index, 1)
       this.$store.dispatch('showAlert', {
         type: 'success',
         text: `Removed ${subName} from the available submarines.`,
@@ -61,7 +61,7 @@ export default {
     },
   },
   components: {
-    AvalSubListElement,
+    AvailSubListElement,
   },
 }
 </script>
