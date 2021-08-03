@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     linkedSubmarines() {
-      return this.$store.state.editorSubmarine.data.elements[0].elements
+      return this.$store.getters.sub.elements
         .filter((el) => el.name === 'LinkedSubmarine')
         .map((el) => {
           return { name: el.attributes.name, object: el, snowflake: el.attributes.linkedto }
