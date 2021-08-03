@@ -4,6 +4,9 @@ import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'
 
+import counter from '@/helpers/counter.dev'
+counter()
+
 const app = createApp(App)
 app.use(router)
 app.use(store)
