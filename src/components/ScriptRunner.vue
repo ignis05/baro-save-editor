@@ -3,12 +3,39 @@
     <v-card-header class="flex-column align-center">
       <v-card-title> Run Script </v-card-title>
     </v-card-header>
-    <v-sheet class="mb-2"> </v-sheet>
+    <v-sheet class="mb-2 d-flex flex-column justify-center align-center px-4">
+      <textarea v-model="areaText" spellcheck="false" class="textArea px-2 mx-0"></textarea>
+      <v-btn class="mt-4" color="secondary" variant="outlined" @click="run" :disabled="areaText == ''">Run</v-btn>
+    </v-sheet>
   </v-card>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      areaText: '//check console\nconsole.dir(submarine)',
+    }
+  },
+  methods: {
+    run() {
+      // eslint-disable-next-line
+      var submarine = this.$store.getters.sub
+      eval(this.areaText)
+      this.$store.dispatch('showAlert', {
+        type: 'success',
+        text: `Succesfully executed script`,
+      })
+    },
+  },
+}
 </script>
 
-<style></style>
+<style>
+.textArea {
+  background: white;
+  color: black;
+  width: 100%;
+  min-height: 80px;
+}
+</style>
