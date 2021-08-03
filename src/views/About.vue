@@ -2,14 +2,43 @@
   <v-container>
     <v-row>
       <v-col>
-        <v-card elevation="1" class="about">
-          <h3 class="text-h3 text-center">Save editor</h3>
-          <p class="text-body-1 ma-4">app in progress - in future some form of guilde will be here</p>
-          <p class="text-body-1 ma-4">
-            if you somehow found this link before release, use it at your own risk, it's very likely to break your saves
-          </p>
-        </v-card>
+        <v-sheet elevation="1" class="buttonWrapper">
+          <v-btn :class="{ 'text-black': !subEditor }" color="secondary" class="mx-2" @click="subEditor = false">
+            About Save Editor
+          </v-btn>
+          <v-btn :class="{ 'text-black': subEditor }" color="secondary" class="mx-2" @click="subEditor = true">
+            About Submarine Editor
+          </v-btn>
+        </v-sheet>
       </v-col>
     </v-row>
+    <AboutSubEditor v-if="subEditor"></AboutSubEditor>
+    <AboutSaveEditor v-else></AboutSaveEditor>
   </v-container>
 </template>
+
+<script>
+import AboutSaveEditor from '@/components/AboutSaveEditor'
+import AboutSubEditor from '@/components/AboutSubEditor'
+
+export default {
+  data() {
+    return {
+      subEditor: false,
+    }
+  },
+  components: {
+    AboutSaveEditor,
+    AboutSubEditor,
+  },
+}
+</script>
+
+<style scoped>
+.buttonWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-content: center;
+}
+</style>
