@@ -37,6 +37,8 @@
               deletes its file
             </li>
           </ul>
+          There is also a radiobutton on the left of each submarine which allows to set currently selected sub.
+          <br />
           Loading .sub file when the save is loaded will add it to that list and attach it to the savefile (or update
           existing submarine file with the same name).
         </v-card-text>

@@ -9,6 +9,14 @@
         :key="sub"
         class="d-flex flex-row justify-center px-4"
       >
+        <input
+          class="selectedSub"
+          type="radio"
+          title="Set as currently selected submarine"
+          name="selectedOwnedSub"
+          :checked="selectedSub === sub"
+          @click="selectSub(sub)"
+        />
         <div class="subname">{{ sub }}</div>
         <v-spacer></v-spacer>
         <v-icon title="download" color="secondary" class="iconButton" @click="downloadSub(sub)">
@@ -30,6 +38,9 @@ export default {
   computed: {
     ownedSubList() {
       return this.$store.state.gamesession.elements?.[0].elements.find((el) => el.name == 'ownedsubmarines').elements
+    },
+    selectedSub() {
+      return this.$store.state.gamesession.elements[0].attributes.submarine
     },
   },
   methods: {
@@ -76,12 +87,24 @@ export default {
       })
       this.$router.push('/SubTools')
     },
+    selectSub(subName) {
+      this.$store.state.gamesession.elements[0].attributes.submarine = subName
+      this.$store.dispatch('showAlert', {
+        type: 'success',
+        text: `Set current submarine to ${subName}.`,
+      })
+    },
   },
 }
 </script>
 
 <style scoped>
 .iconButton {
+  cursor: pointer;
+}
+.selectedSub {
+  margin-top: 5px;
+  margin-right: 5px;
   cursor: pointer;
 }
 </style>
