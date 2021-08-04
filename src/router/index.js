@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
@@ -7,6 +7,16 @@ const routes = [
     component: () => import('../views/SaveTools.vue'),
     meta: {
       title: 'Barotrauma Save Editor',
+    },
+    beforeEnter: (to, from, next) => {
+      // handle redirect from 404.html
+      if (sessionStorage.getItem('redirect') !== null) {
+        const redirect = sessionStorage.redirect
+        delete sessionStorage.redirect
+        next(redirect)
+      } else {
+        next()
+      }
     },
   },
   {
@@ -28,7 +38,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory('/baro-save-editor/'),
   routes,
 })
 
