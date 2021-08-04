@@ -14,4 +14,8 @@ export default function fixOldSave(parsedGamesession) {
       attributes: { radiationenabled: 'false', maxmissioncount: '1' },
     })
   }
+
+  // add crew.elements if missing
+  let crew = campaign.elements.find((el) => el.name == 'bots' || el.name == 'crew')
+  if (!crew.elements) crew.elements = []
 }

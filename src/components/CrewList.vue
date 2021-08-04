@@ -3,7 +3,7 @@
     <v-card-header class="flex-column align-center">
       <v-card-title>{{ isMultiPlayer ? 'Hired Bots' : 'Current Crew' }}</v-card-title>
     </v-card-header>
-    <v-sheet class="mb-2">
+    <v-sheet class="mb-2" id="crewListWrapper">
       <v-sheet
         v-for="el of characterArray"
         :key="hashWrapper(el.attributes)"
@@ -11,6 +11,7 @@
       >
         <div class="name">{{ el.attributes.name }}</div>
         <v-spacer></v-spacer>
+        <v-icon style="cursor: grabbing" class="grabHandle" color="secondary">mdi-drag-horizontal-variant</v-icon>
         <v-icon title="edit" color="secondary" class="iconButton" @click="editChar(el)"> mdi-file-edit-outline </v-icon>
         <v-icon title="delete" color="red" class="iconButton" @click="deleteChar(el)">mdi-delete-outline</v-icon>
       </v-sheet>
@@ -20,6 +21,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Sortable from 'sortablejs'
 import sum from 'hash-sum'
 
 export default {
@@ -62,6 +64,20 @@ export default {
         text: `Removed ${el.attributes.name} from the crew.`,
       })
     },
+  },
+  mounted() {
+    var el = document.getElementById('crewListWrapper')
+    Sortable.create(el, {
+      animation: 150,
+      handle: '.grabHandle',
+      onSort: (event) => {
+        const indexChange = event.newIndex - event.oldIndex
+        const movedItem = this.characterArray[event.oldIndex]
+        const crewListIndex = this.crewList.elements.indexOf(movedItem)
+        this.crewList.elements.splice(crewListIndex, 1)
+        this.crewList.elements.splice(crewListIndex + indexChange, 0, movedItem)
+      },
+    })
   },
 }
 </script>

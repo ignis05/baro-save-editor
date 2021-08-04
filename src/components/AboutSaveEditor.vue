@@ -73,8 +73,9 @@
             Displays a list of current single-player crew or bots hired in multi-player campaign.
           </span>
           <br /><br />
-          Each character on the list has 2 buttons:
+          Each character on the list has 3 buttons:
           <ul class="pl-8">
+            <li><v-icon color="secondary">mdi-drag-horizontal-variant</v-icon> - can be grabbed to reorder crew</li>
             <li><v-icon color="secondary">mdi-file-edit-outline</v-icon> - opens character editing tools (WIP)</li>
             <li><v-icon color="red">mdi-delete-outline</v-icon> - deletes the character</li>
           </ul>
