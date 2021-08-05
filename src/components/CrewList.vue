@@ -17,16 +17,84 @@
       </v-sheet>
     </v-sheet>
   </v-card>
+  <v-dialog class="editCharacter" v-model="editDialog">
+    <v-card class="d-flex flex-column mainCard" style="width: 100%; height: 100%">
+      <v-card-title style="background-color: rgb(var(--v-theme-primary))">
+        <span class="text-h4"
+          >Editing <span class="text-black">{{ charClone?.attributes?.name }}</span></span
+        >
+      </v-card-title>
+      <v-card-text v-if="charClone" class="d-flex flex-grow-1">
+        <v-row>
+          <v-col>
+            <v-card elevation="1">
+              <v-card-title>
+                <span class="text-h4">General</span>
+              </v-card-title>
+              <v-card-text class="charEditCardText">
+                <div>
+                  <div class="text-h5">Name:</div>
+                  <input type="text" v-model="charClone.attributes.name" />
+                </div>
+                <div>
+                  <div class="text-h5">Raw xml:</div>
+                  <v-btn size="x-small" title="copy to clipboard" icon @click="copyChar">
+                    <v-icon color="secondary">mdi-clipboard-arrow-down-outline</v-icon>
+                  </v-btn>
+                  <v-btn size="x-small" title="paste from clipboard" icon @click="pasteChar">
+                    <v-icon color="secondary">mdi-clipboard-arrow-up-outline</v-icon>
+                  </v-btn>
+                  <v-btn size="x-small" title="edit" icon @click="rawEditChar">
+                    <v-icon color="secondary">mdi-file-edit-outline</v-icon>
+                  </v-btn>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col>
+            <v-card elevation="1">
+              <v-card-title>
+                <span class="text-h4">Job &amp; Skills</span>
+              </v-card-title>
+              <v-card-text class="charEditCardText">
+                <div>
+                  <div class="text-h5">Job:</div>
+                  <select :class="cloneJob.attributes.identifier" v-model="cloneJob.attributes.identifier">
+                    <option class="captain" value="captain">Captain</option>
+                    <option class="securityofficer" value="securityofficer">Security Officer</option>
+                    <option class="medicaldoctor" value="medicaldoctor">Medical Doctor</option>
+                    <option class="engineer" value="engineer">Engineer</option>
+                    <option class="mechanic" value="mechanic">Mechanic</option>
+                    <option class="assistant" value="assistant">Assistant</option>
+                  </select>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-card-text>
+      <v-card-actions style="flex: 0 1 auto">
+        <v-spacer></v-spacer>
+        <v-btn color="red darken-1" text @click="editDialogClose()"> Cancel </v-btn>
+        <v-btn color="green darken-1" text @click="editDialogSave()"> Save </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import Sortable from 'sortablejs'
 import sum from 'hash-sum'
+import _cloneDeep from 'lodash/cloneDeep'
+import { xml2js } from 'xml-js'
+
+import { desanitized_js2xml } from '@/helpers/CompressionHelpers'
 
 export default {
   data() {
     return {
+      editDialog: false,
       color: {
         captain: '#718fb7',
         engineer: '#d7ac60',
@@ -35,6 +103,8 @@ export default {
         medicaldoctor: '#b9472b',
         assistant: '#f8f8f8',
       },
+      selectedChar: null,
+      charClone: null,
     }
   },
   computed: {
@@ -47,13 +117,36 @@ export default {
     characterArray() {
       return this.crewList.elements.filter((el) => el.name === 'Character')
     },
+    cloneJob() {
+      if (!this.charClone) return {}
+      return this.charClone.elements.find((el) => el.name == 'job')
+    },
   },
   methods: {
     hashWrapper(object) {
       return sum(object)
     },
     editChar(el) {
-      console.log(el)
+      this.selectedChar = el
+      this.charClone = _cloneDeep(el)
+      this.editDialog = true
+    },
+    editDialogClose() {
+      this.editDialog = false
+      this.selectedChar = null
+      this.charClone = null
+    },
+    editDialogSave() {
+      console.log(this.charClone)
+      this.editDialog = false
+      let index = this.crewList.elements.indexOf(this.selectedChar)
+      this.crewList.elements[index] = this.charClone
+      this.selectedChar = null
+      this.$store.dispatch('showAlert', {
+        type: 'success',
+        text: `Modified character ${this.charClone.attributes.name}`,
+      })
+      this.charClone = null
     },
     deleteChar(el) {
       let index = this.crewList.elements.indexOf(el)
@@ -64,6 +157,42 @@ export default {
         text: `Removed ${el.attributes.name} from the crew.`,
       })
     },
+    async copyChar() {
+      let xmlString = desanitized_js2xml({ elements: [this.charClone] }, { spaces: 4 })
+      await navigator.clipboard.writeText(xmlString)
+      this.$store.dispatch('showAlert', {
+        type: 'success',
+        text: `Copied ${this.charClone.attributes.name} to system clipboard.`,
+      })
+    },
+    async pasteChar() {
+      let xmlString = await navigator.clipboard.readText()
+      let newChar
+      try {
+        newChar = xml2js(xmlString).elements[0]
+      } catch (err) {
+        console.warn(err)
+        this.$store.dispatch('showAlert', {
+          type: 'error',
+          text: `XML parser fail: ${err.message}`,
+        })
+        return
+      }
+      console.log(newChar)
+      if (!newChar.attributes.name) {
+        this.$store.dispatch('showAlert', {
+          type: 'error',
+          text: `Failed to reach character name - file may be invalid or corrupted`,
+        })
+        return
+      }
+      this.charClone = newChar
+      this.$store.dispatch('showAlert', {
+        type: 'success',
+        text: `Pasted ${this.charClone.attributes.name} from system clipboard.`,
+      })
+    },
+    rawEditChar() {},
   },
   mounted() {
     var el = document.getElementById('crewListWrapper')
@@ -88,6 +217,41 @@ export default {
 </script>
 
 <style scoped>
+.charEditCardText {
+  opacity: 100;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: flex-start;
+}
+.charEditCardText > * {
+  margin: 0 8px;
+  margin-bottom: 16px;
+}
+
+input {
+  border: 1px solid white;
+  color: white;
+  font-size: 2em;
+  padding-left: 8px;
+}
+
+select {
+  border: 1px solid white;
+  font-size: 2em;
+  padding-left: 8px;
+  line-height: 40px;
+  cursor: pointer;
+}
+
+option {
+  background: rgb(var(--v-theme-surface));
+}
+
+.mainCard.v-card {
+  background-color: rgb(var(--v-theme-background));
+}
+
 .iconButton {
   cursor: pointer;
 }
@@ -114,5 +278,17 @@ export default {
 
 .assistant {
   color: #f8f8f8;
+}
+</style>
+
+<style>
+.v-dialog.editCharacter .v-overlay__content {
+  width: 100%;
+  height: 100%;
+  max-width: none !important;
+  max-height: none !important;
+  min-width: none !important;
+  min-height: none !important;
+  background-color: #121212;
 }
 </style>
