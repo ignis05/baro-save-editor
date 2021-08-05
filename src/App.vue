@@ -18,7 +18,7 @@
       <router-view />
     </v-main>
   </v-app>
-  <v-dialog v-model="isLoading" class="loader">
+  <v-dialog persistent v-model="isLoading" class="loader">
     <v-progress-circular indeterminate></v-progress-circular>
   </v-dialog>
   <AlertBox></AlertBox>

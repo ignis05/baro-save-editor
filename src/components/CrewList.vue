@@ -17,7 +17,7 @@
       </v-sheet>
     </v-sheet>
   </v-card>
-  <v-dialog class="editCharacter" v-model="editDialog">
+  <v-dialog persistent class="editCharacter" v-model="editDialog">
     <v-card class="d-flex flex-column mainCard" style="width: 100%; height: 100%">
       <v-card-title style="background-color: rgb(var(--v-theme-primary))">
         <span class="text-h4"
@@ -25,7 +25,7 @@
         >
       </v-card-title>
       <v-card-text v-if="charClone" class="d-flex flex-grow-1">
-        <v-row>
+        <v-row v-if="!showTextarea">
           <v-col>
             <v-card elevation="1">
               <v-card-title>
@@ -68,10 +68,20 @@
                     <option class="assistant" value="assistant">Assistant</option>
                   </select>
                 </div>
+                <div>
+                  <div class="text-h5">Skills</div>
+                  <div>
+                    <div v-for="skill of cloneJob.elements" :key="skill.attributes.identifier">
+                      <div>{{ skill.attributes.identifier }}</div>
+                      <input type="number" min="0" max="100" style="width: 6em" v-model="skill.attributes.level" />
+                    </div>
+                  </div>
+                </div>
               </v-card-text>
             </v-card>
           </v-col>
         </v-row>
+        <textarea v-else v-model="textAreaVal" spellcheck="false" class="textArea d-flex px-2 flex-grow-1"></textarea>
       </v-card-text>
       <v-card-actions style="flex: 0 1 auto">
         <v-spacer></v-spacer>
@@ -95,6 +105,8 @@ export default {
   data() {
     return {
       editDialog: false,
+      showTextarea: false,
+      textAreaVal: '',
       color: {
         captain: '#718fb7',
         engineer: '#d7ac60',
@@ -132,12 +144,46 @@ export default {
       this.editDialog = true
     },
     editDialogClose() {
+      // textarea click
+      if (this.showTextarea) {
+        this.showTextarea = false
+        this.textAreaVal = ''
+        return
+      }
       this.editDialog = false
       this.selectedChar = null
       this.charClone = null
     },
     editDialogSave() {
-      console.log(this.charClone)
+      // textarea click
+      if (this.showTextarea) {
+        let xmlString = this.textAreaVal
+        let newChar
+        try {
+          newChar = xml2js(xmlString).elements[0]
+        } catch (err) {
+          console.warn(err)
+          this.$store.dispatch('showAlert', {
+            type: 'error',
+            text: `XML parser fail: ${err.message}`,
+          })
+          return
+        }
+        if (!newChar.attributes.name) {
+          this.$store.dispatch('showAlert', {
+            type: 'error',
+            text: `Failed to read character name - file may be invalid or corrupted`,
+          })
+          return
+        }
+        this.charClone = newChar
+        this.$store.dispatch('showAlert', {
+          type: 'success',
+          text: `Loaded ${this.charClone.attributes.name} xml changes.`,
+        })
+        this.showTextarea = false
+        return
+      }
       this.editDialog = false
       let index = this.crewList.elements.indexOf(this.selectedChar)
       this.crewList.elements[index] = this.charClone
@@ -178,11 +224,10 @@ export default {
         })
         return
       }
-      console.log(newChar)
       if (!newChar.attributes.name) {
         this.$store.dispatch('showAlert', {
           type: 'error',
-          text: `Failed to reach character name - file may be invalid or corrupted`,
+          text: `Failed to read character name - file may be invalid or corrupted`,
         })
         return
       }
@@ -192,7 +237,10 @@ export default {
         text: `Pasted ${this.charClone.attributes.name} from system clipboard.`,
       })
     },
-    rawEditChar() {},
+    rawEditChar() {
+      this.textAreaVal = desanitized_js2xml({ elements: [this.charClone] }, { spaces: 4 })
+      this.showTextarea = true
+    },
   },
   mounted() {
     var el = document.getElementById('crewListWrapper')
@@ -217,6 +265,11 @@ export default {
 </script>
 
 <style scoped>
+.textArea {
+  background: white;
+  color: black;
+}
+
 .charEditCardText {
   opacity: 100;
   display: flex;
