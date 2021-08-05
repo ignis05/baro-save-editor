@@ -71,11 +71,16 @@ export default {
       animation: 150,
       handle: '.grabHandle',
       onSort: (event) => {
-        const indexChange = event.newIndex - event.oldIndex
+        // get real index of moved item
         const movedItem = this.characterArray[event.oldIndex]
         const crewListIndex = this.crewList.elements.indexOf(movedItem)
+
+        // get real index of destination
+        const newCrewListIndex = this.crewList.elements.indexOf(this.characterArray[event.newIndex])
+
+        // move item
         this.crewList.elements.splice(crewListIndex, 1)
-        this.crewList.elements.splice(crewListIndex + indexChange, 0, movedItem)
+        this.crewList.elements.splice(newCrewListIndex, 0, movedItem)
       },
     })
   },
