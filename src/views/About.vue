@@ -24,15 +24,17 @@
     </v-row>
     <AboutSubEditor v-if="subEditor"></AboutSubEditor>
     <AboutSaveEditor v-else></AboutSaveEditor>
-    <v-col>
-      <v-sheet elevation="1" class="pa-2" style="text-align: center">
-        If the editor freezes, crashes or outputs corrupted file feel free to create a
-        <a style="color: rgb(var(--v-theme-secondary))" href="https://github.com/ignis05/baro-save-editor/issues">
-          github issue
-        </a>
-        attaching original file(s) and providing steps for reproduction.
-      </v-sheet>
-    </v-col>
+    <v-row>
+      <v-col>
+        <v-sheet elevation="1" class="pa-2" style="text-align: center">
+          If the editor freezes, crashes or outputs corrupted file feel free to create a
+          <a style="color: rgb(var(--v-theme-secondary))" href="https://github.com/ignis05/baro-save-editor/issues">
+            github issue
+          </a>
+          attaching original file(s) and providing steps for reproduction.
+        </v-sheet>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
