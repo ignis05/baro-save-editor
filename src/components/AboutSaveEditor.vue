@@ -76,7 +76,10 @@
           Each character on the list has 3 buttons:
           <ul class="pl-8">
             <li><v-icon color="secondary">mdi-drag-horizontal-variant</v-icon> - can be grabbed to reorder crew</li>
-            <li><v-icon color="secondary">mdi-file-edit-outline</v-icon> - opens character editing tools (WIP)</li>
+            <li>
+              <v-icon color="secondary">mdi-file-edit-outline</v-icon> - opens character editing menu where you can edit
+              name, job, skills or copy/edit raw .xml
+            </li>
             <li><v-icon color="red">mdi-delete-outline</v-icon> - deletes the character</li>
           </ul>
           Loading CharacterData.xml file will import characters from it and add them to the list.
@@ -127,6 +130,11 @@
           Allows to set current money.
           <br /><br /><span class="text-h6"> Max Missions </span><br />
           Allows to set how many missions can be selected at the same time.
+          <br /><br /><span class="text-h6"> Radiation </span><br />
+          Allows to toggle radiation.<br />
+          Off -> On - will turn on the radiation<br />
+          On -> Off - will turn off the radiation and reset its progress on the map and outposts. Outposts that have
+          already been abandoned due to its effects will stay that way.
         </v-card-text>
       </v-card>
     </v-col>
