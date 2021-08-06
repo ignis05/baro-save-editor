@@ -16,6 +16,38 @@
         <v-icon title="delete" color="red" class="iconButton" @click="deleteChar(el)">mdi-delete-outline</v-icon>
       </v-sheet>
     </v-sheet>
+    <v-sheet class="d-flex flex-row align-center pl-4 pr-2">
+      <div class="pt-1">Add:</div>
+      <v-spacer></v-spacer>
+      <v-btn icon size="x-small" title="Add a new assistant" @click="addNew">
+        <v-icon color="secondary">mdi-account-plus-outline</v-icon>
+      </v-btn>
+      <v-btn icon size="x-small" title="Add from xml" @click="addCharDialog = true">
+        <v-icon color="secondary">mdi-account-edit-outline</v-icon>
+        <v-dialog class="editCharacter" v-model="addCharDialog">
+          <v-card class="d-flex flex-column" style="width: 100%; height: 100%">
+            <v-card-title>
+              <span class="text-h5">Add character from xml</span>
+            </v-card-title>
+            <v-card-text class="d-flex flex-grow-1">
+              <textarea
+                v-model="addCharDialogVal"
+                spellcheck="false"
+                class="textArea d-flex px-2 flex-grow-1"
+              ></textarea>
+            </v-card-text>
+            <v-card-actions style="flex: 0 1 auto">
+              <v-spacer></v-spacer>
+              <v-btn color="red darken-1" text @click="addCharDialog = false"> Cancel </v-btn>
+              <v-btn color="green darken-1" text @click="addFromInput"> Add </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-btn>
+      <v-btn icon size="x-small" title="Add from clipboard" @click="addFromClip">
+        <v-icon color="secondary">mdi-clipboard-arrow-up-outline</v-icon>
+      </v-btn>
+    </v-sheet>
   </v-card>
   <v-dialog persistent class="editCharacter" v-model="editDialog">
     <v-card class="d-flex flex-column mainCard" style="width: 100%; height: 100%">
@@ -104,6 +136,8 @@ import { desanitized_js2xml } from '@/helpers/CompressionHelpers'
 export default {
   data() {
     return {
+      addCharDialog: false,
+      addCharDialogVal: '',
       editDialog: false,
       showTextarea: false,
       textAreaVal: '',
@@ -249,6 +283,183 @@ export default {
     rawEditChar() {
       this.textAreaVal = desanitized_js2xml({ elements: [this.charClone] }, { spaces: 4 })
       this.showTextarea = true
+    },
+    addNew() {
+      let newCharacter = {
+        type: 'element',
+        name: 'Character',
+        attributes: {
+          name: 'New Assistant',
+          originalname: 'New Assistant',
+          speciesname: 'human',
+          gender: 'female',
+          race: 'Asian',
+          salary: '2137',
+          headspriteid: '6',
+          hairindex: '2',
+          beardindex: '0',
+          moustacheindex: '0',
+          faceattachmentindex: '0',
+          startitemsgiven: 'false',
+          ragdoll: '',
+          personality: 'Crazy',
+        },
+        elements: [
+          {
+            type: 'element',
+            name: 'job',
+            attributes: {
+              name: 'Assistant',
+              identifier: 'assistant',
+            },
+            elements: [
+              {
+                type: 'element',
+                name: 'skill',
+                attributes: {
+                  identifier: 'weapons',
+                  level: '20',
+                },
+              },
+              {
+                type: 'element',
+                name: 'skill',
+                attributes: {
+                  identifier: 'mechanical',
+                  level: '20',
+                },
+              },
+              {
+                type: 'element',
+                name: 'skill',
+                attributes: {
+                  identifier: 'electrical',
+                  level: '20',
+                },
+              },
+              {
+                type: 'element',
+                name: 'skill',
+                attributes: {
+                  identifier: 'medical',
+                  level: '20',
+                },
+              },
+              {
+                type: 'element',
+                name: 'skill',
+                attributes: {
+                  identifier: 'helm',
+                  level: '20',
+                },
+              },
+            ],
+          },
+          {
+            type: 'element',
+            name: 'inventory',
+            elements: [],
+          },
+          {
+            type: 'element',
+            name: 'health',
+            elements: [
+              {
+                type: 'element',
+                name: 'LimbHealth',
+                attributes: {
+                  i: '0',
+                },
+              },
+              {
+                type: 'element',
+                name: 'LimbHealth',
+                attributes: {
+                  i: '1',
+                },
+              },
+              {
+                type: 'element',
+                name: 'LimbHealth',
+                attributes: {
+                  i: '2',
+                },
+              },
+              {
+                type: 'element',
+                name: 'LimbHealth',
+                attributes: {
+                  i: '3',
+                },
+              },
+              {
+                type: 'element',
+                name: 'LimbHealth',
+                attributes: {
+                  i: '4',
+                },
+              },
+              {
+                type: 'element',
+                name: 'LimbHealth',
+                attributes: {
+                  i: '5',
+                },
+              },
+            ],
+          },
+          {
+            type: 'element',
+            name: 'orders',
+          },
+        ],
+      }
+
+      var i = 1
+      var newName = 'New Assistant'
+      // increment number to get unique originalName
+      while (this.characterArray.find((el) => el.attributes.originalname.startsWith(newName))) {
+        newName = `New Assistant${i++}`
+        newCharacter.attributes.originalname = newName
+      }
+
+      this.crewList.elements.unshift(newCharacter)
+    },
+    addFromXml(xmlString) {
+      let newChar
+      try {
+        newChar = xml2js(xmlString).elements[0]
+      } catch (err) {
+        console.warn(err)
+        this.$store.dispatch('showAlert', {
+          type: 'error',
+          text: `XML parser fail: ${err.message}`,
+        })
+        return false
+      }
+      if (!newChar.attributes.name) {
+        this.$store.dispatch('showAlert', {
+          type: 'error',
+          text: `Failed to read character name - file may be invalid or corrupted`,
+        })
+        return false
+      }
+      this.crewList.elements.unshift(newChar)
+      this.$store.dispatch('showAlert', {
+        type: 'success',
+        text: `Added new character: ${newChar.attributes.name}.`,
+      })
+      return true
+    },
+    async addFromClip() {
+      let xmlString = await navigator.clipboard.readText()
+      this.addFromXml(xmlString)
+    },
+    addFromInput() {
+      if (this.addFromXml(this.addCharDialogVal)) {
+        this.addCharDialog = false
+        this.addCharDialogVal = ''
+      }
     },
   },
   mounted() {

@@ -82,7 +82,24 @@
             </li>
             <li><v-icon color="red">mdi-delete-outline</v-icon> - deletes the character</li>
           </ul>
-          Loading CharacterData.xml file will import characters from it and add them to the list.
+          To add characters you can:
+          <ul class="pl-8">
+            <li>
+              Load <span class="text-secondary">CharacterData.xml</span> file - to import all multiplayer characters as
+              bots.
+            </li>
+            <li>
+              <v-icon color="secondary">mdi-account-plus-outline</v-icon> - to add a new assistant (inventory will be
+              empty because i don't know how to make it auto fill and don't want to risk item id conflicts)
+            </li>
+            <li>
+              <v-icon color="secondary">mdi-account-edit-outline</v-icon> - to add a new character from xml textfield
+            </li>
+            <li>
+              <v-icon color="secondary">mdi-clipboard-arrow-up-outline</v-icon> - to add a new character from xml in the
+              clipboard
+            </li>
+          </ul>
         </v-card-text>
       </v-card>
       <!-- misc -->
