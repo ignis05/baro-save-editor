@@ -15,6 +15,16 @@ export default function fixOldSave(parsedGamesession) {
     })
   }
 
+  // add <Radiation amount="-200" enabled="False"/>
+  let map = campaign.elements.find((el) => el.name === 'map')
+  if (!map.elements.find((el) => el.name === 'Radiation')) {
+    map.elements.push({
+      type: 'element',
+      name: 'Radiation',
+      attributes: { amount: '-200', enabled: 'False' },
+    })
+  }
+
   // add crew.elements if missing
   let crew = campaign.elements.find((el) => el.name == 'bots' || el.name == 'crew')
   if (!crew.elements) crew.elements = []

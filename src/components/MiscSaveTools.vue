@@ -137,6 +137,16 @@
           SET
         </v-btn>
       </div>
+      <!-- toggle radiation -->
+      <h3 class="toolTitle">Radiation</h3>
+      <div class="toolContent d-flex flex-row justify-space-between px-2">
+        <v-btn variant="outlined" :disabled="!radiation.isEnabled.value" @click="radiation.toggle" color="secondary">
+          {{ !radiation.isEnabled.value ? 'Disabled' : 'Disable' }}
+        </v-btn>
+        <v-btn variant="outlined" :disabled="radiation.isEnabled.value" @click="radiation.toggle" color="secondary">
+          {{ radiation.isEnabled.value ? 'Enabled' : 'Enable' }}
+        </v-btn>
+      </div>
     </v-sheet>
   </v-card>
 </template>
@@ -154,13 +164,14 @@ export default {
 
     const isMP = computed(() => store.getters.isMultiPlayer)
 
-    const money = moneySetup()
     const campaignId = campaignIdSetup()
-    const maxmissions = maxmissionsSetup()
-    const gameses = gamesesSetup()
     const convert = convertSetup()
+    const gameses = gamesesSetup()
+    const maxmissions = maxmissionsSetup()
+    const money = moneySetup()
+    const radiation = radiationSetup()
 
-    return { isMP, money, campaignId, maxmissions, gameses, convert }
+    return { isMP, campaignId, convert, gameses, maxmissions, money, radiation }
   },
 }
 function moneySetup() {
@@ -369,11 +380,37 @@ function maxmissionsSetup() {
     if (ev.key === 'Enter') click()
   }
 
-  watch(maxmsGetter, () => {
-    inputVal.value = maxmsGetter.value
-  })
-
   return { inputVal, isDifferent, click, keyUp }
+}
+function radiationSetup() {
+  const store = useStore()
+
+  const isEnabled = computed(
+    () =>
+      store.getters.campaign.elements.find((el) => el.name == 'CampaignSettings').attributes.radiationenabled == 'true',
+  )
+
+  function toggle() {
+    let map = store.getters.campaign.elements.find((el) => el.name === 'map')
+    let radiation = map.elements.find((el) => el.name === 'Radiation')
+    // on -> off
+    if (isEnabled.value) {
+      store.getters.campaign.elements.find((el) => el.name == 'CampaignSettings').attributes.radiationenabled = 'false'
+      radiation.attributes.enabled = 'False'
+      radiation.attributes.amount = '-200'
+      // reset locations that haven't been abandoned
+      for (let location of map.elements.filter((el) => el.name == 'location')) {
+        location.attributes.turnsinradiation = '0'
+      }
+    }
+    // off -> on
+    else {
+      store.getters.campaign.elements.find((el) => el.name == 'CampaignSettings').attributes.radiationenabled = 'true'
+      delete radiation.attributes.enabled
+    }
+  }
+
+  return { isEnabled, toggle }
 }
 </script>
 
