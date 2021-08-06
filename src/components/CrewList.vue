@@ -184,7 +184,16 @@ export default {
         this.showTextarea = false
         return
       }
+      // normal menu click
       this.editDialog = false
+
+      // first name change, idk why game does this, i guess to prevent two 100% identical characters
+      if (
+        this.charClone.attributes.name !== this.selectedChar.attributes.name &&
+        !this.charClone.attributes.originalname
+      ) {
+        this.charClone.attributes.originalname = this.selectedChar.attributes.name
+      }
       let index = this.crewList.elements.indexOf(this.selectedChar)
       this.crewList.elements[index] = this.charClone
       this.selectedChar = null
