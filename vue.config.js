@@ -7,4 +7,15 @@ module.exports = {
       return args
     })
   },
+  pluginOptions: {
+    electronBuilder: {
+      builderOptions: {
+        productName: 'Barotrauma Save Editor',
+        appId: 'io.github.ignis05.baroSaveEditor',
+        win: {
+          icon: 'public/favicon.ico',
+        },
+      },
+    },
+  },
 }
