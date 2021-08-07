@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
+    alias: '/index.html',
     name: 'SaveTools',
     component: () => import('../views/SaveTools.vue'),
     meta: {

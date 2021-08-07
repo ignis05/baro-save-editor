@@ -8,7 +8,7 @@
         :key="`navbar-link-${link.label}`"
         :to="link.url"
         class="mx-2"
-        :class="{ 'text-secondary': link.url == $route.path }"
+        :class="{ 'text-secondary': link.name == $route.name }"
       >
         {{ link.label }}
       </v-btn>
@@ -35,14 +35,17 @@ export default {
     return {
       navLinks: [
         {
+          name: 'SaveTools',
           label: 'Save Editor',
           url: '/',
         },
         {
+          name: 'SubTools',
           label: 'Submarine Editor',
           url: '/SubTools',
         },
         {
+          name: 'About',
           label: 'About',
           url: '/About',
         },
