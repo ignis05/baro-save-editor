@@ -418,7 +418,7 @@ export default {
       var i = 1
       var newName = 'New Assistant'
       // increment number to get unique originalName
-      while (this.characterArray.find((el) => el.attributes.originalname.startsWith(newName))) {
+      while (this.characterArray.find((el) => el.attributes.originalname?.startsWith(newName))) {
         newName = `New Assistant${i++}`
         newCharacter.attributes.originalname = newName
       }
