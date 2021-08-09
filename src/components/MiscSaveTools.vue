@@ -74,7 +74,7 @@
                 <br />
                 Please note that the player-controlled characters are not saved inside the .save file.<br />If you wish
                 to have them in single-player, you need to import them by loading
-                <span class="text-primary">(...)_CharacterDataxml"</span> file.
+                <span class="text-primary">(...)_CharacterData.xml"</span> file.
               </div>
             </v-card-text>
             <!-- SP to MP -->
