@@ -4,7 +4,7 @@
 
 Working fully client-sided in the browser.<br><br>
 Online build available on https://ignis05.github.io/baro-save-editor/<br>
-For offline uses electron build can be self compiled with `npm run electron:build` or downloaded from [the latest release](https://github.com/ignis05/baro-save-editor/releases/latest).
+For offline uses electron build can be self compiled from the source code or downloaded from [the latest release](https://github.com/ignis05/baro-save-editor/releases/latest).
 <br>
 
 <hr>
