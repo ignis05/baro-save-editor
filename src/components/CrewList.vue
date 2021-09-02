@@ -65,8 +65,14 @@
               </v-card-title>
               <v-card-text class="charEditCardText">
                 <div>
-                  <div class="text-h5">Name:</div>
-                  <input type="text" v-model="charClone.attributes.name" />
+                  <v-text-field
+                    label="Name"
+                    variant="outlined"
+                    style="color: white; min-width: 200px"
+                    class="mb-4 mt-3"
+                    type="text"
+                    v-model="charClone.attributes.name"
+                  />
                 </div>
                 <div>
                   <div class="text-h5">Raw xml:</div>
@@ -495,7 +501,7 @@ export default {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-evenly;
-  align-items: flex-start;
+  align-items: flex-center;
 }
 .charEditCardText > * {
   margin: 0 8px;
@@ -515,6 +521,7 @@ select {
   padding-left: 8px;
   line-height: 40px;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 option {
