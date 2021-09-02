@@ -12,18 +12,26 @@
         <div class="name">{{ el.attributes.name }}</div>
         <v-spacer></v-spacer>
         <v-icon style="cursor: grabbing" class="grabHandle" color="secondary">mdi-drag-horizontal-variant</v-icon>
-        <v-icon title="edit" color="secondary" class="iconButton" @click="editChar(el)"> mdi-file-edit-outline </v-icon>
-        <v-icon title="delete" color="red" class="iconButton" @click="deleteChar(el)">mdi-delete-outline</v-icon>
+        <span>
+          <v-icon color="secondary" class="iconButton" @click="editChar(el)"> mdi-file-edit-outline </v-icon>
+          <v-tooltip anchor="bottom" activator="parent">Edit character</v-tooltip>
+        </span>
+        <span>
+          <v-icon title="delete" color="red" class="iconButton" @click="deleteChar(el)">mdi-delete-outline</v-icon>
+          <v-tooltip anchor="bottom" activator="parent">Delete character</v-tooltip>
+        </span>
       </v-sheet>
     </v-sheet>
     <v-sheet class="d-flex flex-row align-center pl-4 pr-2">
       <div class="pt-1">Add:</div>
       <v-spacer></v-spacer>
-      <v-btn icon size="x-small" title="Add a new assistant" @click="addNew">
+      <v-btn icon size="x-small" @click="addNew">
         <v-icon color="secondary">mdi-account-plus-outline</v-icon>
+        <v-tooltip anchor="bottom" activator="parent">Add new assistant character</v-tooltip>
       </v-btn>
-      <v-btn icon size="x-small" title="Add from xml" @click="addCharDialog = true">
+      <v-btn icon size="x-small" @click="addCharDialog = true">
         <v-icon color="secondary">mdi-account-edit-outline</v-icon>
+        <v-tooltip anchor="bottom" activator="parent">Add character from xml</v-tooltip>
         <v-dialog class="editCharacter" v-model="addCharDialog">
           <v-card class="d-flex flex-column" style="width: 100%; height: 100%">
             <v-card-title>
@@ -44,8 +52,9 @@
           </v-card>
         </v-dialog>
       </v-btn>
-      <v-btn icon size="x-small" title="Add from clipboard" @click="addFromClip">
+      <v-btn icon size="x-small" @click="addFromClip">
         <v-icon color="secondary">mdi-clipboard-arrow-up-outline</v-icon>
+        <v-tooltip anchor="bottom" activator="parent">Paste character xml from clipboard</v-tooltip>
       </v-btn>
     </v-sheet>
   </v-card>
@@ -76,14 +85,17 @@
                 </div>
                 <div>
                   <div class="text-h5">Raw xml:</div>
-                  <v-btn size="x-small" title="copy to clipboard" icon @click="copyChar">
+                  <v-btn size="x-small" icon @click="copyChar">
                     <v-icon color="secondary">mdi-clipboard-arrow-down-outline</v-icon>
+                    <v-tooltip anchor="bottom" activator="parent">Copy character xml to clipboard</v-tooltip>
                   </v-btn>
-                  <v-btn size="x-small" title="paste from clipboard" icon @click="pasteChar">
+                  <v-btn size="x-small" icon @click="pasteChar">
                     <v-icon color="secondary">mdi-clipboard-arrow-up-outline</v-icon>
+                    <v-tooltip anchor="bottom" activator="parent">Paste character xml from clipboard</v-tooltip>
                   </v-btn>
-                  <v-btn size="x-small" title="edit" icon @click="rawEditChar">
+                  <v-btn size="x-small" icon @click="rawEditChar">
                     <v-icon color="secondary">mdi-file-edit-outline</v-icon>
+                    <v-tooltip anchor="bottom" activator="parent">Edit raw xml</v-tooltip>
                   </v-btn>
                 </div>
               </v-card-text>

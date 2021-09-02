@@ -12,7 +12,10 @@
       >
         <div class="d-flex flex-row justify-center align-center">Preview Image</div>
         <v-spacer></v-spacer>
-        <v-icon class="iconButton" color="secondary" @click="downloadImage()">mdi-file-download-outline</v-icon>
+        <span>
+          <v-icon class="iconButton" color="secondary" @click="downloadImage()">mdi-file-download-outline</v-icon>
+          <v-tooltip anchor="bottom" activator="parent">Download</v-tooltip>
+        </span>
       </v-sheet>
       <!-- linked submarines -->
       <v-sheet
@@ -23,9 +26,12 @@
       >
         <div class="d-flex flex-row justify-center align-center">{{ sub.name }}</div>
         <v-spacer></v-spacer>
-        <v-icon class="iconButton" color="secondary" @click="downloadShuttle(sub.object)"
-          >mdi-file-download-outline
-        </v-icon>
+        <span>
+          <v-icon class="iconButton" color="secondary" @click="downloadShuttle(sub.object)"
+            >mdi-file-download-outline
+          </v-icon>
+          <v-tooltip anchor="bottom" activator="parent">Download</v-tooltip>
+        </span>
       </v-sheet>
       <!-- when no preview image or linked submarines -->
       <div v-if="previewImage == '' && linkedSubmarines.length == 0" class="text-center text-grey">

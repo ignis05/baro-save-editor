@@ -5,21 +5,31 @@
     </v-card-header>
     <v-sheet class="d-flex flex-column align-center">
       <!-- gamesession.xml edit / download -->
-      <div class="d-flex flex-row justify-space-between pr-2 toolContent" style="width: 100%; max-width: 320px">
+      <div class="d-flex flex-row justify-space-between pr-2 toolContent mb-8" style="width: 100%; max-width: 320px">
         <h3 class="toolTitle d-block">Gamesession.xml</h3>
         <v-spacer></v-spacer>
-        <v-icon title="copy to clipboard" color="secondary" class="iconButton" @click="gameses.copy()">
-          mdi-clipboard-arrow-down-outline
-        </v-icon>
-        <v-icon title="paste from clipboard" color="secondary" class="iconButton" @click="gameses.paste()">
-          mdi-clipboard-arrow-up-outline
-        </v-icon>
-        <v-icon title="download" color="secondary" class="iconButton" @click="gameses.download()">
-          mdi-file-download-outline
-        </v-icon>
-        <v-icon title="edit" color="secondary" class="iconButton" @click.stop="gameses.edit()">
-          mdi-file-edit-outline
-        </v-icon>
+        <span>
+          <v-icon color="secondary" class="iconButton" @click="gameses.copy()">
+            mdi-clipboard-arrow-down-outline
+          </v-icon>
+          <v-tooltip class="text-bold" anchor="bottom" activator="parent"
+            >Copy to clipboard</v-tooltip
+          >
+        </span>
+        <span>
+          <v-icon color="secondary" class="iconButton" @click="gameses.paste()">
+            mdi-clipboard-arrow-up-outline
+          </v-icon>
+          <v-tooltip anchor="bottom" activator="parent">Paste from clipboard</v-tooltip>
+        </span>
+        <span>
+          <v-icon color="secondary" class="iconButton" @click="gameses.download()"> mdi-file-download-outline </v-icon>
+          <v-tooltip anchor="bottom" activator="parent">Download</v-tooltip>
+        </span>
+        <span>
+          <v-icon color="secondary" class="iconButton" @click.stop="gameses.edit()"> mdi-file-edit-outline </v-icon>
+          <v-tooltip anchor="bottom" activator="parent">Edit xml</v-tooltip>
+        </span>
         <v-dialog class="fullscreen" v-model="gameses.dialog.value" fullscreen>
           <v-card class="d-flex flex-column" style="width: 100%; height: 100%">
             <v-card-title>
@@ -42,16 +52,18 @@
       </div>
       <!-- convert format -->
       <h3 class="toolTitle">Save conversion</h3>
-      <div class="toolContent d-flex flex-row justify-space-between align-center px-2">
+      <div class="toolContent d-flex flex-row justify-space-between align-center px-2 mb-8">
         <div class="text">
           Convert to a <span class="text-primary">{{ isMP ? 'single' : 'multi' }}-player</span> format:
         </div>
         <v-spacer></v-spacer>
-        <v-btn @click="convert.click" size="x-small" icon title="Convert">
+        <v-btn @click="convert.click" size="x-small" icon>
           <v-icon color="secondary">mdi-file-sync-outline</v-icon>
+          <v-tooltip anchor="bottom" activator="parent">Convert</v-tooltip>
         </v-btn>
-        <v-btn @click.stop="convert.dialog.value = true" size="x-small" icon title="Info">
+        <v-btn @click.stop="convert.dialog.value = true" size="x-small" icon>
           <v-icon>mdi-help-circle-outline</v-icon>
+          <v-tooltip anchor="bottom" activator="parent">Info</v-tooltip>
         </v-btn>
         <!-- info dialog -->
         <v-dialog class="convertInfo" v-model="convert.dialog.value">

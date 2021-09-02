@@ -9,23 +9,32 @@
         :key="sub"
         class="d-flex flex-row justify-center px-4"
       >
-        <input
-          class="selectedSub"
-          type="radio"
-          title="Set as currently selected submarine"
-          name="selectedOwnedSub"
-          :checked="selectedSub === sub"
-          @click="selectSub(sub)"
-        />
+        <span>
+          <input
+            class="selectedSub"
+            type="radio"
+            name="selectedOwnedSub"
+            :checked="selectedSub === sub"
+            @click="selectSub(sub)"
+          />
+          <v-tooltip anchor="bottom" activator="parent">Set as currently used</v-tooltip>
+        </span>
         <div class="subname">{{ sub }}</div>
         <v-spacer></v-spacer>
-        <v-icon title="download" color="secondary" class="iconButton" @click="downloadSub(sub)">
-          mdi-file-download-outline
-        </v-icon>
-        <v-icon title="edit" color="secondary" class="iconButton" @click="editSub(sub)">
-          mdi-clipboard-arrow-right-outline
-        </v-icon>
-        <v-icon title="delete" color="red" class="iconButton" @click="deleteSub(sub)">mdi-delete-outline</v-icon>
+        <span>
+          <v-icon color="secondary" class="iconButton" @click="downloadSub(sub)"> mdi-file-download-outline </v-icon>
+          <v-tooltip anchor="bottom" activator="parent">Download submarine file</v-tooltip>
+        </span>
+        <span>
+          <v-icon color="secondary" class="iconButton" @click="editSub(sub)">
+            mdi-clipboard-arrow-right-outline
+          </v-icon>
+          <v-tooltip anchor="bottom" activator="parent">Edit submarine</v-tooltip>
+        </span>
+        <span>
+          <v-icon color="red" class="iconButton" @click="deleteSub(sub)">mdi-delete-outline</v-icon>
+          <v-tooltip anchor="bottom" activator="parent">Delete submarine</v-tooltip>
+        </span>
       </v-sheet>
     </v-sheet>
   </v-card>
@@ -44,6 +53,9 @@ export default {
     },
   },
   methods: {
+    test(data) {
+      console.log(data)
+    },
     deleteSub(subName) {
       // remove from attached files
       let subFiles = this.$store.state.subfiles

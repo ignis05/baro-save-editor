@@ -4,8 +4,9 @@
       <div class="h3 mb-1">Drag a file below to load it:</div>
       <v-spacer></v-spacer>
       <!-- locate file dialog -->
-      <v-btn @click.stop="fileLocDialog = true" size="x-small" icon title="Where can I find my files?">
+      <v-btn @click.stop="fileLocDialog = true" size="x-small" icon>
         <v-icon>mdi-file-find-outline</v-icon>
+        <v-tooltip anchor="bottom" activator="parent">Where can I find my files?</v-tooltip>
       </v-btn>
       <v-dialog class="filedropper" v-model="fileLocDialog">
         <v-card>
@@ -63,8 +64,9 @@
         </v-card>
       </v-dialog>
       <!-- help dialog -->
-      <v-btn @click.stop="helpDialog = true" size="x-small" icon title="What files can I load?">
+      <v-btn @click.stop="helpDialog = true" size="x-small" icon>
         <v-icon>mdi-help-circle-outline</v-icon>
+        <v-tooltip anchor="bottom" activator="parent">What files can I load?</v-tooltip>
       </v-btn>
       <v-dialog class="filedropper" v-model="helpDialog">
         <v-card>
