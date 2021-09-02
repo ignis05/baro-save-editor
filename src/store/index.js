@@ -166,7 +166,7 @@ export default createStore({
           type: 'info',
           text: `No .save file loaded to attach additional files to.`,
         })
-        return console.warn(`No .save file to attach additional files to`)
+        console.warn(`No .save file to attach additional files to`)
       }
       // additional .sub file uploaded, or .raw transfer from submarine editor
       else if (file.name.endsWith('.sub') || file.name.endsWith('.raw')) {
