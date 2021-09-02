@@ -12,9 +12,7 @@
           <v-icon color="secondary" class="iconButton" @click="gameses.copy()">
             mdi-clipboard-arrow-down-outline
           </v-icon>
-          <v-tooltip class="text-bold" anchor="bottom" activator="parent"
-            >Copy to clipboard</v-tooltip
-          >
+          <v-tooltip class="text-bold" anchor="bottom" activator="parent">Copy to clipboard</v-tooltip>
         </span>
         <span>
           <v-icon color="secondary" class="iconButton" @click="gameses.paste()">
