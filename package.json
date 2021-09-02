@@ -2,7 +2,7 @@
   "name": "baro-save-editor",
   "description": "Save and submarine editor for Barotrauma",
   "author": "ignis05",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
