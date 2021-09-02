@@ -12,8 +12,17 @@
           @deleteSub="deleteSub"
         ></AvailSubListElement>
       </v-sheet>
-      <v-sheet class="d-flex flex-row justify-space-between px-2">
-        <input v-model="inputVal" @keyup="keyUpHandler" ref="subListInput" class="mr-2 pl-2" />
+      <v-sheet class="d-flex flex-row justify-space-between align-center px-2 mt-4">
+        <v-text-field
+          density="compact"
+          label="Submarine Name"
+          variant="outlined"
+          style="color: white; min-width: 159px"
+          v-model="inputVal"
+          @keyup="keyUpHandler"
+          ref="subListInput"
+          class="mr-2 mb-0"
+        />
         <v-btn :disabled="!inputVal" @click="addSub" color="secondary">Add</v-btn>
       </v-sheet>
     </div>
@@ -66,10 +75,4 @@ export default {
 }
 </script>
 
-<style scoped>
-input {
-  border: 1px solid white;
-  color: white;
-  width: 100%;
-}
-</style>
+<style scoped></style>

@@ -5,16 +5,24 @@
     </v-card-header>
     <v-sheet class="d-flex flex-column align-center">
       <!-- set price -->
-      <h3 class="toolTitle">Change Price</h3>
-      <div class="toolContent d-flex flex-row justify-space-between px-2">
-        <input
-          type="number"
+      <div class="toolContent d-flex flex-row justify-space-between align-center px-2">
+        <v-text-field
+          density="comfortable"
+          label="Change Price"
+          variant="outlined"
+          style="color: white; min-width: 140px"
           v-model="price.inputVal.value"
           @keyup="price.keyUp"
-          class="mr-2 pl-2"
+          class="mr-2 mb-0"
           :class="{ 'text-secondary': price.isDifferent.value, 'text-white': !price.isDifferent.value }"
         />
-        <v-btn variant="outlined" :disabled="!price.isDifferent.value" @click="price.click" color="secondary">
+        <v-btn
+          variant="outlined"
+          :disabled="!price.isDifferent.value"
+          @click="price.click"
+          color="secondary"
+          class="py-5"
+        >
           SET
         </v-btn>
       </div>

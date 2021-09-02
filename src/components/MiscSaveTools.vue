@@ -5,7 +5,7 @@
     </v-card-header>
     <v-sheet class="d-flex flex-column align-center">
       <!-- gamesession.xml edit / download -->
-      <div class="d-flex flex-row justify-space-between pr-2 toolContent" style="width: 100%">
+      <div class="d-flex flex-row justify-space-between pr-2 toolContent" style="width: 100%; max-width: 320px">
         <h3 class="toolTitle d-block">Gamesession.xml</h3>
         <v-spacer></v-spacer>
         <v-icon title="copy to clipboard" color="secondary" class="iconButton" @click="gameses.copy()">
@@ -91,41 +91,59 @@
         </v-dialog>
       </div>
       <!-- set campaign id -->
-      <h3 class="toolTitle" v-if="isMP">Campaign ID</h3>
-      <div v-if="isMP" class="toolContent d-flex flex-row justify-space-between px-2">
-        <input
-          type="number"
+      <div v-if="isMP" class="toolContent d-flex flex-row justify-space-between align-center px-2">
+        <v-text-field
+          density="comfortable"
+          label="Campaign ID"
+          variant="outlined"
+          style="color: white; min-width: 140px"
           v-model="campaignId.inputVal.value"
           @keyup="campaignId.keyUp"
-          class="mr-2 pl-2"
+          class="mr-2 mb-0"
           :class="{ 'text-secondary': campaignId.isDifferent.value, 'text-white': !campaignId.isDifferent.value }"
         />
-        <v-btn variant="outlined" :disabled="!campaignId.isDifferent.value" @click="campaignId.click" color="secondary">
+        <v-btn
+          variant="outlined"
+          :disabled="!campaignId.isDifferent.value"
+          @click="campaignId.click"
+          color="secondary"
+          class="py-5"
+        >
           SET
         </v-btn>
       </div>
       <!-- set money -->
-      <h3 class="toolTitle">Current Money</h3>
-      <div class="toolContent d-flex flex-row justify-space-between px-2">
-        <input
-          type="number"
+      <div class="toolContent d-flex flex-row justify-space-between align-center px-2">
+        <v-text-field
+          density="comfortable"
+          label="Current Money"
+          variant="outlined"
+          style="color: white; min-width: 140px"
           v-model="money.inputVal.value"
           @keyup="money.keyUp"
-          class="mr-2 pl-2"
+          class="mr-2 mb-0"
           :class="{ 'text-secondary': money.isDifferent.value, 'text-white': !money.isDifferent.value }"
         />
-        <v-btn variant="outlined" :disabled="!money.isDifferent.value" @click="money.click" color="secondary">
+        <v-btn
+          variant="outlined"
+          :disabled="!money.isDifferent.value"
+          @click="money.click"
+          color="secondary"
+          class="py-5"
+        >
           SET
         </v-btn>
       </div>
       <!-- set max missions -->
-      <h3 class="toolTitle">Max Missions</h3>
-      <div class="toolContent d-flex flex-row justify-space-between px-2">
-        <input
-          type="number"
+      <div class="toolContent d-flex flex-row justify-space-between align-center px-2">
+        <v-text-field
+          density="comfortable"
+          label="Max Missions"
+          variant="outlined"
+          style="color: white; min-width: 140px"
           v-model="maxmissions.inputVal.value"
           @keyup="maxmissions.keyUp"
-          class="mr-2 pl-2"
+          class="mr-2 mb-0"
           :class="{ 'text-secondary': maxmissions.isDifferent.value, 'text-white': !maxmissions.isDifferent.value }"
         />
         <v-btn
@@ -133,6 +151,7 @@
           :disabled="!maxmissions.isDifferent.value"
           @click="maxmissions.click"
           color="secondary"
+          class="py-5"
         >
           SET
         </v-btn>
