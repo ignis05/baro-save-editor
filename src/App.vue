@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { useDisplay } from 'vuetify/lib/composables/display'
+import { useDisplay } from 'vuetify/composables'
 
 import AlertBox from '@/components/AlertBox'
 

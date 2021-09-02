@@ -14,7 +14,7 @@ Made with Vue 3 and Vuetify.
 
 ## Project setup
 
-Requires having [node.js](https://nodejs.org) version ^14.16.1 installed.
+Requires having [node.js](https://nodejs.org) version ^16.6.1 installed.
 
 `npm install` - installs node dependencies
 

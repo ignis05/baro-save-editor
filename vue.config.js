@@ -1,3 +1,5 @@
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
+
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '/baro-save-editor/' : '/',
   transpileDependencies: ['vuetify'],
@@ -17,5 +19,8 @@ module.exports = {
         },
       },
     },
+  },
+  configureWebpack: {
+    plugins: [new NodePolyfillPlugin()],
   },
 }
