@@ -9,32 +9,25 @@
         :key="sub"
         class="d-flex flex-row justify-center px-4"
       >
-        <span>
-          <input
-            class="selectedSub"
-            type="radio"
-            name="selectedOwnedSub"
-            :checked="selectedSub === sub"
-            @click="selectSub(sub)"
-          />
-          <v-tooltip anchor="bottom" activator="parent">Set as currently used</v-tooltip>
-        </span>
+        <input
+          title="Set as currently used"
+          class="selectedSub"
+          type="radio"
+          name="selectedOwnedSub"
+          :checked="selectedSub === sub"
+          @click="selectSub(sub)"
+        />
         <div class="subname">{{ sub }}</div>
         <v-spacer></v-spacer>
-        <span>
-          <v-icon color="secondary" class="iconButton" @click="downloadSub(sub)"> mdi-file-download-outline </v-icon>
-          <v-tooltip anchor="bottom" activator="parent">Download submarine file</v-tooltip>
-        </span>
-        <span>
-          <v-icon color="secondary" class="iconButton" @click="editSub(sub)">
-            mdi-clipboard-arrow-right-outline
-          </v-icon>
-          <v-tooltip anchor="bottom" activator="parent">Edit submarine</v-tooltip>
-        </span>
-        <span>
-          <v-icon color="red" class="iconButton" @click="deleteSub(sub)">mdi-delete-outline</v-icon>
-          <v-tooltip anchor="bottom" activator="parent">Delete submarine</v-tooltip>
-        </span>
+        <v-icon title="Download submarine file" color="secondary" class="iconButton" @click="downloadSub(sub)">
+          mdi-file-download-outline
+        </v-icon>
+        <v-icon title="Edit submarine" color="secondary" class="iconButton" @click="editSub(sub)">
+          mdi-clipboard-arrow-right-outline
+        </v-icon>
+        <v-icon title="Delete submarine" color="red" class="iconButton" @click="deleteSub(sub)">
+          mdi-delete-outline
+        </v-icon>
       </v-sheet>
     </v-sheet>
   </v-card>
