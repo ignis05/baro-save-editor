@@ -39,8 +39,8 @@
 </template>
 
 <script>
-import AboutSaveEditor from '@/components/AboutSaveEditor'
-import AboutSubEditor from '@/components/AboutSubEditor'
+import AboutSaveEditor from '@/components/AboutSaveEditor.vue'
+import AboutSubEditor from '@/components/AboutSubEditor.vue'
 
 export default {
   data() {

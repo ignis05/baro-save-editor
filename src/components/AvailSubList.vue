@@ -33,7 +33,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import AvailSubListElement from '@/components/AvailSubListElement'
+import AvailSubListElement from '@/components/AvailSubListElement.vue'
 
 export default {
   data() {

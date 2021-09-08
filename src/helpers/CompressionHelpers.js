@@ -1,5 +1,6 @@
-import { gzipSync, gunzipSync } from 'zlib'
+import { gzipSync, gunzipSync } from 'fflate'
 import { js2xml } from 'xml-js'
+import { Buffer } from 'buffer'
 
 /**
  * Uses zlib to decompress barotrauma savefiles and splits files from each other
@@ -58,7 +59,7 @@ export function CompressSave(save) {
  * @returns {String} string with sub xml
  */
 export function DecompressSub(fileContent) {
-  return gunzipSync(fileContent).toString('utf-8')
+  return Buffer.from(gunzipSync(fileContent)).toString('utf-8')
 }
 
 /**

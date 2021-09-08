@@ -141,7 +141,7 @@ import sum from 'hash-sum'
 import _cloneDeep from 'lodash/cloneDeep'
 import { xml2js } from 'xml-js'
 
-import { desanitized_js2xml } from '@/helpers/CompressionHelpers'
+import { desanitized_js2xml } from '@/helpers/CompressionHelpers.js'
 
 export default {
   data() {

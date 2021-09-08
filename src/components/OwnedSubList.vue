@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { CompressSub, desanitized_js2xml } from '@/helpers/CompressionHelpers'
+import { CompressSub, desanitized_js2xml } from '@/helpers/CompressionHelpers.js'
 
 export default {
   computed: {

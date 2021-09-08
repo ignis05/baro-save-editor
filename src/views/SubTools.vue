@@ -32,12 +32,12 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import FileDropper from '@/components/FileDropper'
-import MiscSubTools from '@/components/MiscSubTools'
-import ScriptRunner from '@/components/ScriptRunner'
-import ShuttleExporter from '@/components/ShuttleExporter'
-import SubDataBar from '@/components/SubDataBar'
-import WireHider from '@/components/WireHider'
+import FileDropper from '@/components/FileDropper.vue'
+import MiscSubTools from '@/components/MiscSubTools.vue'
+import ScriptRunner from '@/components/ScriptRunner.vue'
+import ShuttleExporter from '@/components/ShuttleExporter.vue'
+import SubDataBar from '@/components/SubDataBar.vue'
+import WireHider from '@/components/WireHider.vue'
 
 export default {
   name: 'SubTools',

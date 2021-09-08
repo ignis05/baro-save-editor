@@ -117,7 +117,7 @@
       @dragenter.stop.prevent="dragEnter"
       @dragleave.stop.prevent="dragLeave"
       @dragover.stop.prevent
-      :style="{ borderColor: hovered ? getBorderColor : '' }"
+      :style="{ borderColor: hovered ? getBorderColor : '', backgroundImage: `url(${fileImage})` }"
     ></div>
     <input
       ref="fileInput"
@@ -131,7 +131,11 @@
 </template>
 
 <script>
-import { DecompressSave } from '@/helpers/CompressionHelpers'
+import fileImage from '@/assets/file-upload-outline.png'
+
+import { Buffer } from 'buffer'
+
+import { DecompressSave } from '@/helpers/CompressionHelpers.js'
 
 export default {
   props: {
@@ -204,6 +208,9 @@ export default {
     getBorderColor() {
       return this.$vuetify.theme.themes.dark.colors.secondary
     },
+    fileImage() {
+      return fileImage
+    },
   },
 }
 </script>
@@ -219,7 +226,6 @@ input.dropzoneInput {
   text-align: center;
   cursor: pointer;
   position: relative;
-  background-image: url('~@/assets/file-upload-outline.png');
   background-position: center;
 }
 </style>

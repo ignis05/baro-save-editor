@@ -27,7 +27,7 @@
 <script>
 import { useDisplay } from 'vuetify/composables'
 
-import AlertBox from '@/components/AlertBox'
+import AlertBox from '@/components/AlertBox.vue'
 
 export default {
   name: 'App',

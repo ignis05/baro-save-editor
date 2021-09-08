@@ -31,12 +31,12 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import AvailSubList from '@/components/AvailSubList'
-import CrewList from '@/components/CrewList'
-import FileDropper from '@/components/FileDropper'
-import MiscSaveTools from '@/components/MiscSaveTools'
-import OwnedSubList from '@/components/OwnedSubList'
-import SaveDataBar from '@/components/SaveDataBar'
+import AvailSubList from '@/components/AvailSubList.vue'
+import CrewList from '@/components/CrewList.vue'
+import FileDropper from '@/components/FileDropper.vue'
+import MiscSaveTools from '@/components/MiscSaveTools.vue'
+import OwnedSubList from '@/components/OwnedSubList.vue'
+import SaveDataBar from '@/components/SaveDataBar.vue'
 
 export default {
   name: 'SaveTools',

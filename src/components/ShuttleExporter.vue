@@ -39,7 +39,7 @@
 
 <script>
 import _clone from 'lodash/clone'
-import { desanitized_js2xml, CompressSub } from '../helpers/CompressionHelpers'
+import { desanitized_js2xml, CompressSub } from '../helpers/CompressionHelpers.js'
 
 export default {
   methods: {

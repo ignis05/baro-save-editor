@@ -176,7 +176,7 @@ import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { xml2js } from 'xml-js'
 
-import { desanitized_js2xml, gsHeader } from '@/helpers/CompressionHelpers'
+import { desanitized_js2xml, gsHeader } from '@/helpers/CompressionHelpers.js'
 
 export default {
   setup() {
