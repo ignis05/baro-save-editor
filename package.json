@@ -2,7 +2,7 @@
   "name": "baro-save-editor",
   "description": "Save and submarine editor for Barotrauma",
   "author": "ignis05",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "dev": "vite",
