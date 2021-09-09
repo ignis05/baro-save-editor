@@ -3,7 +3,9 @@
 ## Save and submarine editing tools for Barotrauma.
 
 Working fully client-sided in the browser.<br><br>
-Online build available on https://ignis05.github.io/baro-save-editor/<br>
+Online build available on https://ignis05.github.io/baro-save-editor/<br><br>
+For offline usage PWA feature is available:
+![pwa showcase](https://i.imgur.com/QeCvVXQ.png)
 <br>
 
 <hr>

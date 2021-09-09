@@ -4,6 +4,12 @@ import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'
 
+import { registerSW } from 'virtual:pwa-register'
+registerSW({
+  onNeedRefresh() {},
+  onOfflineReady() {},
+})
+
 import counter from '@/helpers/counter.dev'
 counter()
 

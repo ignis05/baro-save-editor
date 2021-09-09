@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vuetify from '@vuetify/vite-plugin'
 import eslintPlugin from 'vite-plugin-eslint'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -12,6 +13,36 @@ export default defineConfig(({ command, mode }) => {
       vue(),
       vuetify(),
       eslintPlugin(),
+      VitePWA({
+        manifest: {
+          name: 'Barotrauma Save Editor',
+          short_name: 'baro-save-editor',
+          description: 'Save and submarine editing tools for Barotrauma.',
+          theme_color: '#4CAF50',
+          icons: [
+            {
+              src: 'pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: 'pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+            },
+            {
+              src: 'pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'any maskable',
+            },
+          ],
+        },
+        registerType: 'prompt',
+        workbox: {
+          sourcemap: true,
+        },
+      }),
     ],
     resolve: {
       alias: [
