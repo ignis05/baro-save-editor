@@ -49,10 +49,7 @@ export default defineConfig(({ command, mode }) => {
         // resolve @ to /src
         { find: '@', replacement: path.resolve(__dirname, 'src') },
         // polyfill for node core modules
-        { find: 'zlib', replacement: 'browserify-zlib' },
         { find: 'stream', replacement: 'stream-browserify' },
-        { find: 'util', replacement: 'util-browser' },
-        { find: 'process', replacement: 'process/browser' },
       ],
     },
     server: {
