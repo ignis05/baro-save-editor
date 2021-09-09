@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
 import { xml2js } from 'xml-js'
 import { Buffer } from 'buffer'
-import * as _random from 'lodash/random'
+import _random from 'lodash/random'
 
 import { DecompressSub, gsHeader } from '@/helpers/CompressionHelpers'
 import fixOldSave from '@/helpers/fixOldSave'

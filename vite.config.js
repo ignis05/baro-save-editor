@@ -3,7 +3,6 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vuetify from '@vuetify/vite-plugin'
 import eslintPlugin from 'vite-plugin-eslint'
-import htmlTemplate from 'vite-plugin-html-template'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -13,11 +12,6 @@ export default defineConfig(({ command, mode }) => {
       vue(),
       vuetify(),
       eslintPlugin(),
-      htmlTemplate({
-        data: {
-          title: 'Barotrauma Save Editor',
-        },
-      }),
     ],
     resolve: {
       alias: [
