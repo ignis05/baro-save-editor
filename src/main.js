@@ -24,5 +24,7 @@ const DEFAULT_TITLE = 'Barotrauma Save Editor'
 router.afterEach(function (to) {
   nextTick(() => {
     document.title = to.meta.title || DEFAULT_TITLE
+    if (to.meta.desc) document.querySelector('meta[name="description"]').setAttribute('content', to.meta.desc)
+    if (to.meta.keywords) document.querySelector('meta[name="keywords"]').setAttribute('content', to.meta.keywords)
   })
 })
