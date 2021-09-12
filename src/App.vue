@@ -45,6 +45,11 @@ export default {
           url: '/SubTools',
         },
         {
+          name: 'Decompressor',
+          label: 'Save Decompressor',
+          url: '/Decompressor',
+        },
+        {
           name: 'About',
           label: 'About',
           url: '/About',
@@ -57,7 +62,7 @@ export default {
       return this.$route.meta.title
     },
     titleVisible() {
-      return useDisplay().mdAndUp.value
+      return useDisplay().lgAndUp.value
     },
     isLoading() {
       return this.$store.state.isLoading

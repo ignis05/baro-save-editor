@@ -29,6 +29,14 @@ const routes = [
     },
   },
   {
+    path: '/Decompressor',
+    name: 'Decompressor',
+    component: () => import('../views/Decompressor.vue'),
+    meta: {
+      title: 'Barotrauma Save Decompressor',
+    },
+  },
+  {
     path: '/About',
     name: 'About',
     component: () => import('../views/About.vue'),
