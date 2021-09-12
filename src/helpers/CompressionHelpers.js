@@ -81,7 +81,7 @@ export function desanitized_js2xml(object, settings) {
   return js2xml(object, {
     ...settings,
     attributeValueFn(value) {
-      return value.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&/g, '&amp;')
+      return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/&amp;quot;/g, '&quot;')
     },
   })
 }
