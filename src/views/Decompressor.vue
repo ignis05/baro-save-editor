@@ -6,9 +6,9 @@
         <v-card>
           <v-card-text style="opacity: 1">
             <div class="text-white text-center text-h5">Simple save decompression and compression tools.</div>
-            <div class="text-center">
-              Your save files are in <span class="text-primary">{{ saveLocation }}</span>
-              <v-icon title="Copy path to clipboard" @click="copyPath" color="secondary" class="iconButton ml-4">
+            <div class="text-center d-flex flex-row justify-center align-center">
+              Your save files should be in <span class="text-primary ml-2">{{ saveLocation }}</span>
+              <v-icon title="Copy path to clipboard" @click="copyPath" color="secondary" class="iconButton ml-3">
                 mdi-clipboard-outline
               </v-icon>
             </div>
@@ -21,97 +21,110 @@
         </v-card>
       </v-col>
     </v-row>
-    <!-- row 2 - tools -->
+    <!-- row 2 - dir selector -->
     <v-row>
-      <!-- col 1 - decompressor -->
       <v-col>
-        <v-card class="d-flex flex-column align-center pa-4">
-          <div class="text-h4 text-center" style="width: 100%">Decompressor</div>
-          <div class="d-flex justify-start align-center mt-2" style="width: 100%">
-            <v-btn @click="selectDeInp" type="icon">
-              <v-icon class="mr-1">mdi-file-find-outline</v-icon>
-              <span>Select <span class="text-primary">.save</span> file</span>
-            </v-btn>
-            <div class="ml-4">
-              Selected file: <span class="text-primary">{{ toDecompress.inpName || 'none' }}</span>
+        <v-card>
+          <v-card-header class="text-h4 justify-center">Select working directory</v-card-header>
+          <div class="d-flex justify-center align-center mb-4">
+            <div
+              class="mr-4 mb-0 text-white d-inline-flex text-h5 justify-center"
+              style="
+                min-width: 200px;
+                border: 1px solid rgb(var(--v-theme-secondary));
+                padding: 2px;
+                border-radius: 5px;
+              "
+            >
+              {{ workingDir.name || 'none' }}
             </div>
-          </div>
-          <div class="d-flex justify-start align-center mt-2 mb-4" style="width: 100%">
-            <v-btn @click="selectDeOut" type="icon">
-              <v-icon class="mr-1">mdi-folder-search-outline</v-icon>
-              <span>Select output dir</span>
+            <v-btn
+              title="select directory"
+              color="secondary"
+              variant="outlined"
+              type="icon"
+              elevation="1"
+              @click="selectWorkingDir"
+            >
+              <v-icon>mdi-folder-search-outline</v-icon>
             </v-btn>
-            <div class="ml-4">
-              Selected dir: <span class="text-primary">{{ toDecompress.outName || 'none' }}</span>
-            </div>
-          </div>
-          <v-btn :disabled="!toDecompress.inp || !toDecompress.out" @click="decompress" type="icon" color="secondary">
-            <v-icon>mdi-folder-zip-outline</v-icon>
-            <span>Decompress</span>
-          </v-btn>
-        </v-card>
-      </v-col>
-      <!-- col 2 - compressor -->
-      <v-col>
-        <v-card class="d-flex flex-column align-center pa-4">
-          <div class="text-h4 text-center" style="width: 100%">Compressor</div>
-          <div class="d-flex justify-start align-center mt-2" style="width: 100%">
-            <v-btn @click="selectCoInp" type="icon">
-              <v-icon class="mr-1">mdi-folder-search-outline</v-icon>
-              <span>Select input dir</span>
+            <v-btn
+              title="refresh directory"
+              class="ml-2"
+              v-if="workingDir.handle"
+              color="secondary"
+              variant="outlined"
+              type="icon"
+              elevation="1"
+              @click="scanWorkingDir"
+            >
+              <v-icon>mdi-folder-sync-outline</v-icon>
             </v-btn>
-            <div class="ml-4">
-              Selected dir: <span class="text-primary">{{ toCompress.inpName || 'none' }}</span>
-            </div>
           </div>
-          <div class="d-flex justify-start align-center mt-2 mb-4" style="width: 100%">
-            <v-btn @click="selectCoOut" type="icon">
-              <v-icon class="mr-1">mdi-file-download-outline</v-icon>
-              <span>Select output file</span>
-            </v-btn>
-            <div class="ml-4">
-              Selected file: <span class="text-primary">{{ toCompress.outName || 'none' }}</span>
-            </div>
-          </div>
-          <v-btn :disabled="!toCompress.inp || !toCompress.out" @click="compress" type="icon" color="secondary">
-            <v-icon>mdi-folder-zip-outline</v-icon>
-            <span>Compress</span>
-          </v-btn>
         </v-card>
       </v-col>
     </v-row>
-    <!-- row 3 - specific info -->
-    <v-row>
+    <!-- row 3 - save list -->
+    <v-row v-if="workingDir.handle">
       <v-col>
         <v-card>
-          <v-card-text style="opacity: 1">
-            How to use:
-            <ol class="pl-4 mb-2">
-              <li>
-                Make sure that whatever you select is in directory accessible by the API (Desktop, Documents, etc.)
-              </li>
-              <li>Select input .save file</li>
-              <li>Select output directory</li>
-              <li>Click "decompress"</li>
-            </ol>
-            Directory named like the selected savefile will be created in the output location and the save file will be
-            decompressed into that directory.
-          </v-card-text>
+          <v-card-header class="text-h5 justify-center">Detected saves</v-card-header>
+          <div class="d-flex flex-column justify-start align-center mb-4">
+            <div
+              v-for="save of this.savesList"
+              :key="save.name"
+              style="width: 400px"
+              class="d-flex flex-row justify-center align-center my-1"
+            >
+              <div style="font-size: 1.1em">{{ save.name }}</div>
+              <v-spacer />
+              <v-btn
+                color="secondary"
+                :disabled="!save.compressed"
+                title="decompress"
+                class="mx-1"
+                type="icon"
+                elevation="1"
+                variant="outlined"
+                @click="decompress(save)"
+              >
+                <v-icon>mdi-package-variant</v-icon>
+              </v-btn>
+              <v-btn
+                color="secondary"
+                :disabled="!save.decompressed"
+                title="compress"
+                class="mx-1"
+                type="icon"
+                elevation="1"
+                variant="outlined"
+                @click="compress(save)"
+              >
+                <v-icon>mdi-package-variant-closed</v-icon>
+              </v-btn>
+            </div>
+          </div>
         </v-card>
       </v-col>
+    </v-row>
+    <!-- row 4 - usage info -->
+    <v-row>
       <v-col>
-        <v-card>
+        <v-card class="d-flex align-center justify-center">
           <v-card-text style="opacity: 1">
             How to use:
             <ol class="pl-4 mb-2">
+              <li>Select a directory in a location accessible by the API (Desktop, Documents, etc.)</li>
+              <li>The tool will detect all compressed and decompressed saves directly in that selected directory</li>
+              <li><v-icon color="secondary">mdi-package-variant</v-icon> button decompresses the save</li>
+              <li><v-icon color="secondary">mdi-package-variant-closed</v-icon> button compresses the save</li>
               <li>
-                Make sure that whatever you select is in directory accessible by the API (Desktop, Documents, etc.)
+                You can use <v-icon color="secondary">mdi-folder-sync-outline</v-icon> to refresh the current directory
+                or <v-icon color="secondary">mdi-folder-search-outline</v-icon> to select a different one.
               </li>
-              <li>Select input directory (after using the decompressor this will be selected automatically)</li>
-              <li>Select output file (select an existing file or type the name of a new one)</li>
-              <li>Click "compress"</li>
             </ol>
-            All files from the input directory will be merged, compressed and written to the selected output file.
+            If file / directory with a matching name exists when compressing/decompressing the save, it will be
+            overwritten.
           </v-card-text>
         </v-card>
       </v-col>
@@ -128,18 +141,11 @@ import { DecompressSave, CompressSave } from '@/helpers/CompressionHelpers.js'
 export default {
   data() {
     return {
-      toDecompress: {
-        inpName: null,
-        inp: null,
-        outName: null,
-        out: null,
+      workingDir: {
+        name: null,
+        handle: null,
       },
-      toCompress: {
-        inpName: null,
-        inp: null,
-        outName: null,
-        out: null,
-      },
+      savesList: [],
     }
   },
   computed: {
@@ -152,6 +158,69 @@ export default {
     },
   },
   methods: {
+    /** Promps with File System API and runs scanWorkingDir */
+    async selectWorkingDir() {
+      try {
+        var dirHandle = await window.showDirectoryPicker({
+          id: 'DecompressorWorkingDir',
+          startIn: 'desktop',
+        })
+      } catch (err) {
+        // window.showDirectoryPicker is not a function
+        if (err instanceof TypeError) {
+          return this.$store.dispatch('showAlert', {
+            type: 'error',
+            text: `Failed to use the File System API. It seems like it's not supported by your browser.`,
+          })
+        }
+        // user canceled file selector - do nothing
+        if (err instanceof DOMException) {
+          return
+        }
+        console.log(`directory picker failed:`)
+        console.error(err)
+      }
+      // most likely user canceled file selector - do nothing
+      if (!dirHandle) return
+
+      this.workingDir.name = dirHandle.name
+      this.workingDir.handle = dirHandle
+
+      this.scanWorkingDir()
+
+      this.$store.dispatch('showAlert', {
+        type: 'success',
+        text: `Opened ${dirHandle.name} as the working directory.`,
+      })
+    },
+    /** Scans working dir, detecting compressed and decompressed saves */
+    async scanWorkingDir() {
+      let tempList = []
+      for await (const [name, handle] of this.workingDir.handle.entries()) {
+        // files
+        if (handle.kind === 'file') {
+          if (name.endsWith('.save')) {
+            let existing = tempList.find((el) => el.name == name.slice(0, -5))
+            if (existing) {
+              existing.compressed = handle
+            } else tempList.push({ name: name.slice(0, -5), compressed: handle })
+          }
+        }
+        // directory
+        else {
+          for await (const [subName, subHandle] of handle.entries()) {
+            if (subHandle.kind === 'file' && subName == 'gamesession.xml') {
+              let existing = tempList.find((el) => el.name == name)
+              if (existing) {
+                existing.decompressed = handle
+              } else tempList.push({ name: name, decompressed: handle })
+            }
+          }
+        }
+      }
+      this.savesList = tempList
+    },
+    /** Copies save path to clipboard */
     async copyPath() {
       await navigator.clipboard.writeText(this.saveLocation)
       this.$store.dispatch('showAlert', {
@@ -159,225 +228,99 @@ export default {
         text: `Copied save path to system clipboard.`,
       })
     },
-    // decompressor methods
-    async selectDeInp() {
-      try {
-        var [fileHandle] = await window.showOpenFilePicker({
-          id: 'BaroSaveLocation',
-          startIn: 'desktop',
-          types: [
-            {
-              description: 'Barotrauma Save Files',
-              accept: {
-                'application/gzip': ['.save'],
-              },
-            },
-          ],
-        })
-      } catch (err) {
-        // window.showOpenFilePicker is not a function
-        if (err instanceof TypeError) {
-          return this.$store.dispatch('showAlert', {
-            type: 'error',
-            text: `Failed to use File System API. It seems like it's not supported by your browser.`,
-          })
-        }
-        // user canceled file selector - do nothing
-        if (err instanceof DOMException) {
-          return
-        }
-        console.log(`file picker failed:`)
-        console.error(err)
-      }
-      this.toDecompress.inpName = fileHandle.name
-      this.toDecompress.inp = fileHandle
-    },
-    async selectDeOut() {
-      try {
-        var dirHandle = await window.showDirectoryPicker({
-          id: 'BaroDeSaveLocation',
-          startIn: 'desktop',
-        })
-      } catch (err) {
-        // window.showDirectoryPicker is not a function
-        if (err instanceof TypeError) {
-          return this.$store.dispatch('showAlert', {
-            type: 'error',
-            text: `Failed to use File System API. It seems like it's not supported by your browser.`,
-          })
-        }
-        // user canceled file selector - do nothing
-        if (err instanceof DOMException) {
-          return
-        }
-        console.log(`dor picker failed:`)
-        console.error(err)
-      }
-      // most likely user canceled file selector - do nothing
-      if (!dirHandle) return
 
-      this.toDecompress.outName = dirHandle.name
-      this.toDecompress.out = dirHandle
-    },
-    async decompress() {
-      // verify and request read permission for .save file
+    async decompress(save) {
       /** @type {FileSystemFileHandle} */
-      let saveHandle = this.toDecompress.inp
-      if (!saveHandle) return console.error(`no saveHandle - decompress button should not be reachable`)
-      if ((await saveHandle.queryPermission({})) != 'granted')
-        if ((await saveHandle.requestPermission({})) != 'granted')
+      let saveFile = save.compressed
+      if (!saveFile) return console.error(`no saveFile - decompress button should not be reachable`)
+
+      // check and/or request write permission for working dir
+      /** @type {FileSystemDirectoryHandle} */
+      let workingDir = this.workingDir.handle
+      if (!workingDir) return console.error(`no workingDir - decompress button should not be reachable`)
+      if ((await workingDir.queryPermission({ mode: 'readwrite' })) !== 'granted')
+        if ((await workingDir.requestPermission({ mode: 'readwrite' })) !== 'granted')
           return this.$store.dispatch('showAlert', {
             type: 'error',
             text: `Failed get file system permissions.`,
           })
 
-      // verify and request write permission for output dir
-      /** @type {FileSystemDirectoryHandle} */
-      let dirHandle = this.toDecompress.out
-      if (!dirHandle) return console.error(`no dirHandle - decompress button should not be reachable`)
-      if ((await dirHandle.queryPermission({ mode: 'readwrite' })) !== 'granted')
-        if ((await dirHandle.requestPermission({ mode: 'readwrite' })) !== 'granted')
-          return this.$store.dispatch('showAlert', {
-            type: 'error',
-            text: `Failed get file system permissions.`,
-          })
       // read and decompress save file
-      let saveFile = await saveHandle.getFile()
-      let buffer = Buffer.from(await saveFile.arrayBuffer())
+      let fileContent = await saveFile.getFile()
+      let buffer = Buffer.from(await fileContent.arrayBuffer())
       let saveData = DecompressSave(buffer)
 
-      // create output dir named like input file
-      let outHandle = await dirHandle.getDirectoryHandle(saveHandle.name.replace('.', '_'), { create: true })
+      /** @type {FileSystemDirectoryHandle} */
+      let saveDir = save.decompressed
+      // create output dir if doesnt exist
+      if (!saveDir) saveDir = await workingDir.getDirectoryHandle(save.name, { create: true })
 
       // clear output dir if exists
-      for await (const [name, handle] of outHandle.entries()) {
-        if (handle.kind === 'file') await outHandle.removeEntry(name)
+      for await (const [name, handle] of saveDir.entries()) {
+        if (handle.kind === 'file') await saveDir.removeEntry(name)
       }
 
-      let counter = 0
+      // create files in saveDir
       for (let [file, content] of Object.entries(saveData)) {
-        let handle = await outHandle.getFileHandle(file, { create: true })
+        let handle = await saveDir.getFileHandle(file, { create: true })
         let writable = await handle.createWritable()
         let blob = new Blob([content])
         await writable.write(blob)
         await writable.close()
-        counter++
       }
 
-      // set compressor input to decompressor output
-      this.toCompress.inpName = outHandle.name
-      this.toCompress.inp = outHandle
+      this.scanWorkingDir()
 
       this.$store.dispatch('showAlert', {
         type: 'success',
-        text: `Succesfully saved ${counter} extracted files to ${outHandle.name}`,
+        text: `Decompressed ${saveFile.name}`,
       })
     },
     // compressor methods
-    async selectCoInp() {
-      try {
-        var dirHandle = await window.showDirectoryPicker({
-          id: 'BaroCoSaveLocation',
-          startIn: 'desktop',
-        })
-      } catch (err) {
-        // window.showDirectoryPicker is not a function
-        if (err instanceof TypeError) {
-          return this.$store.dispatch('showAlert', {
-            type: 'error',
-            text: `Failed to use File System API. It seems like it's not supported by your browser.`,
-          })
-        }
-        // user canceled file selector - do nothing
-        if (err instanceof DOMException) {
-          return
-        }
-        console.log(`dor picker failed:`)
-        console.error(err)
-      }
-      // most likely user canceled file selector - do nothing
-      if (!dirHandle) return
-
-      this.toCompress.inpName = dirHandle.name
-      this.toCompress.inp = dirHandle
-    },
-    async selectCoOut() {
-      try {
-        var fileHandle = await window.showSaveFilePicker({
-          id: 'BaroSaveLocation',
-          startIn: 'desktop',
-          types: [
-            {
-              description: 'Barotrauma Save Files',
-              accept: {
-                'application/gzip': ['.save'],
-              },
-            },
-          ],
-        })
-      } catch (err) {
-        // window.showSaveFilePicker is not a function
-        if (err instanceof TypeError) {
-          return this.$store.dispatch('showAlert', {
-            type: 'error',
-            text: `Failed to use File System API. It seems like it's not supported by your browser.`,
-          })
-        }
-        // user canceled file selector - do nothing
-        if (err instanceof DOMException) {
-          return
-        }
-        console.log(`file picker failed:`)
-        console.error(err)
-      }
-      this.toCompress.outName = fileHandle.name
-      this.toCompress.out = fileHandle
-    },
-    async compress() {
-      // verify and request read permission for input dir
+    async compress(save) {
       /** @type {FileSystemDirectoryHandle} */
-      let dirHandle = this.toCompress.inp
-      if (!dirHandle) return console.error(`no dirHandle - compress button should not be reachable`)
-      if ((await dirHandle.queryPermission({})) !== 'granted')
-        if ((await dirHandle.requestPermission({})) !== 'granted')
-          return this.$store.dispatch('showAlert', {
-            type: 'error',
-            text: `Failed get file system permissions.`,
-          })
+      let saveDir = save.decompressed
+      if (!saveDir) return console.error(`no saveDir - decompress button should not be reachable`)
 
-      // verify and request write permission for .save file
-      /** @type {FileSystemFileHandle} */
-      let saveHandle = this.toCompress.out
-      if (!saveHandle) return console.error(`no saveHandle - compress button should not be reachable`)
-      if ((await saveHandle.queryPermission({ mode: 'readwrite' })) != 'granted')
-        if ((await saveHandle.requestPermission({ mode: 'readwrite' })) != 'granted')
+      // check and/or request write permission for working dir
+      /** @type {FileSystemDirectoryHandle} */
+      let workingDir = this.workingDir.handle
+      if (!workingDir) return console.error(`no workingDir - decompress button should not be reachable`)
+      if ((await workingDir.queryPermission({ mode: 'readwrite' })) !== 'granted')
+        if ((await workingDir.requestPermission({ mode: 'readwrite' })) !== 'granted')
           return this.$store.dispatch('showAlert', {
             type: 'error',
             text: `Failed get file system permissions.`,
           })
 
       // read files from dir and add them to the save
-      let counter = 0
-      const save = {}
-      for await (const [name, handle] of dirHandle.entries()) {
+      const saveObject = {}
+      for await (const [name, handle] of saveDir.entries()) {
         if (handle.kind !== 'file') continue
         let file = await handle.getFile()
         let buffer = Buffer.from(await file.arrayBuffer())
-        save[name] = buffer
-        counter++
+        saveObject[name] = buffer
       }
 
       // compress save
-      let compressed = CompressSave(save)
+      let compressed = CompressSave(saveObject)
       let blob = new Blob([compressed.buffer], { type: 'application/gzip' })
 
-      let writable = await saveHandle.createWritable()
+      /** @type {FileSystemFileHandle} */
+      let saveFile = save.compressed
+      // create output dir if doesnt exist
+      if (!saveFile) saveFile = await workingDir.getFileHandle(saveDir.name + '.save', { create: true })
+
+      // open write stream and write compressed savefile
+      let writable = await saveFile.createWritable()
       await writable.write(blob)
       await writable.close()
 
+      this.scanWorkingDir()
+
       this.$store.dispatch('showAlert', {
         type: 'success',
-        text: `Succesfully created ${saveHandle.name} from ${counter} files in ${dirHandle.name}`,
+        text: `Compressed ${save.name}`,
       })
     },
   },
