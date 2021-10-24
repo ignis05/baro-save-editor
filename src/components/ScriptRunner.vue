@@ -19,8 +19,8 @@ export default {
   },
   methods: {
     run() {
-      // eslint-disable-next-line
       var submarine = this.$store.getters.sub
+      submarine.toString() // dummy call to prevent transpiler from removing unused variable
       eval(this.areaText)
       this.$store.dispatch('showAlert', {
         type: 'success',
