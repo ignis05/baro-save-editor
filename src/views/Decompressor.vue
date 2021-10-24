@@ -13,9 +13,10 @@
               </v-icon>
             </div>
             <div class="text-center mt-2">
-              <span class="text-orange">Warning:</span> this tool uses experimental File System API. It might not work
-              correctly in some browsers and it can't access files outside of "safe" locations like Desktop, Documents,
-              Downloads, etc.
+              <span class="text-orange">Warning:</span> This tool uses experimental File System API - it might not work
+              correctly in some browsers.<br />It's also unable to access directories where some system files might be
+              (this includes anything inside AppData directory - so you will need to copy the saves you want to
+              decompress somewhere accessible).
             </div>
           </v-card-text>
         </v-card>
