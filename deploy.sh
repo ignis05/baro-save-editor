@@ -1,5 +1,7 @@
 # abort on errors
 set -e
+# clear dist
+rm -rf dist
 # build
 npm run build
 # navigate into the build output directory
