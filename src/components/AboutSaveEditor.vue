@@ -100,6 +100,14 @@
               clipboard
             </li>
           </ul>
+          After loading <span class="text-secondary">CharacterData.xml</span> file,
+          <v-icon color="secondary">mdi-file-download-outline</v-icon> icon will be available, which allows you to
+          export player characters back as <span class="text-secondary">CharacterData.xml</span> file.<br />
+          This has some limitations though, the save editor temporarily keeps a list of steam data mapped to character
+          names and uses it when exporting player characters. This means that changing the "originalname" of the
+          character won't allow it to be exported properly. Also, there is no way to safely store this list in the save
+          file, so it won't be stored there, meaning the export option will disappear after downloading the modified
+          save and loading it again.
         </v-card-text>
       </v-card>
       <!-- misc -->

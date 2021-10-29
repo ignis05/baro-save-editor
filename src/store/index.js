@@ -15,6 +15,7 @@ export default createStore({
     isLoading: false,
     savefileName: null,
     subfiles: {},
+    playerCharacters: [],
   },
   getters: {
     campaign: (state) => {
@@ -84,6 +85,9 @@ export default createStore({
     SET_LOADING(state, value) {
       state.isLoading = value
     },
+    CLEAR_PLAYERS(state) {
+      state.playerCharacters = []
+    },
   },
   actions: {
     showAlert({ commit }, value) {
@@ -129,6 +133,7 @@ export default createStore({
     fileUploaded({ commit, dispatch, state, getters }, file) {
       if (file.name.endsWith('.save')) {
         commit('CLEAR_SUBFILES')
+        commit('CLEAR_PLAYERS')
         commit('SET_SAVEFILENAME', file.name)
 
         // strips header - makes gamesssion the root of xml
@@ -226,6 +231,8 @@ export default createStore({
           character.elements.push(health)
           characters.push(character)
           count++
+
+          state.playerCharacters.push(chData.attributes)
         }
         if (count === 0) {
           console.warn(`Character import failed - file might be invalid or empty`)

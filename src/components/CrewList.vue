@@ -21,6 +21,9 @@
       </v-sheet>
     </v-sheet>
     <v-sheet class="d-flex flex-row align-center pl-4 pr-2">
+      <v-btn v-if="canExportPlayers" title="Export player characters" icon size="x-small" @click="exportPlayers">
+        <v-icon color="secondary">mdi-file-download-outline</v-icon>
+      </v-btn>
       <div class="pt-1">Add:</div>
       <v-spacer></v-spacer>
       <v-btn title="Add new assistant character" icon size="x-small" @click="addNew">
@@ -141,7 +144,7 @@ import sum from 'hash-sum'
 import _cloneDeep from 'lodash/cloneDeep'
 import { xml2js } from 'xml-js'
 
-import { desanitized_js2xml } from '@/helpers/CompressionHelpers.js'
+import { desanitized_js2xml, gsHeader } from '@/helpers/CompressionHelpers.js'
 
 export default {
   data() {
@@ -176,6 +179,9 @@ export default {
     cloneJob() {
       if (!this.charClone) return {}
       return this.charClone.elements.find((el) => el.name == 'job')
+    },
+    canExportPlayers() {
+      return this.$store.state.playerCharacters.length > 0
     },
   },
   methods: {
@@ -470,6 +476,51 @@ export default {
         this.addCharDialog = false
         this.addCharDialogVal = ''
       }
+    },
+    exportPlayers() {
+      let exportCount = 0
+      let chData = xml2js('<CharacterData></CharacterData>').elements[0]
+      chData.elements = []
+      console.log(chData)
+      for (let ch of this.characterArray) {
+        let name = ch.attributes.originalname ?? ch.attributes.name
+        let playerData = this.$store.state.playerCharacters.find((el) => el.name == name)
+        if (!playerData) continue
+        console.log(`Found matching player data: ${JSON.stringify(playerData)}`)
+        let char = _cloneDeep(ch)
+        let chCpData = xml2js(
+          `<CharacterCampaignData name="${playerData.name}" endpoint="${playerData.endpoint}" steamid="${playerData.steamid}"></CharacterCampaignData>`,
+        ).elements[0]
+        chCpData.elements = []
+        console.log(chCpData)
+        let inventory = char.elements.splice(
+          char.elements.findIndex((el) => el.name == 'inventory'),
+          1,
+        )[0]
+        let health = char.elements.splice(
+          char.elements.findIndex((el) => el.name == 'health'),
+          1,
+        )[0]
+        chCpData.elements.push(char)
+        chCpData.elements.push(inventory)
+        chCpData.elements.push(health)
+        chData.elements.push(chCpData)
+        exportCount++
+      }
+      if (!exportCount)
+        return this.$store.dispatch('showAlert', {
+          type: 'info',
+          text: `Could not match any of the crew characters with its CharacterCampaignData`,
+        })
+      let xmlString = gsHeader + desanitized_js2xml({ elements: [chData] }, { spaces: 4 })
+      let a = document.createElement('a')
+      a.href = URL.createObjectURL(new Blob([xmlString], { type: 'application/xml' }))
+      a.download = this.$store.state.savefileName.slice(0, -5) + '_CharacterData.xml'
+      a.click()
+      this.$store.dispatch('showAlert', {
+        type: 'success',
+        text: `Exported and prompted to download ${exportCount} player characters`,
+      })
     },
   },
   mounted() {
