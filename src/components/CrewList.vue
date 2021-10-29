@@ -481,18 +481,15 @@ export default {
       let exportCount = 0
       let chData = xml2js('<CharacterData></CharacterData>').elements[0]
       chData.elements = []
-      console.log(chData)
       for (let ch of this.characterArray) {
         let name = ch.attributes.originalname ?? ch.attributes.name
         let playerData = this.$store.state.playerCharacters.find((el) => el.name == name)
         if (!playerData) continue
-        console.log(`Found matching player data: ${JSON.stringify(playerData)}`)
         let char = _cloneDeep(ch)
         let chCpData = xml2js(
           `<CharacterCampaignData name="${playerData.name}" endpoint="${playerData.endpoint}" steamid="${playerData.steamid}"></CharacterCampaignData>`,
         ).elements[0]
         chCpData.elements = []
-        console.log(chCpData)
         let inventory = char.elements.splice(
           char.elements.findIndex((el) => el.name == 'inventory'),
           1,
@@ -510,7 +507,7 @@ export default {
       if (!exportCount)
         return this.$store.dispatch('showAlert', {
           type: 'info',
-          text: `Could not match any of the crew characters with its CharacterCampaignData`,
+          text: `Could not match any of the crew characters with their CharacterCampaignData`,
         })
       let xmlString = gsHeader + desanitized_js2xml({ elements: [chData] }, { spaces: 4 })
       let a = document.createElement('a')
