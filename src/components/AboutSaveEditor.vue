@@ -160,6 +160,16 @@
           Off -> On - will turn on the radiation<br />
           On -> Off - will turn off the radiation and reset its progress on the map and outposts. Outposts that have
           already been abandoned due to its effects will stay that way.
+          <br /><br /><span class="text-h6"> Difficulty </span><br />
+          Allows to mass-update difficulties across all generated levels.<br />
+          The input can take any value, with "current" being the current difficuly for any given level.<br />
+          Example uses:
+          <ul class="pl-8">
+            <li><span class="text-secondary">current * 2</span> - will double the difficulty in each level</li>
+            <li><span class="text-secondary">current + 10</span> - will increase the difficuly by 10 in each level</li>
+            <li><span class="text-secondary">85</span> - will set the difficuly to 85 in each level</li>
+          </ul>
+          It won't let you set any difficuly higher than 100 or lower than 0 as that might break some things.
         </v-card-text>
       </v-card>
     </v-col>
