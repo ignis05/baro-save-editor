@@ -27,5 +27,5 @@ export default function fixOldSave(parsedGamesession) {
 
   // add crew.elements if missing
   let crew = campaign.elements.find((el) => el.name == 'bots' || el.name == 'crew')
-  if (!crew.elements) crew.elements = []
+  crew.elements ||= []
 }

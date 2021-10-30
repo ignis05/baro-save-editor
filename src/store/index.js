@@ -78,7 +78,7 @@ export default createStore({
         ?.find((el) => el.name === 'MultiPlayerCampaign')
         .elements.find((el) => el.name === 'bots')
       if (bots.attributes.hasbots !== 'true') bots.attributes.hasbots = 'true'
-      if (!bots.elements) bots.elements = []
+      bots.elements ||= []
       for (let char of characters) bots.elements.push(char)
     },
     // sets isLoading
@@ -283,7 +283,7 @@ export default createStore({
         // convert crew to bots
         let bots = getters.campaign.elements.find((el) => el.name == 'crew')
         bots.name = 'bots'
-        if (!bots.attributes) bots.attributes = {}
+        bots.attributes ||= {}
         bots.attributes.hasbots = 'true'
 
         // add available subs

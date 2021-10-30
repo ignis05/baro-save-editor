@@ -254,7 +254,7 @@ export default {
       /** @type {FileSystemDirectoryHandle} */
       let saveDir = save.decompressed
       // create output dir if doesnt exist
-      if (!saveDir) saveDir = await workingDir.getDirectoryHandle(save.name, { create: true })
+      saveDir ||= await workingDir.getDirectoryHandle(save.name, { create: true })
 
       // clear output dir if exists
       for await (const [name, handle] of saveDir.entries()) {
@@ -310,7 +310,7 @@ export default {
       /** @type {FileSystemFileHandle} */
       let saveFile = save.compressed
       // create output dir if doesnt exist
-      if (!saveFile) saveFile = await workingDir.getFileHandle(saveDir.name + '.save', { create: true })
+      saveFile ||= await workingDir.getFileHandle(saveDir.name + '.save', { create: true })
 
       // open write stream and write compressed savefile
       let writable = await saveFile.createWritable()
