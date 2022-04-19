@@ -3,6 +3,13 @@
     <div class="d-flex flex-row align-center justify-center mb-1">
       <div class="h3 mb-1">Drag a file below to load it:</div>
       <v-spacer></v-spacer>
+      <!-- file path guess -->
+      <div v-if="fromSubEditor" class="text-center">
+        Your submarine files are inside your <span class="text-primary">Barotrauma installation directory</span>
+      </div>
+      <div v-else class="text-center">
+        Your save files should be in <span class="text-primary">{{ saveLocation }}</span>
+      </div>
       <!-- locate file dialog -->
       <v-btn @click.stop="fileLocDialog = true" size="x-small" icon>
         <v-icon>mdi-file-find-outline</v-icon>
@@ -133,6 +140,7 @@
 <script>
 import fileImage from '@/assets/file-upload-outline.png'
 
+import platform from 'platform-detect/os.mjs'
 import { Buffer } from 'buffer'
 
 import { DecompressSave } from '@/helpers/CompressionHelpers.js'
@@ -210,6 +218,13 @@ export default {
     },
     fileImage() {
       return fileImage
+    },
+    /**@type {String} */
+    saveLocation() {
+      if (platform.windows) return 'C:\\Users\\%username%\\AppData\\Local\\Daedalic Entertainment GmbH\\Barotrauma'
+      if (platform.linux) return '/home/$USER/.local/share/Daedalic Entertainment GmbH/'
+      if (platform.macos) return '/$USER/Library/Application Support/Daedalic Entertainment GmbH/'
+      return 'Your platform was not recognized, use button on the right to see possible save locations'
     },
   },
 }
