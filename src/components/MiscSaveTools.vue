@@ -144,8 +144,6 @@
 import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import { xml2js } from 'xml-js'
-import _round from 'lodash/round'
-import _clamp from 'lodash/clamp'
 
 import { desanitized_js2xml, gsHeader } from '@/helpers/CompressionHelpers.js'
 
