@@ -265,10 +265,6 @@ export default createStore({
         crew.name = 'crew'
         if (crew.attributes.hasbots) delete crew.attributes.hasbots
 
-        // strip available subs
-        let availSubListIndex = getters.campaign.elements.findIndex((el) => el.name === 'AvailableSubs')
-        getters.campaign.elements.splice(availSubListIndex, 1)
-
         // rename campaign
         getters.campaign.name = 'SinglePlayerCampaign'
 
@@ -285,25 +281,6 @@ export default createStore({
         bots.name = 'bots'
         if (!bots.attributes) bots.attributes = {}
         bots.attributes.hasbots = 'true'
-
-        // add available subs
-        let availSubList = {
-          type: 'element',
-          name: 'AvailableSubs',
-          elements: [
-            { type: 'element', name: 'Sub', attributes: { name: 'Azimuth' } },
-            { type: 'element', name: 'Sub', attributes: { name: 'Berilia' } },
-            { type: 'element', name: 'Sub', attributes: { name: 'Dugong' } },
-            { type: 'element', name: 'Sub', attributes: { name: 'Humpback' } },
-            { type: 'element', name: 'Sub', attributes: { name: 'Kastrull' } },
-            { type: 'element', name: 'Sub', attributes: { name: 'Orca' } },
-            { type: 'element', name: 'Sub', attributes: { name: 'R-29' } },
-            { type: 'element', name: 'Sub', attributes: { name: 'Remora' } },
-            { type: 'element', name: 'Sub', attributes: { name: 'Typhon' } },
-            { type: 'element', name: 'Sub', attributes: { name: 'Typhon2' } },
-          ],
-        }
-        getters.campaign.elements.push(availSubList)
 
         // rename campaign
         getters.campaign.name = 'MultiPlayerCampaign'

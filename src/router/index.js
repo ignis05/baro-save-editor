@@ -9,7 +9,7 @@ const routes = [
     meta: {
       title: 'Barotrauma Save Editor',
       keywords: 'barotrauma, save editor, save, editor, submarine, decompressor',
-      desc: 'Online save and submarine editing tools for Barotrauma. Edit available and owned submarines, the crew, convert between single-player and multi-player formats, adjust campaign settings. Also includes some submarine editing tools and save decompressor.',
+      desc: 'Online save and submarine editing tools for Barotrauma. Edit owned submarines, the crew, convert between single-player and multi-player formats, adjust campaign settings. Also includes some submarine editing tools and save decompressor.',
     },
     beforeEnter: (to, from, next) => {
       // handle redirect from 404.html
@@ -51,7 +51,7 @@ const routes = [
     meta: {
       title: 'About This App',
       keywords: 'barotrauma, save editor, save, editor, submarine, decompressor',
-      desc: 'Online save and submarine editing tools for Barotrauma. Edit available and owned submarines, the crew, convert between single-player and multi-player formats, adjust campaign settings. Also includes some submarine editing tools and save decompressor.',
+      desc: 'Online save and submarine editing tools for Barotrauma. Edit owned submarines, the crew, convert between single-player and multi-player formats, adjust campaign settings. Also includes some submarine editing tools and save decompressor.',
     },
   },
 ]

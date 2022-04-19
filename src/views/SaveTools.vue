@@ -16,7 +16,7 @@
         <OwnedSubList></OwnedSubList>
       </v-col>
       <v-col>
-        <AvailSubList></AvailSubList>
+        <CampaignSettings></CampaignSettings>
       </v-col>
       <v-col>
         <CrewList></CrewList>
@@ -31,7 +31,7 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import AvailSubList from '@/components/AvailSubList.vue'
+import CampaignSettings from '@/components/CampaignSettings.vue'
 import CrewList from '@/components/CrewList.vue'
 import FileDropper from '@/components/FileDropper.vue'
 import MiscSaveTools from '@/components/MiscSaveTools.vue'
@@ -42,7 +42,7 @@ export default {
   name: 'SaveTools',
 
   components: {
-    AvailSubList,
+    CampaignSettings,
     CrewList,
     FileDropper,
     MiscSaveTools,

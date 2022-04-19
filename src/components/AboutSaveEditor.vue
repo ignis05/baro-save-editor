@@ -5,8 +5,8 @@
         <v-btn color="secondary" variant="outlined" class="mx-2" @click="selectedComp = 'ownedSubs'">
           Owned Submarines
         </v-btn>
-        <v-btn color="secondary" variant="outlined" class="mx-2" @click="selectedComp = 'availSubs'">
-          Available Submarines
+        <v-btn color="secondary" variant="outlined" class="mx-2" @click="selectedComp = 'campSettings'">
+          Campaign Settings
         </v-btn>
         <v-btn color="secondary" variant="outlined" class="mx-2" @click="selectedComp = 'crew'"> Crew </v-btn>
         <v-btn color="secondary" variant="outlined" class="mx-2" @click="selectedComp = 'misc'"> Misc Tools </v-btn>
@@ -43,24 +43,29 @@
           existing submarine file with the same name).
         </v-card-text>
       </v-card>
-      <!-- available submarines -->
-      <v-card v-if="selectedComp === 'availSubs'" elevation="1" class="aboutCard">
+      <!-- campaign settings -->
+      <v-card v-if="selectedComp === 'campSettings'" elevation="1" class="aboutCard">
         <v-card-header>
-          <v-card-title class="text-h4">Available Submarines</v-card-title>
+          <v-card-title class="text-h4">Campaign Settings</v-card-title>
         </v-card-header>
         <v-card-text>
-          <span class="text-h6">
-            Displays a list of submarines available for purchase (not used in single-player saves).
-          </span>
-          <br /><br />
-          This list consists of only submarine names.
+          <span class="text-h6"> Max Missions </span><br />
+          Allows to set how many missions can be selected at the same time.
+          <br /><br /><span class="text-h6"> Radiation </span><br />
+          Allows to toggle radiation.<br />
+          Off -> On - will turn on the radiation<br />
+          On -> Off - will turn off the radiation and reset its progress on the map and outposts. Outposts that have
+          already been abandoned due to its effects will stay that way.
+          <br /><br /><span class="text-h6"> Difficulty </span><br />
+          Allows to mass-update difficulties across all generated levels.<br />
+          The input can take any value, with "current" being the current difficuly for any given level.<br />
+          Example uses:
           <ul class="pl-8">
-            <li><v-icon color="red">mdi-delete-outline</v-icon> - removes submarine name from the list</li>
-            <li>
-              Additional names can be added to the list by typing them in the input at the bottom and presing
-              <span class="text-secondary">ADD</span>.
-            </li>
+            <li><span class="text-secondary">current * 2</span> - will double the difficulty in each level</li>
+            <li><span class="text-secondary">current + 10</span> - will increase the difficuly by 10 in each level</li>
+            <li><span class="text-secondary">85</span> - will set the difficuly to 85 in each level</li>
           </ul>
+          It won't let you set any difficuly higher than 100 or lower than 0 as that might break some things.
         </v-card-text>
       </v-card>
       <!-- crew -->
@@ -145,31 +150,13 @@
             </li>
             <li>
               When converting SP->MP random capaign id will be generted. Make sure its unique from your other MP
-              savefiles. Also submarines available for purchase will be limited to what's in the "available submarines"
-              list.
+              savefiles.
             </li>
           </ul>
           <br /><span class="text-h6"> Campaign ID (MP saves only) </span><br />
           Allows to set campaign id property.
           <br /><br /><span class="text-h6"> Current Money </span><br />
           Allows to set current money.
-          <br /><br /><span class="text-h6"> Max Missions </span><br />
-          Allows to set how many missions can be selected at the same time.
-          <br /><br /><span class="text-h6"> Radiation </span><br />
-          Allows to toggle radiation.<br />
-          Off -> On - will turn on the radiation<br />
-          On -> Off - will turn off the radiation and reset its progress on the map and outposts. Outposts that have
-          already been abandoned due to its effects will stay that way.
-          <br /><br /><span class="text-h6"> Difficulty </span><br />
-          Allows to mass-update difficulties across all generated levels.<br />
-          The input can take any value, with "current" being the current difficuly for any given level.<br />
-          Example uses:
-          <ul class="pl-8">
-            <li><span class="text-secondary">current * 2</span> - will double the difficulty in each level</li>
-            <li><span class="text-secondary">current + 10</span> - will increase the difficuly by 10 in each level</li>
-            <li><span class="text-secondary">85</span> - will set the difficuly to 85 in each level</li>
-          </ul>
-          It won't let you set any difficuly higher than 100 or lower than 0 as that might break some things.
         </v-card-text>
       </v-card>
     </v-col>
