@@ -249,7 +249,6 @@ function gamesesSetup() {
   }
 
   function saveChanges() {
-    console.log('here')
     let newGameses
     try {
       newGameses = xml2js(xmlString.value.substring(gsHeader.length))
@@ -363,21 +362,5 @@ input {
 .textArea {
   background: white;
   color: black;
-}
-</style>
-
-<style>
-/* temp hack untill fullscreen prop gets properly implemented */
-.v-dialog.fullscreen .v-overlay__content {
-  width: 100%;
-  height: 100%;
-  max-width: none !important;
-  max-height: none !important;
-  min-width: none !important;
-  min-height: none !important;
-}
-.v-dialog.convertInfo .v-overlay__content {
-  max-width: 820px !important;
-  max-height: 650px !important;
 }
 </style>

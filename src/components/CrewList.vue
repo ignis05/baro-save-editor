@@ -56,7 +56,7 @@
       </v-btn>
     </v-sheet>
   </v-card>
-  <v-dialog persistent class="editCharacter" v-model="editDialog">
+  <v-dialog persistent class="editCharacter" v-model="editDialog" fullscreen>
     <v-card class="d-flex flex-column mainCard" style="width: 100%; height: 100%">
       <v-card-title style="background-color: rgb(var(--v-theme-primary))">
         <span class="text-h4"
@@ -610,17 +610,5 @@ option {
 
 .assistant {
   color: #f8f8f8;
-}
-</style>
-
-<style>
-.v-dialog.editCharacter .v-overlay__content {
-  width: 100%;
-  height: 100%;
-  max-width: none !important;
-  max-height: none !important;
-  min-width: none !important;
-  min-height: none !important;
-  background-color: #121212;
 }
 </style>
