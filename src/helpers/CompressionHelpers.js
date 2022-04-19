@@ -86,6 +86,8 @@ export function desanitized_js2xml(object, settings) {
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/&amp;quot;/g, '&quot;')
+        .replace(/\r/g, '&#xD;')
+        .replace(/\n/g, '&#xA;')
     },
   })
 }
