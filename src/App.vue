@@ -1,13 +1,12 @@
 <template>
   <v-app>
     <v-app-bar color="primary">
-      <v-app-bar-title v-if="titleVisible" class="text-h4 text-black" text>{{ pageName }}</v-app-bar-title>
-      <v-spacer v-if="titleVisible" />
+      <v-app-bar-title text class="text-black" style="font-size: 2em">{{ pageName }}</v-app-bar-title>
       <v-btn
         v-for="link in navLinks"
         :key="`navbar-link-${link.label}`"
         :to="link.url"
-        class="mx-2"
+        class="mx-2 navbar-button"
         :class="{ 'text-secondary': link.name == $route.name }"
       >
         {{ link.label }}
@@ -25,7 +24,7 @@
 </template>
 
 <script>
-import { useDisplay } from 'vuetify/composables'
+import { useDisplay } from 'vuetify'
 
 import AlertBox from '@/components/AlertBox.vue'
 
@@ -82,5 +81,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.navbar-button {
+  background-color: rgb(var(--v-theme-surface)) !important;
+  color: rgb(var(--v-theme-on-surface)) !important;
 }
 </style>

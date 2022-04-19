@@ -94,6 +94,7 @@
       <!-- set campaign id -->
       <div v-if="isMP" class="toolContent d-flex flex-row justify-space-between align-center px-2">
         <v-text-field
+          hide-details="true"
           density="comfortable"
           label="Campaign ID"
           variant="outlined"
@@ -116,6 +117,7 @@
       <!-- set money -->
       <div class="toolContent d-flex flex-row justify-space-between align-center px-2">
         <v-text-field
+          hide-details="true"
           density="comfortable"
           label="Current Money"
           variant="outlined"
@@ -138,6 +140,7 @@
       <!-- set max missions -->
       <div class="toolContent d-flex flex-row justify-space-between align-center px-2">
         <v-text-field
+          hide-details="true"
           density="comfortable"
           label="Max Missions"
           variant="outlined"
@@ -175,6 +178,7 @@
         </div>
         <div class="d-flex flex-row justify-space-between align-center">
           <v-text-field
+            hide-details="true"
             density="comfortable"
             label="New difficulty"
             variant="outlined"
@@ -302,6 +306,7 @@ function gamesesSetup() {
   }
 
   function saveChanges() {
+    console.log('here')
     let newGameses
     try {
       newGameses = xml2js(xmlString.value.substring(gsHeader.length))

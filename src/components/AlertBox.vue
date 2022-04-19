@@ -28,7 +28,7 @@ export default {
 div .alertDisplayDiv {
   position: absolute;
   bottom: 0;
-  z-index: 900;
+  z-index: 9000;
   width: 100%;
   pointer-events: none;
 }
