@@ -1,7 +1,9 @@
 <template>
   <v-col>
     <v-card elevation="1" class="pr-2">
-      <v-btn class="mr-4" color="secondary" :disabled="blockDownload" @click="download">Download</v-btn>
+      <v-btn class="mr-4" :color="blockDownload ? 'surface' : 'secondary'" :disabled="blockDownload" @click="download">
+        Download
+      </v-btn>
       <v-icon
         size="32"
         title="load to savefile"
