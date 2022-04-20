@@ -187,8 +187,9 @@ function moneySetup() {
     if (ev.key === 'Enter') click()
   }
 
-  watch(moneyGetter, () => {
-    inputVal.value = moneyGetter.value
+  // reset input value when campaign data changes (like when another save gets loaded)
+  watch(moneyGetter, (newVal) => {
+    inputVal.value = newVal
   })
 
   return { inputVal, isDifferent, click, keyUp }
@@ -219,8 +220,9 @@ function campaignIdSetup() {
     if (ev.key === 'Enter') click()
   }
 
-  watch(cpIdGetter, () => {
-    inputVal.value = cpIdGetter.value
+  // reset input value when campaign data changes (like when another save gets loaded)
+  watch(cpIdGetter, (newVal) => {
+    inputVal.value = newVal
   })
 
   return { inputVal, isDifferent, click, keyUp }

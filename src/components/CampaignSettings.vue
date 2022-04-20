@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
 import _round from 'lodash/round'
 import _clamp from 'lodash/clamp'
@@ -89,9 +89,7 @@ export default {
 function maxmissionsSetup() {
   const store = useStore()
 
-  const maxmsGetter = computed(
-    () => store.getters.campaign.elements.find((el) => el.name == 'CampaignSettings').attributes.maxmissioncount,
-  )
+  const maxmsGetter = computed(() => store.getters.campaignSettings.attributes.maxmissioncount)
 
   const inputVal = ref(maxmsGetter.value)
   const isDifferent = computed(() => {
@@ -99,8 +97,7 @@ function maxmissionsSetup() {
   })
   function click() {
     if (parseInt(inputVal.value) >= 0) {
-      store.getters.campaign.elements.find((el) => el.name == 'CampaignSettings').attributes.maxmissioncount =
-        inputVal.value
+      store.getters.campaignSettings.attributes.maxmissioncount = inputVal.value
       store.dispatch('showAlert', {
         type: 'success',
         text: `Set max missions to "${inputVal.value}".`,
@@ -114,6 +111,11 @@ function maxmissionsSetup() {
   function keyUp(ev) {
     if (ev.key === 'Enter') click()
   }
+
+  // reset input value when campaign data changes (like when another save gets loaded)
+  watch(maxmsGetter, (newVal) => {
+    inputVal.value = newVal
+  })
 
   return { inputVal, isDifferent, click, keyUp }
 }
@@ -177,7 +179,7 @@ function difficultySetup() {
 
   const inputVal = ref('current * 2')
 
-  // makes necessary cheks and updates difficulty value in element
+  // makes necessary checks and updates difficulty value in element
   function updateVal(element) {
     let current = parseFloat(element.attributes?.difficulty)
     if (isNaN(current)) return false

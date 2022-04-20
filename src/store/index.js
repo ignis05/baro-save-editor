@@ -23,6 +23,9 @@ export default createStore({
         (el) => el.name === 'MultiPlayerCampaign' || el.name === 'SinglePlayerCampaign',
       )
     },
+    campaignSettings: (state, getters) => {
+      return getters.campaign.elements.find((el) => el.name == 'CampaignSettings')
+    },
     isMultiPlayer: (state) => {
       return state.gamesession.elements?.[0]?.elements?.findIndex((el) => el.name === 'MultiPlayerCampaign') !== -1
     },
