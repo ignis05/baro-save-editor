@@ -8,9 +8,10 @@
             <div class="text-white text-center text-h5">Simple save decompression and compression tools.</div>
             <div class="text-center d-flex flex-row justify-center align-center">
               Your save files should be in <span class="text-primary ml-2">{{ saveLocation }}</span>
-              <v-icon title="Copy path to clipboard" @click="copyPath" color="secondary" class="iconButton ml-3">
-                mdi-clipboard-outline
-              </v-icon>
+              <div>
+                <v-icon @click="copyPath" color="secondary" class="iconButton ml-3"> mdi-clipboard-outline </v-icon>
+                <v-tooltip anchor="bottom" activator="parent">Copy path to clipboard</v-tooltip>
+              </div>
             </div>
             <div class="text-center mt-2">
               <span class="text-orange">Warning:</span> This tool uses experimental File System API - it might not work
@@ -39,18 +40,11 @@
             >
               {{ workingDir.name || 'none' }}
             </div>
-            <v-btn
-              title="select directory"
-              color="secondary"
-              variant="outlined"
-              type="icon"
-              elevation="1"
-              @click="selectWorkingDir"
-            >
-              <v-icon>mdi-folder-search-outline</v-icon>
+            <v-btn color="secondary" variant="outlined" type="icon" elevation="1" @click="selectWorkingDir">
+              <v-icon size="large">mdi-folder-search-outline</v-icon>
+              <v-tooltip anchor="bottom" activator="parent">Select working directory</v-tooltip>
             </v-btn>
             <v-btn
-              title="refresh directory"
               class="ml-2"
               v-if="workingDir.handle"
               color="secondary"
@@ -59,7 +53,8 @@
               elevation="1"
               @click="scanWorkingDir"
             >
-              <v-icon>mdi-folder-sync-outline</v-icon>
+              <v-icon size="large">mdi-folder-sync-outline</v-icon>
+              <v-tooltip anchor="bottom" activator="parent">Refresh directory</v-tooltip>
             </v-btn>
           </div>
         </v-card>
@@ -80,28 +75,28 @@
               <div style="font-size: 1.1em">{{ save.name }}</div>
               <v-spacer />
               <v-btn
-                color="secondary"
+                :color="save.compressed ? 'secondary' : 'grey'"
                 :disabled="!save.compressed"
-                title="decompress"
                 class="mx-1"
                 type="icon"
                 elevation="1"
                 variant="outlined"
                 @click="decompress(save)"
               >
-                <v-icon>mdi-package-variant</v-icon>
+                <v-icon size="large">mdi-package-variant</v-icon>
+                <v-tooltip anchor="bottom" activator="parent">Decompress save</v-tooltip>
               </v-btn>
               <v-btn
-                color="secondary"
+                :color="save.decompressed ? 'secondary' : 'grey'"
                 :disabled="!save.decompressed"
-                title="compress"
                 class="mx-1"
                 type="icon"
                 elevation="1"
                 variant="outlined"
                 @click="compress(save)"
               >
-                <v-icon>mdi-package-variant-closed</v-icon>
+                <v-icon size="large">mdi-package-variant-closed</v-icon>
+                <v-tooltip anchor="bottom" activator="parent">Compress save</v-tooltip>
               </v-btn>
             </div>
           </div>
