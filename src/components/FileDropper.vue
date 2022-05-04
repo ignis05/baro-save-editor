@@ -30,16 +30,20 @@
             <div class="text-h6 text-center">Submarines are within Barotrauma installation dir:</div>
             <ul>
               <li>
-                Created or modified by you:
+                Vanilla submarines:
                 <span class="text-primary"> Barotrauma/Submarines </span>
               </li>
               <li>
-                Downloaded when joining server:
+                Downloaded temporarily when joining server:
                 <span class="text-primary"> Barotrauma/Submarines/Downloaded </span> (it's a hidden directory)
               </li>
               <li>
                 Downloaded from Steam Workshop:
-                <span class="text-primary"> Barotrauma/Mods/[mod name] </span>
+                <span class="text-primary"> Barotrauma/Mods/[package name] </span>
+              </li>
+              <li>
+                Created or modified by you:
+                <span class="text-primary"> Barotrauma/LocalMods/[package name] </span>
               </li>
             </ul>
             <br />
