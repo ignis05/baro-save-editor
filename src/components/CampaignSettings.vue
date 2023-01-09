@@ -89,7 +89,7 @@ export default {
 function maxmissionsSetup() {
   const store = useStore()
 
-  const maxmsGetter = computed(() => store.getters.campaignSettings.attributes.maxmissioncount)
+  const maxmsGetter = computed(() => store.getters.campaignSettings.attributes.MaxMissionCount)
 
   const inputVal = ref(maxmsGetter.value)
   const isDifferent = computed(() => {
@@ -97,7 +97,7 @@ function maxmissionsSetup() {
   })
   function click() {
     if (parseInt(inputVal.value) >= 0) {
-      store.getters.campaignSettings.attributes.maxmissioncount = inputVal.value
+      store.getters.campaignSettings.attributes.MaxMissionCount = inputVal.value
       store.dispatch('showAlert', {
         type: 'success',
         text: `Set max missions to "${inputVal.value}".`,
@@ -122,19 +122,16 @@ function maxmissionsSetup() {
 function radiationSetup() {
   const store = useStore()
 
-  const isEnabled = computed(
-    () =>
-      store.getters.campaign.elements.find((el) => el.name == 'CampaignSettings').attributes.radiationenabled == 'true',
-  )
+  const isEnabled = computed(() => store.getters.campaignSettings.attributes.RadiationEnabled == 'True')
 
   function toggle() {
     let map = store.getters.campaign.elements.find((el) => el.name === 'map')
     let radiation = map.elements.find((el) => el.name === 'Radiation')
     // on -> off
     if (isEnabled.value) {
-      store.getters.campaign.elements.find((el) => el.name == 'CampaignSettings').attributes.radiationenabled = 'false'
-      radiation.attributes.enabled = 'False'
-      radiation.attributes.amount = '-200'
+      store.getters.campaignSettings.attributes.RadiationEnabled = 'False'
+      radiation.attributes.Enabled = 'False'
+      radiation.attributes.Amount = '-200'
       // reset locations that haven't been abandoned
       for (let location of map.elements.filter((el) => el.name == 'location')) {
         location.attributes.turnsinradiation = '0'
@@ -142,8 +139,8 @@ function radiationSetup() {
     }
     // off -> on
     else {
-      store.getters.campaign.elements.find((el) => el.name == 'CampaignSettings').attributes.radiationenabled = 'true'
-      delete radiation.attributes.enabled
+      store.getters.campaignSettings.attributes.RadiationEnabled = 'True'
+      radiation.attributes.Enabled = 'True'
     }
   }
 
