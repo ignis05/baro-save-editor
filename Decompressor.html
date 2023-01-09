@@ -1,0 +1,39 @@
+<!-- page with redirect to properly handle web crawlers -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- normal metadata -->
+    <title>Barotrauma Save Editor - Decompressor Tool</title>
+    <meta
+      name="description"
+      content="Online save decompressor for Barotrauma. Simply select a working directory and start compressing/decompressing Barotrauma saves with single clicks, 0 downloads required. (This tool uses experimental API, so it might not work with all browsers.)"
+    />
+    <meta name="keywords" content="barotrauma, save editor, save, editor, submarine, decompressor" />
+    <meta name="author" content="ignis05" />
+    <meta name="theme-color" content="#4CAF50" />
+    <link rel="icon" href="/baro-save-editor/favicon.ico" />
+
+    <!-- opengraph protocol -->
+    <meta property="og:title" content="Barotrauma Save Editor - Decompressor Tool" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ignis05.github.io/baro-save-editor/" />
+    <meta property="og:site_name" content="ignis05" />
+    <meta
+      property="og:description"
+      content="Online save decompressor for Barotrauma. Simply select a working directory and start compressing/decompressing Barotrauma saves with single clicks, 0 downloads required. (This tool uses experimental API, so it might not work with all browsers.)"
+    />
+    <meta property="og:image" content="https://ignis05.github.io/baro-save-editor/Decompressor.png" />
+    <meta property="og:image:width" content="1240" />
+    <meta property="og:image:height" content="600" />
+
+    <!-- redirect -->
+    <script>
+      sessionStorage.redirect = location.href
+      sessionStorage.referrer = document.referrer
+    </script>
+    <meta http-equiv="refresh" content="0;URL='/baro-save-editor/'" />
+  </head>
+  <body style="background-color: #121212">
+    <a style="color: #121212 !important" href="/baro-save-editor/">redirect</a>
+  </body>
+</html>
